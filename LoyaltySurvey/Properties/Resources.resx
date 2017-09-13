@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BackButton2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackButton2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottomLineContinuesClear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottomLineContinuesClear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottomLineTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottomLineTemplate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButterflyClear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButterflyClear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonBackspace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonBackspace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonCapslock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonCapslock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonClear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonClear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonSearch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonSearch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonShiftPressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonShiftPressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonShiftUnpressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonShiftUnpressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DownButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DownButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="smile_angry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smile_angry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="smile_happy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smile_happy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="smile_love" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smile_love.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="smile_neutral" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smile_neutral.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="smile_sad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smile_sad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StringPageDepartmentSelectSearchButton" xml:space="preserve">
+    <value>Найти врача по фамилии</value>
+  </data>
+  <data name="StringPageDepartmentSelectSubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь нужной кнопки</value>
+  </data>
+  <data name="StringPageDepartmentSelectTitle" xml:space="preserve">
+    <value>Найдите врача по фамилии или выберите отделение, в котором Вы были</value>
+  </data>
+  <data name="StringPageDoctorRateSubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь кнопки с нужной оценкой</value>
+  </data>
+  <data name="StringPageDoctorRateTitle" xml:space="preserve">
+    <value>Пожалуйста, оцените качество приема у врача</value>
+  </data>
+  <data name="StringPageDoctorSearchInitial" xml:space="preserve">
+    <value>Начните вводить фамилию врача</value>
+  </data>
+  <data name="StringPageDoctorSearchNothingFound" xml:space="preserve">
+    <value>К сожалению, ничего не найдено
+Попробуйте изменить строку поиска</value>
+  </data>
+  <data name="StringPageDoctorSearchSubtitleEmpty" xml:space="preserve">
+    <value>Для ввода используйте экранную клавиатуру</value>
+  </data>
+  <data name="StringPageDoctorSearchSubtitleFound" xml:space="preserve">
+    <value>Для выбора коснитесь кнопки с врачом</value>
+  </data>
+  <data name="StringPageDoctorSearchTitle" xml:space="preserve">
+    <value>Поиск врача по фамилии</value>
+  </data>
+  <data name="StringPageDoctorSelectSubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь кнопки с врачом</value>
+  </data>
+  <data name="StringPageDoctorSelectTitle" xml:space="preserve">
+    <value>Выберите врача у которого Вы были на приеме</value>
+  </data>
+  <data name="StringPageErrorSubtitle" xml:space="preserve">
+    <value>К сожалению, cервис временно недоступен</value>
+  </data>
+  <data name="StringPageErrorTitle" xml:space="preserve">
+    <value>Уважаемые пациенты!</value>
+  </data>
+  <data name="StringPageSplashScreenSubtitle" xml:space="preserve">
+    <value>Для продолжения коснитесь экрана</value>
+  </data>
+  <data name="StringPageSplashScreenTitle" xml:space="preserve">
+    <value>Помогите нам стать лучше!</value>
+  </data>
+  <data name="StringPageThanksSubtitle" xml:space="preserve">
+    <value>Ваше мнение очень важно для нас!</value>
+  </data>
+  <data name="StringPageThanksTitle" xml:space="preserve">
+    <value>Благодарим Вас за участие в опросе</value>
+  </data>
+  <data name="StringRateDoctorMark1" xml:space="preserve">
+    <value>Очень плохо</value>
+  </data>
+  <data name="StringRateDoctorMark2" xml:space="preserve">
+    <value>Плохо</value>
+  </data>
+  <data name="StringRateDoctorMark3" xml:space="preserve">
+    <value>Средне</value>
+  </data>
+  <data name="StringRateDoctorMark4" xml:space="preserve">
+    <value>Хорошо</value>
+  </data>
+  <data name="StringRateDoctorMark5" xml:space="preserve">
+    <value>Отлично</value>
+  </data>
+  <data name="UnknownDepartment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UnknownDepartment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UnknownDoctor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UnknownDoctor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UpButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UpButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Background_CallBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background_CallBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Background_Comment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background_Comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonClose.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonOk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonOk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_dislike" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_dislike.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_dont_know" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_dont_know.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_like" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_like.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Recommend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Recommend.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StringPageCallbackQuestion" xml:space="preserve">
+    <value>Можно мы позвоним Вам, чтобы узнать подробности?</value>
+  </data>
+  <data name="StringPageCallbackSubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь нужной кнопки</value>
+  </data>
+  <data name="StringPageCallbackSubtitleTextBox" xml:space="preserve">
+    <value>Для ввода используйте экранную клавиатуру</value>
+  </data>
+  <data name="StringPageCallbackTitle" xml:space="preserve">
+    <value>Уважаемый пациент!</value>
+  </data>
+  <data name="StringPageCallbackTitleTextBox" xml:space="preserve">
+    <value>Укажите свой номер телефона, чтобы мы смогли Вам перезвонить</value>
+  </data>
+  <data name="StringPageClinicRateDontKnow" xml:space="preserve">
+    <value>Не знаю</value>
+  </data>
+  <data name="StringPageClinicRateMostLikely" xml:space="preserve">
+    <value>Буду рекомендовать</value>
+  </data>
+  <data name="StringPageClinicRateNotAtAll" xml:space="preserve">
+    <value>Однозначно нет</value>
+  </data>
+  <data name="StringPageClinicRateQuestion" xml:space="preserve">
+    <value>Пожалуйста,
+оцените по десятибальной шкале насколько бы Вы порекомендовали
+нашу клинику своим друзьям и знакомым?</value>
+  </data>
+  <data name="StringPageClinicRateSubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь нужной кнопки</value>
+  </data>
+  <data name="StringPageClinicRateTitle" xml:space="preserve">
+    <value>И последний вопрос</value>
+  </data>
+  <data name="StringPageCommentQuestion" xml:space="preserve">
+    <value>Желаете ли Вы оставить комментарий?</value>
+  </data>
+  <data name="StringPageCommentSubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь нужной кнопки</value>
+  </data>
+  <data name="StringPageCommentSubtitleTextBox" xml:space="preserve">
+    <value>Для ввода используйте экранную клавиатуру</value>
+  </data>
+  <data name="StringPageCommentTitle" xml:space="preserve">
+    <value>Уважаемый пациент!</value>
+  </data>
+  <data name="StringPageCommentTitleTextBox" xml:space="preserve">
+    <value>Напишите свой комментарий</value>
+  </data>
+  <data name="StringPageSplashScreenWelcome" xml:space="preserve">
+    <value>Просим Вас принять участие в опросе о качестве работы нашей клиники</value>
+  </data>
+  <data name="thanks_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thanks-1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thanks_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thanks_2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>
