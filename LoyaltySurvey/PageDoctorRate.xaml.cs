@@ -33,8 +33,8 @@ namespace LoyaltySurvey {
 			double elementWidth = (AvailableWidth * 0.66 - Gap * (elementsInLine - 1)) / elementsInLine;
 			double elementHeight = AvailableHeight * 0.35;
 
-			currentX = StartX + (AvailableWidth * 0.33) / 2;
-			currentY = StartY + AvailableHeight - elementHeight;
+			double currentX = StartX + (AvailableWidth * 0.33) / 2;
+			double currentY = StartY + AvailableHeight - elementHeight;
 
 			foreach (string rate in rates) {
 				Button buttonRate = ControlsFactory.CreateButtonWithImageAndText(

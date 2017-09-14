@@ -30,7 +30,37 @@ namespace LoyaltySurvey {
 		}
 
 		#endregion
+		
+		#region HorizontalOffset Property
 
+		public static DependencyProperty HorizontalOffsetProperty =
+			DependencyProperty.RegisterAttached("HorizontalOffset",
+												typeof(double),
+												typeof(ScrollAnimationBehavior),
+												new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
+
+		public static void SetHorizontalOffset(FrameworkElement target, double value) {
+			target.SetValue(HorizontalOffsetProperty, value);
+		}
+
+		public static double cw(FrameworkElement target) {
+			return (double)target.GetValue(HorizontalOffsetProperty);
+		}
+
+		#endregion
+		
+		#region OnHorizontalOffset Changed
+
+		private static void OnHorizontalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e) {
+			ScrollViewer scrollViewer = target as ScrollViewer;
+
+			if (scrollViewer != null) {
+				scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
+			}
+		}
+
+		#endregion
+		
 		#region TimeDuration Property
 
 		public static DependencyProperty TimeDurationProperty =

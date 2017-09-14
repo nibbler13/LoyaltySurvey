@@ -11,8 +11,6 @@ namespace LoyaltySurvey {
 	/// </summary>
 	public partial class PageDoctorSearch : ClassPageTemplate {
 		private Dictionary<string, List<Doctor>> dictionaryOfDoctors;
-		private Button buttonScrollLeft;
-		private Button buttonScrollRight;
 		private Label labelInfo;
 		private int minTextBoxSearchLength = 3;
 		private TextBox textBox;
@@ -62,19 +60,11 @@ namespace LoyaltySurvey {
 			double scrollViewerWidth = AvailableWidth + leftCornerShadow + rightCornerShadow;
 			double scrollViewerHeight = Canvas.GetTop(canvasKeyboard) - Gap - scrollViewerY + leftCornerShadow + rightCornerShadow;
 
-			CreateRootPanel(3, 1, 0);
-			ScrollViewer.Width = scrollViewerWidth;
-			ScrollViewer.Height = scrollViewerHeight;
-			Canvas.SetLeft(ScrollViewer, scrollViewerX);
-			Canvas.SetTop(ScrollViewer, scrollViewerY);
-			CanvasForElements.Orientation = Orientation.Horizontal;
-			CanvasForElements.VerticalAlignment = VerticalAlignment.Top;
+			CreateRootPanel(3, 1, 0, Orientation.Horizontal, scrollViewerWidth, scrollViewerHeight, scrollViewerX, scrollViewerY);
 			
 			double elementHeight = ScrollViewer.Height - leftCornerShadow - rightCornerShadow;
 			double elementWidth = (ScrollViewer.Width - leftCornerShadow - rightCornerShadow - Gap * 2) / 3;
 			SetElementsWidthAndHeight(elementWidth, elementHeight);
-			
-			CreateLeftRightButtons(Canvas.GetTop(canvasKeyboard));
 
 			labelInfo = ControlsFactory.CreateLabel(
 				"", 
@@ -93,40 +83,6 @@ namespace LoyaltySurvey {
 			onscreenKeyboard.SetEnterButtonClick(ButtonEnter_Click);
 		}
 
-		private void CreateLeftRightButtons(double top) {
-			buttonScrollLeft = ControlsFactory.CreateButtonWithImageOnly(
-				Properties.Resources.ButtonLeft, 
-				DefaultButtonWidth, 
-				DefaultButtonWidth);
-			buttonScrollLeft.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
-
-			buttonScrollRight = ControlsFactory.CreateButtonWithImageOnly(
-				Properties.Resources.ButtonRight, 
-				DefaultButtonWidth, 
-				DefaultButtonWidth);
-			buttonScrollRight.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
-
-			Canvas.SetLeft(buttonScrollLeft, StartX);
-			Canvas.SetTop(buttonScrollLeft, top);
-
-			Canvas.SetLeft(buttonScrollRight, StartX + AvailableWidth - DefaultButtonWidth);
-			Canvas.SetTop(buttonScrollRight, top);
-
-			CanvasMain.Children.Add(buttonScrollLeft);
-			CanvasMain.Children.Add(buttonScrollRight);
-
-			buttonScrollLeft.Click += ButtonScrollLeft_Click;
-			buttonScrollRight.Click += ButtonScrollRight_Click;
-		}
-
-		private void ButtonScrollLeft_Click(object sender, RoutedEventArgs e) {
-			Console.WriteLine("ButtonScrollLeft_Click");
-		}
-
-		private void ButtonScrollRight_Click(object sender, RoutedEventArgs e) {
-			Console.WriteLine("ButtonScrollRight_Click");
-		}
-
 		private void ButtonClear_Click(object sender, RoutedEventArgs e) {
 			textBox.Clear();
 			SetLabelInfoToInitial();
@@ -139,17 +95,14 @@ namespace LoyaltySurvey {
 		private void SetPanelResultVisible(bool isVisible) {
 			ScrollViewer.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
 			labelInfo.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
-			SetButtonVisible(buttonScrollLeft, false);
-			SetButtonVisible(buttonScrollRight, false);
 		}
 
 		private void SetLabelInfoToInitial() {
-			Console.WriteLine("SetLabelInfoToInitial");
 			SetLabelInfoText(Properties.Resources.StringPageDoctorSearchInitial);
+			CanvasForElements.Children.Clear();
 		}
 
 		private void SetLabelInfoToNothingFound() {
-			Console.WriteLine("SetLabelInfoToNothingFoun");
 			SetLabelInfoText(Properties.Resources.StringPageDoctorSearchNothingFound);
 		}
 
@@ -161,12 +114,6 @@ namespace LoyaltySurvey {
 				FontFamilySub, 
 				FontSizeMain, 
 				FontWeights.Normal);
-		}
-
-		private void SetButtonVisible(Button button, bool isVisible) {
-			Visibility visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
-			button.Visibility = visibility;
-			button.Visibility = visibility;
 		}
 
 		private void TextBox_TextChanged(object sender, RoutedEventArgs e) {
@@ -208,15 +155,16 @@ namespace LoyaltySurvey {
 		}
 
 		private void UpdateResultPanelContent(List<Doctor> doctors) {
-			//Console.WriteLine("UpdateResultPanelContent: " + doctors.Count);
+			Console.WriteLine("UpdateResultPanelContent: " + doctors.Count);
 
 			CanvasForElements.Children.Clear();
 			SetLabelSubtitleText(Properties.Resources.StringPageDoctorSearchSubtitleFound);
 			SetPanelResultVisible(true);
 
-			foreach (Doctor doctor in doctors) {
-				string info = doctor.Name + Environment.NewLine + Environment.NewLine +
-					doctor.Position;
+			for (int i = 0; i < doctors.Count; i++) {
+				string info = doctors[i].Name + Environment.NewLine + Environment.NewLine +
+					doctors[i].Position;
+
 				Button buttonDoctor = ControlsFactory.CreateButtonWithImageAndText(
 					info,
 					ElementWidth,
@@ -225,21 +173,17 @@ namespace LoyaltySurvey {
 					FontFamilySub,
 					FontSizeMain,
 					FontWeights.Normal);
-				buttonDoctor.Margin = new Thickness(0, 0, doctors.Count > 1 ? Gap : 0, 0);
+				buttonDoctor.Margin = new Thickness(0, 0, i != doctors.Count - 1 ? Gap : rightCornerShadow, 0);
 				CanvasForElements.Children.Add(buttonDoctor);
 
-				buttonDoctor.Tag = doctor;
+				buttonDoctor.Tag = doctors[i];
 				buttonDoctor.Click += PanelDoctor_Click;
 			}
 
-			if (doctors.Count > 3) {
-				SetButtonVisible(buttonScrollRight, true);
+			if (doctors.Count > 3) 
 				CanvasForElements.HorizontalAlignment = HorizontalAlignment.Left;
-			} else {
+			else 
 				CanvasForElements.HorizontalAlignment = HorizontalAlignment.Center;
-			}
-
-			CanvasForElements.Width = doctors.Count * (ElementWidth + Gap);
 		}
 
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {

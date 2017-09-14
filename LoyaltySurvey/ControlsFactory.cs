@@ -21,6 +21,7 @@ namespace LoyaltySurvey {
 			textBox.FontFamily = fontFamily;
 			textBox.FontSize = fontSize;
 			textBox.FontWeight = FontWeights.Normal;
+			textBox.IsReadOnly = true;
 
 			if (isContentCentered) {
 				textBox.VerticalContentAlignment = VerticalAlignment.Center;

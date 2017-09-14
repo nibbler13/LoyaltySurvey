@@ -131,8 +131,8 @@ namespace LoyaltySurvey {
 			} else {
 				pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
 
-				if (NavigationService.CanGoBack)
-					NavigationService.GoBack();
+				//if (NavigationService.CanGoBack)
+				//	NavigationService.GoBack();
 			}
 		}
 	}
