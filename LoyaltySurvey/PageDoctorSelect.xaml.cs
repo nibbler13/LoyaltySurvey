@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LoyaltySurvey {
 	/// <summary>
@@ -19,32 +11,45 @@ namespace LoyaltySurvey {
 	/// </summary>
 	public partial class PageDoctorSelect : ClassPageTemplate {
 		private List<Doctor> doctors;
+		private WrapPanel wrapPanel;
 
 		public PageDoctorSelect(List<Doctor> doctors, string depName) {
 			InitializeComponent();
 
 			HideLogo();
 
-			string title = Properties.Resources.StringPageDoctorSelectTitle;
-			if (title.Contains("*"))
-				title = title.Replace("*", depName);
-
 			SetLabelsContent(
-				title,
+				Properties.Resources.StringPageDoctorSelectTitle,
 				Properties.Resources.StringPageDoctorSelectSubtitle);
 
+			wrapPanel = new WrapPanel();
+
+			Image imageDepartment = ControlsFactory.CreateImage((System.Drawing.Bitmap)ControlsFactory.GetImageForDepartment(depName));
+			wrapPanel.Children.Add(imageDepartment);
+
 			Label labelDep = ControlsFactory.CreateLabel(
-				"Отделение: " + depName,
+				ControlsFactory.FirstCharToUpper(depName),
 				Colors.Transparent,
 				Properties.Settings.Default.ColorLabelForeground,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
-				AvailableWidth,
-				DefaultButtonWidth,
-				StartX,
-				StartY,
-				CanvasMain);
+				-1,
+				-1,
+				-1,
+				-1,
+				wrapPanel);
+			
+			wrapPanel.Height = DefaultButtonHeight;
+			wrapPanel.HorizontalAlignment = HorizontalAlignment.Center;
+			wrapPanel.VerticalAlignment = VerticalAlignment.Center;
+
+			if (IsDebug)
+				wrapPanel.Background = new SolidColorBrush(Colors.Aqua);
+
+			Loaded += PageDoctorSelect_Loaded;
+			Canvas.SetTop(wrapPanel, StartY);
+			CanvasMain.Children.Add(wrapPanel);
 
 			this.doctors = doctors;
 			
@@ -60,8 +65,13 @@ namespace LoyaltySurvey {
 			FillPanelWithElements(keys, ControlsFactory.ElementType.Doctor, PanelDoctor_Click);
 		}
 
+		private void PageDoctorSelect_Loaded(object sender, RoutedEventArgs e) {
+			Canvas.SetLeft(wrapPanel, StartX + AvailableWidth / 2 - wrapPanel.ActualWidth / 2);
+		}
+
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
 			string docname = (sender as Control).Tag.ToString();
+			LoggingSystem.LogMessageToFile("Выбран доктор: " + docname);
 			Doctor selectedDoctor = new Doctor("", "", "", "");
 
 			foreach (Doctor doctor in doctors) {

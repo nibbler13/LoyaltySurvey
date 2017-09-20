@@ -63,9 +63,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BackButton2 {
+        internal static System.Drawing.Bitmap BackgroundCallBack {
             get {
-                object obj = ResourceManager.GetObject("BackButton2", resourceCulture);
+                object obj = ResourceManager.GetObject("BackgroundCallBack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Background_CallBack {
+        internal static System.Drawing.Bitmap BackgroundClinicRecommend {
             get {
-                object obj = ResourceManager.GetObject("Background_CallBack", resourceCulture);
+                object obj = ResourceManager.GetObject("BackgroundClinicRecommend", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,29 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Background_Comment {
+        internal static System.Drawing.Bitmap BackgroundComment {
             get {
-                object obj = ResourceManager.GetObject("Background_Comment", resourceCulture);
+                object obj = ResourceManager.GetObject("BackgroundComment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BackgroundError {
+            get {
+                object obj = ResourceManager.GetObject("BackgroundError", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BackgroundThanks {
+            get {
+                object obj = ResourceManager.GetObject("BackgroundThanks", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +133,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ButterflyClear {
+        internal static System.Drawing.Bitmap ButtonBack {
             get {
-                object obj = ResourceManager.GetObject("ButterflyClear", resourceCulture);
+                object obj = ResourceManager.GetObject("ButtonBack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -156,6 +176,16 @@ namespace LoyaltySurvey.Properties {
         internal static System.Drawing.Bitmap ButtonClose {
             get {
                 object obj = ResourceManager.GetObject("ButtonClose", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ButtonDown {
+            get {
+                object obj = ResourceManager.GetObject("ButtonDown", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +253,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DownButton {
+        internal static System.Drawing.Bitmap ButtonUp {
             get {
-                object obj = ResourceManager.GetObject("DownButton", resourceCulture);
+                object obj = ResourceManager.GetObject("ButtonUp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +263,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_dislike {
+        internal static System.Drawing.Bitmap ClinicRate0 {
             get {
-                object obj = ResourceManager.GetObject("icon_dislike", resourceCulture);
+                object obj = ResourceManager.GetObject("ClinicRate0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +273,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_dont_know {
+        internal static System.Drawing.Bitmap ClinicRate10 {
             get {
-                object obj = ResourceManager.GetObject("icon_dont_know", resourceCulture);
+                object obj = ResourceManager.GetObject("ClinicRate10", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,9 +283,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_like {
+        internal static System.Drawing.Bitmap ClinicRate5 {
             get {
-                object obj = ResourceManager.GetObject("icon_like", resourceCulture);
+                object obj = ResourceManager.GetObject("ClinicRate5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +293,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Recommend {
+        internal static System.Drawing.Bitmap DepartmentWithoutAPhoto {
             get {
-                object obj = ResourceManager.GetObject("Recommend", resourceCulture);
+                object obj = ResourceManager.GetObject("DepartmentWithoutAPhoto", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +303,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap smile_angry {
+        internal static System.Drawing.Bitmap DoctorRate1 {
             get {
-                object obj = ResourceManager.GetObject("smile_angry", resourceCulture);
+                object obj = ResourceManager.GetObject("DoctorRate1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +313,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap smile_happy {
+        internal static System.Drawing.Bitmap DoctorRate2 {
             get {
-                object obj = ResourceManager.GetObject("smile_happy", resourceCulture);
+                object obj = ResourceManager.GetObject("DoctorRate2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,9 +323,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap smile_love {
+        internal static System.Drawing.Bitmap DoctorRate3 {
             get {
-                object obj = ResourceManager.GetObject("smile_love", resourceCulture);
+                object obj = ResourceManager.GetObject("DoctorRate3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -303,9 +333,9 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap smile_neutral {
+        internal static System.Drawing.Bitmap DoctorRate4 {
             get {
-                object obj = ResourceManager.GetObject("smile_neutral", resourceCulture);
+                object obj = ResourceManager.GetObject("DoctorRate4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -313,9 +343,39 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap smile_sad {
+        internal static System.Drawing.Bitmap DoctorRate5 {
             get {
-                object obj = ResourceManager.GetObject("smile_sad", resourceCulture);
+                object obj = ResourceManager.GetObject("DoctorRate5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DoctorWithoutAPhoto {
+            get {
+                object obj = ResourceManager.GetObject("DoctorWithoutAPhoto", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LogoBzFull {
+            get {
+                object obj = ResourceManager.GetObject("LogoBzFull", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LogoBzSmall {
+            get {
+                object obj = ResourceManager.GetObject("LogoBzSmall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -393,9 +453,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пожалуйста,
-        ///оцените по десятибальной шкале насколько бы Вы порекомендовали
-        ///нашу клинику своим друзьям и знакомым?.
+        ///   Ищет локализованную строку, похожую на .
         /// </summary>
         internal static string StringPageClinicRateQuestion {
             get {
@@ -404,7 +462,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Для выбора коснитесь нужной кнопки.
+        ///   Ищет локализованную строку, похожую на Для выбора коснитесь кнопки с нужной оценкой.
         /// </summary>
         internal static string StringPageClinicRateSubtitle {
             get {
@@ -413,7 +471,8 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на И последний вопрос.
+        ///   Ищет локализованную строку, похожую на Пожалуйста, оцените по десятибальной шкале
+        ///насколько бы Вы порекомендовали нашу клинику своим друзьям и знакомым?.
         /// </summary>
         internal static string StringPageClinicRateTitle {
             get {
@@ -576,7 +635,17 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на К сожалению, cервис временно недоступен.
+        ///   Ищет локализованную строку, похожую на К сожалению, сервис временно недоступен
+        ///по техническим причинам..
+        /// </summary>
+        internal static string StringPageErrorMessage {
+            get {
+                return ResourceManager.GetString("StringPageErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Приносим свои извинения за доставленные неудобства. Администрация..
         /// </summary>
         internal static string StringPageErrorSubtitle {
             get {
@@ -612,6 +681,33 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Просим Вас уделить пару минут и оценить качество нашей работы.
+        /// </summary>
+        internal static string StringPageSplashScreenTitleLeftBottom {
+            get {
+                return ResourceManager.GetString("StringPageSplashScreenTitleLeftBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на МЫ СТРЕМИМСЯ СТАТЬ.
+        /// </summary>
+        internal static string StringPageSplashScreenTitleLeftTop {
+            get {
+                return ResourceManager.GetString("StringPageSplashScreenTitleLeftTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ЛУЧШЕ.
+        /// </summary>
+        internal static string StringPageSplashScreenTitleRight {
+            get {
+                return ResourceManager.GetString("StringPageSplashScreenTitleRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Просим Вас принять участие в опросе о качестве работы нашей клиники.
         /// </summary>
         internal static string StringPageSplashScreenWelcome {
@@ -635,6 +731,33 @@ namespace LoyaltySurvey.Properties {
         internal static string StringPageThanksTitle {
             get {
                 return ResourceManager.GetString("StringPageThanksTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на за участие в нашем опросе!.
+        /// </summary>
+        internal static string StringPageThanksTitleLeftBottom {
+            get {
+                return ResourceManager.GetString("StringPageThanksTitleLeftBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на МЫ ЦЕНИМ ВАШЕ МНЕНИЕ.
+        /// </summary>
+        internal static string StringPageThanksTitleLeftRight {
+            get {
+                return ResourceManager.GetString("StringPageThanksTitleLeftRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на БЛАГОДАРИМ ВАС.
+        /// </summary>
+        internal static string StringPageThanksTitleLeftTop {
+            get {
+                return ResourceManager.GetString("StringPageThanksTitleLeftTop", resourceCulture);
             }
         }
         
@@ -680,56 +803,6 @@ namespace LoyaltySurvey.Properties {
         internal static string StringRateDoctorMark5 {
             get {
                 return ResourceManager.GetString("StringRateDoctorMark5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap thanks_1 {
-            get {
-                object obj = ResourceManager.GetObject("thanks_1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap thanks_2 {
-            get {
-                object obj = ResourceManager.GetObject("thanks_2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap UnknownDepartment {
-            get {
-                object obj = ResourceManager.GetObject("UnknownDepartment", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap UnknownDoctor {
-            get {
-                object obj = ResourceManager.GetObject("UnknownDoctor", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap UpButton {
-            get {
-                object obj = ResourceManager.GetObject("UpButton", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

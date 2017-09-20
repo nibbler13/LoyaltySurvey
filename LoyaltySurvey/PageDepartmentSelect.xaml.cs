@@ -20,7 +20,7 @@ namespace LoyaltySurvey {
 
 			this.dictionaryOfDoctors = dictionaryOfDoctors;
 
-			Console.WriteLine(dictionaryOfDoctors.Count);
+			LoggingSystem.LogMessageToFile("Количество отделений: " + dictionaryOfDoctors.Count);
 
 			SetLabelsContent(
 				Properties.Resources.StringPageDepartmentSelectTitle,
@@ -39,11 +39,6 @@ namespace LoyaltySurvey {
 			List<string> keys = dictionaryOfDoctors.Keys.ToList();
 			FillPanelWithElements(keys, ControlsFactory.ElementType.Department, PanelDepartment_Click);
 
-			//scrollViewer.Height = scrollViewer.Height - elementHeight - Gap;
-			//Canvas.SetTop(scrollViewer, StartY + elementHeight + Gap);
-
-			//Canvas.SetTop(buttonScrollUp, StartY + elementHeight + Gap);
-
 			Button buttonSearch = ControlsFactory.CreateButtonWithImageAndText(
 				Properties.Resources.StringPageDepartmentSelectSearchButton, 
 				DefaultButtonWidth * 6, 
@@ -59,10 +54,17 @@ namespace LoyaltySurvey {
 			buttonSearch.Click += ButtonSearch_Click;
 
 			buttonSearch.Background = new SolidColorBrush(Colors.Beige);
+
+			IsVisibleChanged += PageDepartmentSelect_IsVisibleChanged;
+		}
+
+		private void PageDepartmentSelect_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
+			if (IsVisible)
+				ScrollViewer.ScrollToTop();
 		}
 
 		private void ButtonSearch_Click(object sender, RoutedEventArgs e) {
-			Console.WriteLine("ButtonSearch_Click");
+			LoggingSystem.LogMessageToFile("Нажата кнопка 'Поиск'");
 
 			PageDoctorSearch pageDoctorSearch = new PageDoctorSearch(dictionaryOfDoctors);
 			NavigationService.Navigate(pageDoctorSearch);
@@ -70,7 +72,7 @@ namespace LoyaltySurvey {
 
 		private void PanelDepartment_Click(object sender, RoutedEventArgs e) {
 			string depname = (sender as Control).Tag.ToString();
-			Console.WriteLine("ButtonDepartment_Click : " + depname);
+			LoggingSystem.LogMessageToFile("Выбрано отделение: " + depname);
 
 			PageDoctorSelect pageDoctorSelect = new PageDoctorSelect(dictionaryOfDoctors[depname], depname);
 			NavigationService.Navigate(pageDoctorSelect);

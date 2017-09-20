@@ -17,7 +17,8 @@ namespace LoyaltySurvey {
 					sw.WriteLine(logLine);
 				}
 			} catch (Exception e) {
-				Console.WriteLine("Cannot write to log file: " + logFileName + " | " + e.Message + " | " + e.StackTrace);
+				Console.WriteLine("LogMessageToFile exception: " + logFileName + Environment.NewLine + e.Message + 
+					Environment.NewLine + e.StackTrace);
 			}
 
 			Console.WriteLine(msg);
@@ -35,7 +36,7 @@ namespace LoyaltySurvey {
 				for (int i = 0; i < files.Length - MAX_LOGFILES_QUANTITY; i++)
 					files[i].Delete();
 			} catch (Exception e) {
-				Console.WriteLine("Cannot delete old lig files: " + e.Message + " | " + e.StackTrace);
+				Console.WriteLine("CheckAndCleanOldFiles exception" + e.Message + Environment.NewLine + e.StackTrace);
 			}
 		}
 	}

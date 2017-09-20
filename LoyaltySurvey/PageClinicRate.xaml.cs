@@ -10,8 +10,10 @@ namespace LoyaltySurvey {
 	/// Логика взаимодействия для PageClinicRate.xaml
 	/// </summary>
 	public partial class PageClinicRate : ClassPageTemplate {
-		public PageClinicRate() {
+		public PageClinicRate(SurveyResult surveyResult) {
 			InitializeComponent();
+
+			this.surveyResult = surveyResult;
 
 			HideLogo();
 			HideButtonBack();
@@ -19,10 +21,7 @@ namespace LoyaltySurvey {
 			SetLabelsContent(
 				Properties.Resources.StringPageClinicRateTitle,
 				Properties.Resources.StringPageClinicRateSubtitle);
-
-
-
-
+			
 			double labelWidth = DefaultButtonWidth * 4;
 			double labelHeight = DefaultButtonHeight / 2;
 			double currentX = StartX;
@@ -30,7 +29,7 @@ namespace LoyaltySurvey {
 
 			List<string> labels = new List<string>() {
 				Properties.Resources.StringPageClinicRateNotAtAll,
-				//Properties.Resources.StringPageClinicRateDontKnow,
+				Properties.Resources.StringPageClinicRateDontKnow,
 				Properties.Resources.StringPageClinicRateMostLikely
 			};
 
@@ -39,9 +38,9 @@ namespace LoyaltySurvey {
 				if (i == 0) {
 					horizontalAlignment = HorizontalAlignment.Left;
 					currentX = StartX;
-				//} else if (i == 1) {
-				//	horizontalAlignment = HorizontalAlignment.Center;
-				//	currentX = StartX + AvailableWidth / 2 - labelWidth / 2;
+				} else if (i == 1) {
+					horizontalAlignment = HorizontalAlignment.Center;
+					currentX = StartX + AvailableWidth / 2 - labelWidth / 2;
 				} else {
 					horizontalAlignment = HorizontalAlignment.Right;
 					currentX = StartX + AvailableWidth - labelWidth;
@@ -61,11 +60,7 @@ namespace LoyaltySurvey {
 					CanvasMain);
 
 				label.HorizontalContentAlignment = horizontalAlignment;
-				//label.VerticalContentAlignment = VerticalAlignment.Top;
 			}
-
-
-
 
 			int maxRate = 11;
 			double rateSide = (AvailableWidth - (Gap * (maxRate - 1))) / maxRate;
@@ -88,67 +83,34 @@ namespace LoyaltySurvey {
 
 				Image image = null;
 				if (i == 0)
-					image = ControlsFactory.CreateImage(Properties.Resources.icon_dislike);
+					image = ControlsFactory.CreateImage(Properties.Resources.ClinicRate0);
 				if (i == 5)
-					image = ControlsFactory.CreateImage(Properties.Resources.icon_dont_know);
+					image = ControlsFactory.CreateImage(Properties.Resources.ClinicRate5);
 				if (i == 10)
-					image = ControlsFactory.CreateImage(Properties.Resources.icon_like);
+					image = ControlsFactory.CreateImage(Properties.Resources.ClinicRate10);
 
 				if (image != null)
 					button.Content = image;
 
-				//Brush brush = null;
-				//if (i < 4) {
-				//	brush = new SolidColorBrush(Colors.LightSkyBlue);
-				//} else if (i > 6) {
-				//	brush = new SolidColorBrush(Colors.LightSeaGreen);
-				//}
-
-				//if (brush != null)
-				//	button.Background = brush;
-
 				currentX += rateSide + Gap;
 			}
 
-
-
-
-
-
-			double labelQuestionHeight = DefaultButtonHeight * 2;
-			currentY -= Gap + labelQuestionHeight;
-			Label labelQuestion = ControlsFactory.CreateLabel(
-				Properties.Resources.StringPageClinicRateQuestion,
-				Colors.Transparent,
-				Properties.Settings.Default.ColorLabelForeground,
-				FontFamilySub,
-				FontSizeMain,
-				FontWeights.Normal,
-				AvailableWidth,
-				labelQuestionHeight,
-				StartX,
-				currentY,
-				CanvasMain);
-			//labelQuestion.VerticalContentAlignment = VerticalAlignment.Bottom;
-
-
-
-
-			currentY -= Gap;
-			double lastHeight = StartY + AvailableHeight - Canvas.GetTop(labelQuestion) - labelQuestion.Height - Gap;
 			ControlsFactory.CreateImage(
-				Properties.Resources.Recommend,
+				Properties.Resources.BackgroundClinicRecommend,
 				AvailableWidth,
-				currentY - StartY,
+				currentY - StartY - Gap,
 				StartX,
 				StartY,
 				CanvasMain,
 				false);
-			
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
-			PageThanks pageThanks = new PageThanks();
+			string tag = (sender as Button).Tag.ToString();
+			LoggingSystem.LogMessageToFile("Выбрана оценка: " + tag);
+			surveyResult.SetClinicRecommendMark(tag);
+
+			PageThanks pageThanks = new PageThanks(surveyResult);
 			NavigationService.Navigate(pageThanks);
 		}
 	}

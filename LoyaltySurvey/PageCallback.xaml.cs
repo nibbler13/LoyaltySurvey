@@ -17,8 +17,10 @@ namespace LoyaltySurvey {
 		private double buttonWidth;
 		private string mask = "+7 (___) ___-__-__";
 
-		public PageCallback() {
+		public PageCallback(SurveyResult surveyResult) {
 			InitializeComponent();
+
+			this.surveyResult = surveyResult;
 
 			buttonWidth = DefaultButtonWidth * 3;
 
@@ -28,11 +30,13 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageCallbackTitle,
 				Properties.Resources.StringPageCallbackSubtitle);
 
-			CreateQuestionControlsAnd(Properties.Resources.StringPageCallbackQuestion, Properties.Resources.Background_CallBack,
+			CreateQuestionControlsAnd(Properties.Resources.StringPageCallbackQuestion, Properties.Resources.BackgroundCallBack,
 				ButtonNoOrNext_Click, ButtonYes_Click);
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
+			LoggingSystem.LogMessageToFile("Нажата кнопка 'Да'");
+
 			textBoxData = new TextBox();
 			textBoxData.TextChanged += TextBoxData_TextChanged;
 
@@ -91,7 +95,6 @@ namespace LoyaltySurvey {
 
 			string updatedMask = mask;
 
-
 			Regex regex = new Regex(Regex.Escape("_"));
 
 			foreach (char c in enteredText) {
@@ -106,7 +109,17 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonNoOrNext_Click(object sender, RoutedEventArgs e) {
-			PageClinicRate pageClinicRate = new PageClinicRate();
+			string phoneNumber = "Resused";
+
+			if ((sender as Button).Tag.ToString().Equals("Далее")) {
+				phoneNumber = textBoxData.Text;
+				LoggingSystem.LogMessageToFile("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
+			} else
+				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
+
+			surveyResult.SetPhoneNumber(phoneNumber);
+
+			PageClinicRate pageClinicRate = new PageClinicRate(surveyResult);
 			NavigationService.Navigate(pageClinicRate);
 		}
 	}

@@ -28,32 +28,22 @@ namespace LoyaltySurvey {
 
 			KeepAlive = true;
 
-			SetLabelsContent(
-				Properties.Resources.StringPageSplashScreenTitle,
-				Properties.Resources.StringPageSplashScreenSubtitle);
+			Rect rect = CreateFirstOrLastPageControls(
+				Properties.Resources.StringPageSplashScreenTitleLeftTop,
+				Properties.Resources.StringPageSplashScreenTitleLeftBottom,
+				Properties.Resources.StringPageSplashScreenTitleRight,
+				Properties.Resources.StringPageSplashScreenSubtitle,
+				true);
 
-			Label labelWelcome = ControlsFactory.CreateLabel(
-				Properties.Resources.StringPageSplashScreenWelcome,
-				Colors.Transparent,
-				Properties.Settings.Default.ColorLabelForeground,
-				FontFamilySub,
-				FontSizeMain,
-				FontWeights.Normal,
-				AvailableWidth,
-				DefaultButtonHeight,
-				StartX,
-				StartY,
-				CanvasMain);
-			Canvas.SetZIndex(labelWelcome, 0);
-			//labelWelcome.VerticalContentAlignment = VerticalAlignment.Bottom;
-
+			double mediaElementWidth = rect.Width;
+			double mediaElementHeight = rect.Height;
 			MediaElement mediaElement = new MediaElement();
-			mediaElement.Source = new Uri(Directory.GetCurrentDirectory() + "\\simple.gif");
-			mediaElement.Width = AvailableWidth;
-			mediaElement.Height = AvailableHeight - labelWelcome.Height - Gap;
+			mediaElement.Source = new Uri(Directory.GetCurrentDirectory() + "\\" + Properties.Settings.Default.WelcomeAnimationFileName);
+			mediaElement.Width = mediaElementWidth;
+			mediaElement.Height = mediaElementHeight;
 			mediaElement.Stretch = Stretch.Uniform;
-			Canvas.SetLeft(mediaElement, StartX);
-			Canvas.SetTop(mediaElement, Canvas.GetTop(labelWelcome) + labelWelcome.Height + Gap);
+			Canvas.SetLeft(mediaElement, rect.Location.X);
+			Canvas.SetTop(mediaElement, rect.Location.Y);
 			CanvasMain.Children.Add(mediaElement);
 			mediaElement.UnloadedBehavior = MediaState.Manual;
 			mediaElement.MediaEnded += MediaElement_MediaEnded;
@@ -65,10 +55,16 @@ namespace LoyaltySurvey {
 			backgroundWorker.DoWork += BackgroundWorker_DoWork;
 			backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
 			backgroundWorker.RunWorkerAsync();
+
+			DisableTimer();
+			DisableTimerResetByClick();
+		}
+
+		private void BackgroundWorker_RunWorkerCompleted1(object sender, RunWorkerCompletedEventArgs e) {
+			backgroundWorker.Dispose();
 		}
 
 		private void MediaElement_MediaEnded(object sender, RoutedEventArgs e) {
-			Console.WriteLine("MediaElement_MediaEnded");
 			(sender as MediaElement).Position = new TimeSpan(0, 0, 1);
 			(sender as MediaElement).Play();
 		}
@@ -103,8 +99,9 @@ namespace LoyaltySurvey {
 					string department = dataRow["DEPARTMENT"].ToString().ToLower();
 					string docname = dataRow["DOCNAME"].ToString();
 					string docposition = dataRow["DOCPOSITION"].ToString();
+					string dcode = dataRow["DCODE"].ToString();
 
-					Doctor doctor = new Doctor(docname, docposition, department, "123");
+					Doctor doctor = new Doctor(docname, docposition, department, dcode);
 
 					if (dictionary.ContainsKey(department)) {
 						if (dictionary[department].Contains(doctor))
@@ -130,9 +127,6 @@ namespace LoyaltySurvey {
 				NavigationService.Navigate(pageError);
 			} else {
 				pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
-
-				//if (NavigationService.CanGoBack)
-				//	NavigationService.GoBack();
 			}
 		}
 	}

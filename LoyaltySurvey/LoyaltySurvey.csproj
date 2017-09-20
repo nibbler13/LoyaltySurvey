@@ -28,6 +28,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +51,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DirectShowLib-2005">
+      <HintPath>..\DirectShowLib-2005.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI, Version=3.2.0.2721, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\packages\Emgu.CV.3.2.0.2721\lib\net35\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.World, Version=3.2.0.2721, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\packages\Emgu.CV.3.2.0.2721\lib\net35\Emgu.CV.World.dll</HintPath>
+    </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=5.11.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.5.11.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
@@ -60,13 +71,15 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZedGraph.5.1.5\lib\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -96,6 +109,7 @@
       <DependentUpon>PageThanks.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScrollAnimationBehavior.cs" />
+    <Compile Include="SurveyResult.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -234,9 +248,6 @@
     <None Include="Resources\UnknownDepartment.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\UnknownDoctor.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ButtonBackspace.png" />
   </ItemGroup>
   <ItemGroup>
@@ -270,19 +281,10 @@
     <None Include="Resources\icon_like.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\giphy2.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\thanks-1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Background_CallBack.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Background_Comment.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\thanks_2.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Recommend.png" />
@@ -299,5 +301,36 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoBz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecommendClinic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecommendClinicBz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecommendClinicBz2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DoctorWithoutAPhoto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoBzFull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OpinionsClouds.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ServiceUnavailable.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets" Condition="Exists('..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets'))" />
+  </Target>
 </Project>

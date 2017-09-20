@@ -32,13 +32,35 @@ namespace LoyaltySurvey {
 				FbDataAdapter fbDataAdapter = new FbDataAdapter(command);
 				fbDataAdapter.Fill(dataTable);
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("Не удалось получить данные, запрос: " + query + 
-					Environment.NewLine + e.Message + " @ " + e.StackTrace);
+				LoggingSystem.LogMessageToFile("GetDataTable exception: " + query + 
+					Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
 			} finally {
 				connection.Close();
 			}
 
 			return dataTable;
 		}
-    }
+
+		public bool ExecuteUpdateQuery(string query, Dictionary<string, string> parameters) {
+			bool updated = false;
+			try {
+				connection.Open();
+				FbCommand update = new FbCommand(query, connection);
+
+				if (parameters.Count > 0) {
+					foreach (KeyValuePair<string, string> parameter in parameters)
+						update.Parameters.AddWithValue(parameter.Key, parameter.Value);
+				}
+
+				updated = update.ExecuteNonQuery() > 0 ? true : false;
+			} catch (Exception e) {
+				LoggingSystem.LogMessageToFile("ExecuteUpdateQuery exception: " + query +
+					Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
+			} finally {
+				connection.Close();
+			}
+
+			return updated;
+		}
+	}
 }

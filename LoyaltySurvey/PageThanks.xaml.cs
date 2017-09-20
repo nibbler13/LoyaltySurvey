@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace LoyaltySurvey {
@@ -7,35 +9,36 @@ namespace LoyaltySurvey {
 	/// Логика взаимодействия для PageThanks.xaml
 	/// </summary>
 	public partial class PageThanks : ClassPageTemplate {
-		private DispatcherTimer dispatcherTimer;
-
-		public PageThanks() {
+		public PageThanks(SurveyResult surveyResult) {
 			InitializeComponent();
 
-			HideButtonBack();
+			this.surveyResult = surveyResult;
 
-			SetLabelsContent(
-				Properties.Resources.StringPageThanksTitle,
-				Properties.Resources.StringPageThanksSubtitle);
-			
-			Image temp = ControlsFactory.CreateImage(
-				Properties.Resources.thanks_2,
-				AvailableWidth,
-				AvailableHeight,
-				StartX,
-				StartY,
+			Rect rect = CreateFirstOrLastPageControls(
+				Properties.Resources.StringPageThanksTitleLeftTop,
+				Properties.Resources.StringPageThanksTitleLeftBottom,
+				Properties.Resources.StringPageThanksTitleLeftRight,
+				"",
+				false);
+
+			Image imageThanks = ControlsFactory.CreateImage(
+				Properties.Resources.BackgroundThanks,
+				rect.Width,
+				rect.Height,
+				rect.Location.X,
+				rect.Location.Y,
 				CanvasMain,
 				false);
 
-			dispatcherTimer = new DispatcherTimer();
-			dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
-			dispatcherTimer.Tick += DispatcherTimer_Tick;
-			dispatcherTimer.Start();
-		}
+			if (IsDebug) {
+				Label surveyLabel = ControlsFactory.CreateLabel(surveyResult.ToString(), Colors.White, Colors.DarkGray, FontFamilySub, FontSizeMain / 2,
+					FontWeights.Normal, AvailableWidth / 2, AvailableHeight / 2, StartX, StartY, CanvasMain);
+				(surveyLabel.Content as TextBlock).TextAlignment = TextAlignment.Left;
+				surveyLabel.VerticalContentAlignment = VerticalAlignment.Top;
+				surveyLabel.HorizontalContentAlignment = HorizontalAlignment.Left;
+			}
 
-		private void DispatcherTimer_Tick(object sender, EventArgs e) {
-			dispatcherTimer.Stop();
-			CloseAllFormsExceptMain();
+			DisableTimerResetByClick();
 		}
 	}
 }

@@ -14,8 +14,10 @@ namespace LoyaltySurvey {
 		private TextBox textBox;
 		private double buttonWidth;
 
-		public PageComment() {
+		public PageComment(SurveyResult surveyResult) {
 			InitializeComponent();
+
+			this.surveyResult = surveyResult;
 
 			buttonWidth = DefaultButtonWidth * 3;
 
@@ -25,11 +27,13 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageCommentTitle,
 				Properties.Resources.StringPageCommentSubtitle);
 
-			CreateQuestionControlsAnd(Properties.Resources.StringPageCommentQuestion, Properties.Resources.Background_Comment,
-				ButtonNo_Click, ButtonYes_Click);
+			CreateQuestionControlsAnd(Properties.Resources.StringPageCommentQuestion, Properties.Resources.BackgroundComment,
+				ButtonNoOrNext_Click, ButtonYes_Click);
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
+			LoggingSystem.LogMessageToFile("Нажата кнопка 'Да'");
+
 			textBox = ControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain, false);
 			OnscreenKeyboard onscreenKeyboard = new OnscreenKeyboard(textBox, AvailableWidth, AvailableHeight,
 				StartX, StartY, Gap, FontSizeMain, OnscreenKeyboard.KeyboardType.Full);
@@ -60,7 +64,7 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth - buttonWidth,
 				StartY + AvailableHeight + Gap,
 				CanvasMain);
-			buttonNext.Click += ButtonNext_Click;
+			buttonNext.Click += ButtonNoOrNext_Click;
 			buttonNext.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
 			buttonNext.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
 
@@ -78,13 +82,17 @@ namespace LoyaltySurvey {
 			textBox.Clear();
 		}
 
-		private void ButtonNext_Click(object sender, RoutedEventArgs e) {
-			PageCallback pageCallback = new PageCallback();
-			NavigationService.Navigate(pageCallback);
-		}
+		private void ButtonNoOrNext_Click(object sender, RoutedEventArgs e) {
+			string comment = "Resused";
+			if ((sender as Button).Tag.ToString().Equals("Далее")) {
+				comment = textBox.Text;
+				LoggingSystem.LogMessageToFile("Нажата кнопка 'Далее', введенный комментарий: " + comment);
+			} else
+				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
 
-		private void ButtonNo_Click(object sender, RoutedEventArgs e) {
-			PageCallback pageCallback = new PageCallback();
+			surveyResult.SetComment(comment);
+
+			PageCallback pageCallback = new PageCallback(surveyResult);
 			NavigationService.Navigate(pageCallback);
 		}
 	}

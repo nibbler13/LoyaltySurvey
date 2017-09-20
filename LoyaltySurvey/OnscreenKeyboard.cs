@@ -50,13 +50,6 @@ namespace LoyaltySurvey {
 
 		private void RemoveClickEvent(Button b) {
 			b.Click -= ButtonKeyEnter_Click;
-			//FieldInfo f1 = typeof(Control).GetField("EventClick",
-			//	BindingFlags.Static | BindingFlags.NonPublic);
-			//object obj = f1.GetValue(b);
-			//PropertyInfo pi = b.GetType().GetProperty("Events",
-			//	BindingFlags.NonPublic | BindingFlags.Instance);
-			//EventHandlerList list = (EventHandlerList)pi.GetValue(b, null);
-			//list.RemoveHandler(obj, list[obj]);
 		}
 
 		public Canvas CreateOnscreenKeyboard() {
@@ -88,11 +81,8 @@ namespace LoyaltySurvey {
 
 			double keyboardSizeCoefficient = 0.4;
 
-			if (keyboardType == KeyboardType.Number) {
-				//keys[3][0] = "clear";
+			if (keyboardType == KeyboardType.Number)
 				keys[3][2] = "backspace";
-				//keyboardSizeCoefficient = 0.6;
-			}
 
 			int keysInLine = keys[0].Count;
 			int keysLines = keys.Count;
@@ -113,8 +103,7 @@ namespace LoyaltySurvey {
 			double keyboardY = startY + availableHeight - keyboardHeight;
 			double keyCurrentX = leftCornerShadow;
 			double keyCurrentY = leftCornerShadow;
-
-
+			
 			Canvas canvasKeyboard = new Canvas();
 			canvasKeyboard.Width = keyboardWidth + leftCornerShadow + rightCornerShadow;
 			canvasKeyboard.Height = keyboardHeight + leftCornerShadow + rightCornerShadow;
@@ -137,11 +126,11 @@ namespace LoyaltySurvey {
 						fontScale = 0.7;
 
 					Button buttonKey = ControlsFactory.CreateButtonWithTextOnly(
-						keyName, 
-						buttonWidth, 
+						keyName,
+						buttonWidth,
 						buttonHeight,
 						new System.Windows.Media.FontFamily(Properties.Settings.Default.FontSub.Name),
-						fontSize * fontScale, 
+						fontSize * fontScale,
 						FontWeights.Normal,
 						keyCurrentX,
 						keyCurrentY,
@@ -184,9 +173,10 @@ namespace LoyaltySurvey {
 							break;
 					}
 
-					if (string.IsNullOrEmpty(tag))
+					if (string.IsNullOrEmpty(tag)) { 
+						buttonKey.Tag = null;
 						buttonKey.Click += ButtonKey_Click;
-					else
+					} else
 						buttonKey.Tag = tag;
 
 					if (keyName.Equals("shift") ||
@@ -231,7 +221,6 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonKeyShift_Click(object sender, EventArgs e) {
-			Console.WriteLine("ButtonKeyShift_Click");
 			UpdateShiftKey();
 		}
 

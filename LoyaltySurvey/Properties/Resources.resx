@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BackButton2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ButtonBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BackButton2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BottomLineContinuesClear" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -127,7 +127,7 @@
   <data name="BottomLineTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BottomLineTemplate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ButterflyClear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="LogoBzSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ButterflyClear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ButtonBackspace" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -154,22 +154,19 @@
   <data name="ButtonShiftUnpressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ButtonShiftUnpressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DownButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ButtonDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DownButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="smile_angry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DoctorRate1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\smile_angry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="smile_happy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\smile_happy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="smile_love" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DoctorRate5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\smile_love.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="smile_neutral" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DoctorRate3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\smile_neutral.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="smile_sad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DoctorRate2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\smile_sad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StringPageDepartmentSelectSearchButton" xml:space="preserve">
@@ -210,7 +207,7 @@
     <value>Выберите врача у которого Вы были на приеме</value>
   </data>
   <data name="StringPageErrorSubtitle" xml:space="preserve">
-    <value>К сожалению, cервис временно недоступен</value>
+    <value>Приносим свои извинения за доставленные неудобства. Администрация.</value>
   </data>
   <data name="StringPageErrorTitle" xml:space="preserve">
     <value>Уважаемые пациенты!</value>
@@ -242,19 +239,16 @@
   <data name="StringRateDoctorMark5" xml:space="preserve">
     <value>Отлично</value>
   </data>
-  <data name="UnknownDepartment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DepartmentWithoutAPhoto" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UnknownDepartment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="UnknownDoctor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UnknownDoctor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="UpButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ButtonUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UpButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Background_CallBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="BackgroundCallBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Background_CallBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Background_Comment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="BackgroundComment" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Background_Comment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ButtonClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -263,17 +257,14 @@
   <data name="ButtonOk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ButtonOk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_dislike" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ClinicRate0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_dislike.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_dont_know" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ClinicRate5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_dont_know.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_like" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ClinicRate10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_like.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Recommend" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Recommend.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StringPageCallbackQuestion" xml:space="preserve">
     <value>Можно мы позвоним Вам, чтобы узнать подробности?</value>
@@ -300,15 +291,14 @@
     <value>Однозначно нет</value>
   </data>
   <data name="StringPageClinicRateQuestion" xml:space="preserve">
-    <value>Пожалуйста,
-оцените по десятибальной шкале насколько бы Вы порекомендовали
-нашу клинику своим друзьям и знакомым?</value>
+    <value />
   </data>
   <data name="StringPageClinicRateSubtitle" xml:space="preserve">
-    <value>Для выбора коснитесь нужной кнопки</value>
+    <value>Для выбора коснитесь кнопки с нужной оценкой</value>
   </data>
   <data name="StringPageClinicRateTitle" xml:space="preserve">
-    <value>И последний вопрос</value>
+    <value>Пожалуйста, оцените по десятибальной шкале
+насколько бы Вы порекомендовали нашу клинику своим друзьям и знакомым?</value>
   </data>
   <data name="StringPageCommentQuestion" xml:space="preserve">
     <value>Желаете ли Вы оставить комментарий?</value>
@@ -328,10 +318,44 @@
   <data name="StringPageSplashScreenWelcome" xml:space="preserve">
     <value>Просим Вас принять участие в опросе о качестве работы нашей клиники</value>
   </data>
-  <data name="thanks_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\thanks-1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BackgroundClinicRecommend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RecommendClinicBz2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="thanks_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\thanks_2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DoctorWithoutAPhoto" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DoctorWithoutAPhoto.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LogoBzFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LogoBzFull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StringPageSplashScreenTitleLeftBottom" xml:space="preserve">
+    <value>Просим Вас уделить пару минут и оценить качество нашей работы</value>
+  </data>
+  <data name="StringPageSplashScreenTitleLeftTop" xml:space="preserve">
+    <value>МЫ СТРЕМИМСЯ СТАТЬ</value>
+  </data>
+  <data name="StringPageSplashScreenTitleRight" xml:space="preserve">
+    <value>ЛУЧШЕ</value>
+  </data>
+  <data name="StringPageThanksTitleLeftBottom" xml:space="preserve">
+    <value>за участие в нашем опросе!</value>
+  </data>
+  <data name="StringPageThanksTitleLeftRight" xml:space="preserve">
+    <value>МЫ ЦЕНИМ ВАШЕ МНЕНИЕ</value>
+  </data>
+  <data name="StringPageThanksTitleLeftTop" xml:space="preserve">
+    <value>БЛАГОДАРИМ ВАС</value>
+  </data>
+  <data name="BackgroundError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ServiceUnavailable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BackgroundThanks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OpinionsClouds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DoctorRate4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smile_happy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StringPageErrorMessage" xml:space="preserve">
+    <value>К сожалению, сервис временно недоступен
+по техническим причинам.</value>
   </data>
 </root>

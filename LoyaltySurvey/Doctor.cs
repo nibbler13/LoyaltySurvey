@@ -1,21 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoyaltySurvey {
 	public class Doctor {
-		public string Name { get; private set; }
+		private string _name;
+		public string Name {
+			get {
+				string[] parts = _name.Replace("  ", " ").TrimStart(' ').TrimEnd(' ').Split(' ');
+
+				if (parts.Length < 3)
+					return _name;
+
+				return parts[0] + " " + parts[1] + " " + parts[2];
+			}
+			private set {
+				_name = value;
+			}
+		}
+
 		public string Position { get; private set; }
 		public string Department { get; private set; }
-		public string Id { get; private set; }
+		public string Code { get; private set; }
 		
-		public Doctor(string name, string position, string department, string id) {
+		public Doctor(string name, string position, string department, string code) {
 			Name = name;
 			Position = position;
 			Department = department;
-			Id = id;
+			Code = code;
 		}
 	}
 }

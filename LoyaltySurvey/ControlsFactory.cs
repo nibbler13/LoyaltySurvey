@@ -22,6 +22,7 @@ namespace LoyaltySurvey {
 			textBox.FontSize = fontSize;
 			textBox.FontWeight = FontWeights.Normal;
 			textBox.IsReadOnly = true;
+			textBox.Focusable = false;
 
 			if (isContentCentered) {
 				textBox.VerticalContentAlignment = VerticalAlignment.Center;
@@ -64,6 +65,7 @@ namespace LoyaltySurvey {
 			Button button = CreateButton(width, height, left, top, panel);
 			TextBlock textBlock = CreateTextBlock(text, fontFamily, fontSize, fontWeight);
 			button.Content = textBlock;
+			button.Tag = text;
 			return button;
 		}
 
@@ -88,7 +90,7 @@ namespace LoyaltySurvey {
 			} else if (type == ElementType.Doctor) {
 				imageInside = GetImageForDoctor(str);
 				Regex regex = new Regex(Regex.Escape(" "));
-				normalizedStr = str.Replace("  ", " ").TrimStart(' ').TrimEnd(' ');
+				//normalizedStr = str.Replace("  ", " ").TrimStart(' ').TrimEnd(' ');
 				normalizedStr = regex.Replace(normalizedStr, Environment.NewLine, 2);
 				maxSizeCoefficient = 0.7;
 			} else if (type == ElementType.Rate) {
@@ -167,7 +169,8 @@ namespace LoyaltySurvey {
 			return button;
 		}
 
-		public static TextBlock CreateTextBlock(string text, FontFamily fontFamily, double fontSize, FontWeight fontWeight) {
+		public static TextBlock CreateTextBlock(string text, FontFamily fontFamily, double fontSize, FontWeight fontWeight,
+			Color? colorForeground = null, FontStretch? fontStretch = null) {
 			TextBlock textBlock = new TextBlock();
 			textBlock.Text = text;
 			textBlock.TextAlignment = TextAlignment.Center;
@@ -175,6 +178,12 @@ namespace LoyaltySurvey {
 			textBlock.FontSize = fontSize;
 			textBlock.FontWeight = fontWeight;
 			textBlock.TextWrapping = TextWrapping.Wrap;
+
+			if (colorForeground != null)
+				textBlock.Foreground = new SolidColorBrush((Color)colorForeground);
+
+			if (fontStretch != null)
+				textBlock.FontStretch = (FontStretch)fontStretch;
 
 			if (Properties.Settings.Default.IsDebug)
 				textBlock.Background = new SolidColorBrush(Colors.Yellow);
@@ -186,7 +195,7 @@ namespace LoyaltySurvey {
 			double left = -1, double top = -1, Panel panel = null, bool withMargin = true, double margin = 5.0) {
 			Image image = new Image();
 			image.Source = ImageSourceForBitmap(bitmap);
-			RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
+			RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.Fant);
 
 			if (withMargin)
 				image.Margin = new Thickness(margin, margin, margin, margin);
@@ -244,7 +253,9 @@ namespace LoyaltySurvey {
 			var handle = bmp.GetHbitmap();
 			try {
 				return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-			} finally { DeleteObject(handle); }
+			} finally {
+				DeleteObject(handle);
+			}
 		}
 
 		public static void AddDropShadow(Control control) {
@@ -267,18 +278,11 @@ namespace LoyaltySurvey {
 				//
 				//send message to stp
 				//
-				return Properties.Resources.UnknownDepartment;
+				return Properties.Resources.DoctorWithoutAPhoto;
 			}
 
-			Random random = new Random();
-			int fileNumber = random.Next(0, files.Length - 1);
-			try {
-				return System.Drawing.Image.FromFile(files[fileNumber]);
-			} catch (Exception) {
-				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + files[fileNumber]);
-				return Properties.Resources.UnknownDepartment;
-			}
 
+			return Properties.Resources.DoctorWithoutAPhoto;
 		}
 
 		public static System.Drawing.Image GetImageForDepartment(string depname) {
@@ -290,27 +294,24 @@ namespace LoyaltySurvey {
 				//
 				//send message to stp
 				//
-				return Properties.Resources.UnknownDepartment;
+				return Properties.Resources.DepartmentWithoutAPhoto;
 			}
-
-			//Random random = new Random();
-			//double fileNumber = random.Next(0, files.Length - 1);
+			
 			try {
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception) {
 				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + wantedFile);
-				return Properties.Resources.UnknownDepartment;
+				return Properties.Resources.DepartmentWithoutAPhoto;
 			}
-
 		}
 
 		public static System.Drawing.Image GetImageForRate(string rate) {
 			Dictionary<string, System.Drawing.Image> rates = new Dictionary<string, System.Drawing.Image>() {
-				{ "1", Properties.Resources.smile_angry },
-				{ "2", Properties.Resources.smile_sad },
-				{ "3", Properties.Resources.smile_neutral },
-				{ "4", Properties.Resources.smile_happy },
-				{ "5", Properties.Resources.smile_love }
+				{ "1", Properties.Resources.DoctorRate1 },
+				{ "2", Properties.Resources.DoctorRate2 },
+				{ "3", Properties.Resources.DoctorRate3 },
+				{ "4", Properties.Resources.DoctorRate4 },
+				{ "5", Properties.Resources.DoctorRate5 }
 			};
 
 			if (!rates.ContainsKey(rate))
@@ -337,6 +338,7 @@ namespace LoyaltySurvey {
 		public static string FirstCharToUpper(string input) {
 			if (String.IsNullOrEmpty(input))
 				return input;
+
 			return input.First().ToString().ToUpper() + String.Join("", input.Skip(1));
 		}
 	}
