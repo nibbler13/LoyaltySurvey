@@ -12,7 +12,7 @@ namespace LoyaltySurvey {
 			InitializeComponent();
 			LoggingSystem.LogMessageToFile("==================================" + 
 				Environment.NewLine + "Создание основного окна");
-			MailSystem.SendMail("Запуск приложение", "Приложение успешно запущено", Properties.Settings.Default.MailCopy);
+			NotificationSystem.AppStart();
 		}
 
 		private void NavigationWindow_KeyDown(object sender, KeyEventArgs e) {

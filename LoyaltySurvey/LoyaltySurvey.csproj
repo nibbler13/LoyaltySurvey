@@ -86,7 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MidnightNotifier.cs" />
     <Compile Include="ControlsFactory.cs" />
+    <Compile Include="DataHandleSystem.cs" />
+    <Compile Include="NotificationSystem.cs" />
     <Compile Include="PageCallback.xaml.cs">
       <DependentUpon>PageCallback.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,7 @@
     </Compile>
     <Compile Include="ScrollAnimationBehavior.cs" />
     <Compile Include="SurveyResult.cs" />
+    <Compile Include="WebCam.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

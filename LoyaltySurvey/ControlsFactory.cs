@@ -88,10 +88,10 @@ namespace LoyaltySurvey {
 				normalizedStr = FirstCharToUpper(normalizedStr);
 				maxSizeCoefficient = 0.5;
 			} else if (type == ElementType.Doctor) {
-				imageInside = GetImageForDoctor(str);
+				string[] splitted = str.Split('|');
+				imageInside = GetImageForDoctor(splitted[0]);
 				Regex regex = new Regex(Regex.Escape(" "));
-				//normalizedStr = str.Replace("  ", " ").TrimStart(' ').TrimEnd(' ');
-				normalizedStr = regex.Replace(normalizedStr, Environment.NewLine, 2);
+				normalizedStr = regex.Replace(splitted[1], Environment.NewLine, 2);
 				maxSizeCoefficient = 0.7;
 			} else if (type == ElementType.Rate) {
 				imageInside = GetImageForRate(str);
@@ -270,37 +270,45 @@ namespace LoyaltySurvey {
 
 
 
-		public static System.Drawing.Image GetImageForDoctor(string docname) {
-			string[] files = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\Doctors\\", "*.jpg");
+		public static System.Drawing.Image GetImageForDoctor(string dcode) {
+			try {
+				string folderToSearchPhotos = Directory.GetCurrentDirectory() + "\\DoctorsPhoto\\";
+				string[] files = Directory.GetFiles(folderToSearchPhotos, "*.jpg");
 
-			if (files.Length == 0) {
-				LoggingSystem.LogMessageToFile("Не удалось найти изображение для доктора: " + docname);
-				//
-				//send message to stp
-				//
+				string wantedFile = "";
+				foreach (string file in files)
+					if (file.Contains(dcode)) {
+						wantedFile = file;
+						break;
+					}
+
+				if (string.IsNullOrEmpty(wantedFile)) {
+					LoggingSystem.LogMessageToFile("Не удалось найти изображение для доктора с кодом: " + dcode);
+					return Properties.Resources.DoctorWithoutAPhoto;
+				}
+
+				return System.Drawing.Image.FromFile(wantedFile);
+			} catch (Exception e) {
+				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message + 
+					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DoctorWithoutAPhoto;
 			}
-
-
-			return Properties.Resources.DoctorWithoutAPhoto;
 		}
 
 		public static System.Drawing.Image GetImageForDepartment(string depname) {
-			string mask = Directory.GetCurrentDirectory() + "\\Departments\\*.png";
-			string wantedFile = mask.Replace("*", depname);
-
-			if (!File.Exists(wantedFile)) {
-				LoggingSystem.LogMessageToFile("Не удалось найти изображение для подразделения: " + depname);
-				//
-				//send message to stp
-				//
-				return Properties.Resources.DepartmentWithoutAPhoto;
-			}
-			
 			try {
+				string mask = Directory.GetCurrentDirectory() + "\\Departments\\*.png";
+				string wantedFile = mask.Replace("*", depname);
+
+				if (!File.Exists(wantedFile)) {
+					LoggingSystem.LogMessageToFile("Не удалось найти изображение для подразделения: " + depname);
+					return Properties.Resources.DepartmentWithoutAPhoto;
+				}
+
 				return System.Drawing.Image.FromFile(wantedFile);
-			} catch (Exception) {
-				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + wantedFile);
+			} catch (Exception e) {
+				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message +
+					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DepartmentWithoutAPhoto;
 			}
 		}
@@ -319,6 +327,8 @@ namespace LoyaltySurvey {
 
 			return rates[rate];
 		}
+
+
 
 		public static string GetNameForRate(string str) {
 			Dictionary<string, string> rates = new Dictionary<string, string>() {

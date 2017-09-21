@@ -83,7 +83,8 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonNoOrNext_Click(object sender, RoutedEventArgs e) {
-			string comment = "Resused";
+			string comment = "Refused";
+
 			if ((sender as Button).Tag.ToString().Equals("Далее")) {
 				comment = textBox.Text;
 				LoggingSystem.LogMessageToFile("Нажата кнопка 'Далее', введенный комментарий: " + comment);

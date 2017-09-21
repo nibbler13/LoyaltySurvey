@@ -60,7 +60,7 @@ namespace LoyaltySurvey {
 
 			List<string> keys = new List<string>();
 			foreach (Doctor doctor in doctors)
-				keys.Add(doctor.Name);
+				keys.Add(doctor.Code + "|" + doctor.Name); //doctor.Code is using to find a photo
 
 			FillPanelWithElements(keys, ControlsFactory.ElementType.Doctor, PanelDoctor_Click);
 		}
@@ -70,7 +70,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
-			string docname = (sender as Control).Tag.ToString();
+			string docname = (sender as Control).Tag.ToString().Split('|')[1];
 			LoggingSystem.LogMessageToFile("Выбран доктор: " + docname);
 			Doctor selectedDoctor = new Doctor("", "", "", "");
 

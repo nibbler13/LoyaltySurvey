@@ -109,15 +109,19 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonNoOrNext_Click(object sender, RoutedEventArgs e) {
-			string phoneNumber = "Resused";
+			string phoneNumber = "Refused";
+			bool isNextPressed = (sender as Button).Tag.ToString().Equals("Далее");
 
-			if ((sender as Button).Tag.ToString().Equals("Далее")) {
+			if (isNextPressed) {
 				phoneNumber = textBoxData.Text;
 				LoggingSystem.LogMessageToFile("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
 			} else
 				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
 
 			surveyResult.SetPhoneNumber(phoneNumber);
+
+			if (isNextPressed)
+				NotificationSystem.CallbackAccepted(surveyResult);
 
 			PageClinicRate pageClinicRate = new PageClinicRate(surveyResult);
 			NavigationService.Navigate(pageClinicRate);

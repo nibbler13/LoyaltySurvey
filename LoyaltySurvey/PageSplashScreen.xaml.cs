@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Reflection;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,11 +16,6 @@ namespace LoyaltySurvey {
 	/// Логика взаимодействия для PageSplashScreen.xaml
 	/// </summary>
 	public partial class PageSplashScreen : ClassPageTemplate {
-		private FBClient fbClient = new FBClient(
-			Properties.Settings.Default.MisInfoclinicaDbAddress,
-			Properties.Settings.Default.MisInfoclinicaDbName,
-			Properties.Settings.Default.MisInfoclinicaDbUser,
-			Properties.Settings.Default.MisInfoclinicaDbPassword);
 		private Dictionary<string, List<Doctor>> dictionaryOfDoctors = new Dictionary<string, List<Doctor>>();
 		private BackgroundWorker backgroundWorker;
 		private PageDepartmentSelect pageDepartmentSelect;
@@ -48,6 +45,9 @@ namespace LoyaltySurvey {
 			mediaElement.UnloadedBehavior = MediaState.Manual;
 			mediaElement.MediaEnded += MediaElement_MediaEnded;
 
+			//need to work previewmouseleftbutton on full screen area
+			ControlsFactory.CreateLabel("", Colors.Transparent, Colors.Transparent, FontFamily, FontSize, FontWeights.Normal, ScreenWidth, ScreenHeight, 0, 0, CanvasMain);
+
 			PreviewMouseLeftButtonDown += PageSplashScreen_PreviewMouseDown;
 			HideButtonBack();
 
@@ -58,10 +58,12 @@ namespace LoyaltySurvey {
 
 			DisableTimer();
 			DisableTimerResetByClick();
+
+			MidnightNotifier.DayChanged += MidnightNotifier_DayChanged;
 		}
 
-		private void BackgroundWorker_RunWorkerCompleted1(object sender, RunWorkerCompletedEventArgs e) {
-			backgroundWorker.Dispose();
+		private void MidnightNotifier_DayChanged(object sender, EventArgs e) {
+			backgroundWorker.RunWorkerAsync();
 		}
 
 		private void MediaElement_MediaEnded(object sender, RoutedEventArgs e) {
@@ -70,7 +72,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
-			UpdateListOfDoctors();
+			dictionaryOfDoctors = DataHandleSystem.GetDoctorsDictionary();
 		}
 
 		private void PageSplashScreen_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
@@ -83,51 +85,22 @@ namespace LoyaltySurvey {
 			NavigationService.Navigate(pageDepartmentSelect);
 		}
 
-		private void UpdateListOfDoctors() {
-			LoggingSystem.LogMessageToFile("Обновление данных из базы ИК");
-			DataTable dataTable = fbClient.GetDataTable(Properties.Settings.Default.SqlQueryDoctors);
-
-			if (dataTable.Rows.Count == 0) {
-				LoggingSystem.LogMessageToFile("Из базы ИК вернулась пустая таблица");
-				return;
-			}
-
-			Dictionary<string, List<Doctor>> dictionary = new Dictionary<string, List<Doctor>>();
-
-			foreach (DataRow dataRow in dataTable.Rows) {
-				try {
-					string department = dataRow["DEPARTMENT"].ToString().ToLower();
-					string docname = dataRow["DOCNAME"].ToString();
-					string docposition = dataRow["DOCPOSITION"].ToString();
-					string dcode = dataRow["DCODE"].ToString();
-
-					Doctor doctor = new Doctor(docname, docposition, department, dcode);
-
-					if (dictionary.ContainsKey(department)) {
-						if (dictionary[department].Contains(doctor))
-							continue;
-
-						dictionary[department].Add(doctor);
-					} else {
-						dictionary.Add(department, new List<Doctor>() { doctor });
-					}
-				} catch (Exception e) {
-					LoggingSystem.LogMessageToFile("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
-				}
-			}
-
-			LoggingSystem.LogMessageToFile("Обработано строк:" + dataTable.Rows.Count);
-
-			dictionaryOfDoctors = dictionary;
-		}
-
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
 			if (dictionaryOfDoctors.Count == 0) {
+				NotificationSystem.EmptyResults();
 				PageError pageError = new PageError();
 				NavigationService.Navigate(pageError);
+
+				Timer timer = new Timer(60 * 60 * 1000);
+				timer.Elapsed += Timer_Elapsed;
+				timer.Start();
 			} else {
 				pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
 			}
+		}
+
+		private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
+			backgroundWorker.RunWorkerAsync();
 		}
 	}
 }
