@@ -212,18 +212,6 @@
   <data name="StringPageErrorTitle" xml:space="preserve">
     <value>Уважаемые пациенты!</value>
   </data>
-  <data name="StringPageSplashScreenSubtitle" xml:space="preserve">
-    <value>Для продолжения коснитесь экрана</value>
-  </data>
-  <data name="StringPageSplashScreenTitle" xml:space="preserve">
-    <value>Помогите нам стать лучше!</value>
-  </data>
-  <data name="StringPageThanksSubtitle" xml:space="preserve">
-    <value>Ваше мнение очень важно для нас!</value>
-  </data>
-  <data name="StringPageThanksTitle" xml:space="preserve">
-    <value>Благодарим Вас за участие в опросе</value>
-  </data>
   <data name="StringRateDoctorMark1" xml:space="preserve">
     <value>Очень плохо</value>
   </data>
@@ -290,14 +278,11 @@
   <data name="StringPageClinicRateNotAtAll" xml:space="preserve">
     <value>Однозначно нет</value>
   </data>
-  <data name="StringPageClinicRateQuestion" xml:space="preserve">
-    <value />
-  </data>
   <data name="StringPageClinicRateSubtitle" xml:space="preserve">
     <value>Для выбора коснитесь кнопки с нужной оценкой</value>
   </data>
   <data name="StringPageClinicRateTitle" xml:space="preserve">
-    <value>Пожалуйста, оцените по десятибальной шкале
+    <value>Пожалуйста, оцените по десятибалльной шкале
 насколько бы Вы порекомендовали нашу клинику своим друзьям и знакомым?</value>
   </data>
   <data name="StringPageCommentQuestion" xml:space="preserve">
@@ -357,5 +342,8 @@
   <data name="StringPageErrorMessage" xml:space="preserve">
     <value>К сожалению, сервис временно недоступен
 по техническим причинам.</value>
+  </data>
+  <data name="StringPageSplashScreenSubtitle" xml:space="preserve">
+    <value>Для продолжения коснитесь экрана</value>
   </data>
 </root>

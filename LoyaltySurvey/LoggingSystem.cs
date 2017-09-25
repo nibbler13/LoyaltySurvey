@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LoyaltySurvey {
 	class LoggingSystem {
-		private const string LOG_FILE_NAME = "LoyaltyQuizWpf_*.log";
+		private const string LOG_FILE_NAME = "LoyaltySurvey_*.log";
 		private const int MAX_LOGFILES_QUANTITY = 7;
 
 		public static void LogMessageToFile(string msg) {

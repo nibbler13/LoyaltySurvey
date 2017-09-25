@@ -453,15 +453,6 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string StringPageClinicRateQuestion {
-            get {
-                return ResourceManager.GetString("StringPageClinicRateQuestion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Для выбора коснитесь кнопки с нужной оценкой.
         /// </summary>
         internal static string StringPageClinicRateSubtitle {
@@ -471,7 +462,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пожалуйста, оцените по десятибальной шкале
+        ///   Ищет локализованную строку, похожую на Пожалуйста, оцените по десятибалльной шкале
         ///насколько бы Вы порекомендовали нашу клинику своим друзьям и знакомым?.
         /// </summary>
         internal static string StringPageClinicRateTitle {
@@ -672,15 +663,6 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Помогите нам стать лучше!.
-        /// </summary>
-        internal static string StringPageSplashScreenTitle {
-            get {
-                return ResourceManager.GetString("StringPageSplashScreenTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Просим Вас уделить пару минут и оценить качество нашей работы.
         /// </summary>
         internal static string StringPageSplashScreenTitleLeftBottom {
@@ -713,24 +695,6 @@ namespace LoyaltySurvey.Properties {
         internal static string StringPageSplashScreenWelcome {
             get {
                 return ResourceManager.GetString("StringPageSplashScreenWelcome", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Ваше мнение очень важно для нас!.
-        /// </summary>
-        internal static string StringPageThanksSubtitle {
-            get {
-                return ResourceManager.GetString("StringPageThanksSubtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Благодарим Вас за участие в опросе.
-        /// </summary>
-        internal static string StringPageThanksTitle {
-            get {
-                return ResourceManager.GetString("StringPageThanksTitle", resourceCulture);
             }
         }
         

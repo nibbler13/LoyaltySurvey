@@ -25,8 +25,17 @@ namespace LoyaltySurvey {
 				NotificationSystem.DataBaseEmptyResponse();
 			}
 
+			bool isAdultMedicine = Properties.Settings.Default.IsAdultMedicine;
+			string[] adultSections = { "стоматология", "медицина - взрослая" };
+			string[] kidsSections = { "педиатрия", "пнд-педиатрия" };
+
 			foreach (DataRow dataRow in dataTable.Rows) {
 				try {
+					string sectionName = dataRow["SECTIONNAME"].ToString().ToLower();
+
+					if ((isAdultMedicine ? kidsSections : adultSections).Contains(sectionName))
+						continue;
+
 					string department = dataRow["DEPARTMENT"].ToString().ToLower();
 					string docname = dataRow["DOCNAME"].ToString();
 					string docposition = dataRow["DOCPOSITION"].ToString();
@@ -57,7 +66,7 @@ namespace LoyaltySurvey {
 		public static void UpdateDoctorsPhoto(Dictionary<string, List<Doctor>> departments) {
 			LoggingSystem.LogMessageToFile("Обновление фотографий докторов");
 			string searchPath = @Properties.Settings.Default.DoctorsPhotoPath;
-			string destinationPath = Directory.GetCurrentDirectory() + "\\DoctorsPhoto\\";
+			string destinationPath = Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\";
 			if (!Directory.Exists(destinationPath))
 				Directory.CreateDirectory(destinationPath);
 

@@ -272,7 +272,7 @@ namespace LoyaltySurvey {
 
 		public static System.Drawing.Image GetImageForDoctor(string dcode) {
 			try {
-				string folderToSearchPhotos = Directory.GetCurrentDirectory() + "\\DoctorsPhoto\\";
+				string folderToSearchPhotos = Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\";
 				string[] files = Directory.GetFiles(folderToSearchPhotos, "*.jpg");
 
 				string wantedFile = "";
@@ -297,7 +297,7 @@ namespace LoyaltySurvey {
 
 		public static System.Drawing.Image GetImageForDepartment(string depname) {
 			try {
-				string mask = Directory.GetCurrentDirectory() + "\\Departments\\*.png";
+				string mask = Directory.GetCurrentDirectory() + "\\DepartmentsPhotos\\*.png";
 				string wantedFile = mask.Replace("*", depname);
 
 				if (!File.Exists(wantedFile)) {

@@ -112,6 +112,7 @@
       <DependentUpon>PageThanks.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScrollAnimationBehavior.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SurveyResult.cs" />
     <Compile Include="WebCam.cs" />
     <Page Include="MainWindow.xaml">

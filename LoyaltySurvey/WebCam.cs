@@ -13,7 +13,7 @@ namespace LoyaltySurvey {
 		public static void CaptureImageFromWebCamAndSave(ref SurveyResult surveyResult) {
 			DsDevice[] dsDevices = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
 			if (dsDevices.Length == 0) {
-				surveyResult.SetPhotoLink("Camera not installed");
+				surveyResult.SetPhotoLink("Camera isn't installed");
 				LoggingSystem.LogMessageToFile("CaptureImageFromWebCamAndSave: There is no video input device available");
 				return;
 			}
