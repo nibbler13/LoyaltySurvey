@@ -10,9 +10,15 @@ namespace LoyaltySurvey {
 	public partial class MainWindow : NavigationWindow {
 		public MainWindow() {
 			InitializeComponent();
+
 			LoggingSystem.LogMessageToFile("==================================" + 
 				Environment.NewLine + "Создание основного окна");
 			NotificationSystem.AppStart();
+
+			if (!Properties.Settings.Default.IsDebug) {
+				Topmost = true;
+				Cursor = Cursors.None;
+			}
 		}
 
 		private void NavigationWindow_KeyDown(object sender, KeyEventArgs e) {

@@ -5,17 +5,19 @@ namespace LoyaltySurvey {
 		public DateTime SurveyDateTime { get; private set; }
 		public string DCode { get; private set; }
 		public string DocName { get; private set; }
+		public string DocDepartment { get; private set; }
 		public string DocRate { get; private set; }
 		public string PhotoLink { get; private set; }
 		public string Comment { get; private set; }
 		public string PhoneNumber { get; private set; }
 		public string ClinicRecommendMark { get; private set; }
 
-		public SurveyResult(DateTime dateTime, string dCode, string docName, string docRate) {
+		public SurveyResult(DateTime dateTime, string dCode, string docName, string docRate, string docDepartment) {
 			SurveyDateTime = dateTime;
 			DCode = dCode;
 			DocName = docName;
 			DocRate = docRate;
+			DocDepartment = docDepartment;
 		}
 
 		public void SetPhotoLink(string link) {

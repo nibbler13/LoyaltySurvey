@@ -49,8 +49,8 @@ namespace LoyaltySurvey {
 				CanvasMain,
 				false);
 
-			DisableTimer();
-			DisableTimerResetByClick();
+			DisablePageAutoCloseTimer();
+			DisablePageAutoCloseTimerResetByClick();
 		}
 	}
 }

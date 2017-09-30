@@ -53,7 +53,7 @@ namespace LoyaltySurvey {
 		private double elementsLineCount = 0;
 
 		protected SurveyResult surveyResult = null;
-		private DispatcherTimer dispatcherTimer;
+		private DispatcherTimer dispatcherTimerPageAutoClose;
 
 
 
@@ -209,14 +209,14 @@ namespace LoyaltySurvey {
 				CanvasMain);
 			buttonBack.Click += ButtonBack_Click;
 			
-			dispatcherTimer = new DispatcherTimer();
+			dispatcherTimerPageAutoClose = new DispatcherTimer();
 
 			int timeoutSeconds = Properties.Settings.Default.PageAutocloseTimeoutInSeconds;
 			if (this is PageThanks)
 				timeoutSeconds /= 2;
 
-			dispatcherTimer.Interval = new TimeSpan(0, 0, timeoutSeconds);
-			dispatcherTimer.Tick += DispatcherTimer_Tick;
+			dispatcherTimerPageAutoClose.Interval = new TimeSpan(0, 0, timeoutSeconds);
+			dispatcherTimerPageAutoClose.Tick += DispatcherTimerPageAutoClose_Tick;
 			PreviewMouseLeftButtonDown += ClassPageTemplate_PreviewMouseLeftButtonDown;
 		}
 
@@ -684,7 +684,7 @@ namespace LoyaltySurvey {
 			}
 		}
 
-		protected void CloseAllFormsExceptMain() {
+		protected void CloseAllPagesExceptSplashScreen() {
 			LoggingSystem.LogMessageToFile("<<< Возвращение к стартовой странице");
 
 			try {
@@ -734,10 +734,10 @@ namespace LoyaltySurvey {
 			if ((bool)e.NewValue)
 				ResetTimer();
 			else
-				DisableTimer();
+				DisablePageAutoCloseTimer();
 		}
 
-		private void DispatcherTimer_Tick(object sender, EventArgs e) {
+		private void DispatcherTimerPageAutoClose_Tick(object sender, EventArgs e) {
 			LoggingSystem.LogMessageToFile("Истекло время таймера автозакрытия страницы");
 
 			if (surveyResult != null) {
@@ -751,25 +751,25 @@ namespace LoyaltySurvey {
 				WriteSurveyResultToDb(surveyResult);
 			}
 
-			dispatcherTimer.Stop();
-			CloseAllFormsExceptMain();
+			dispatcherTimerPageAutoClose.Stop();
+			CloseAllPagesExceptSplashScreen();
 		}
 
 		private void ClassPageTemplate_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
 			ResetTimer();
 		}
 
-		protected void DisableTimerResetByClick() {
+		protected void DisablePageAutoCloseTimerResetByClick() {
 			PreviewMouseLeftButtonDown -= ClassPageTemplate_PreviewMouseLeftButtonDown;
 		}
 
-		protected void DisableTimer() {
-			dispatcherTimer.Stop();
+		protected void DisablePageAutoCloseTimer() {
+			dispatcherTimerPageAutoClose.Stop();
 		}
 
 		private void ResetTimer() {
-			dispatcherTimer.Stop();
-			dispatcherTimer.Start();
+			dispatcherTimerPageAutoClose.Stop();
+			dispatcherTimerPageAutoClose.Start();
 		}
 	}
 }

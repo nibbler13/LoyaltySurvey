@@ -617,7 +617,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Выберите врача у которого Вы были на приеме.
+        ///   Ищет локализованную строку, похожую на Выберите врача, у которого Вы были на приеме.
         /// </summary>
         internal static string StringPageDoctorSelectTitle {
             get {

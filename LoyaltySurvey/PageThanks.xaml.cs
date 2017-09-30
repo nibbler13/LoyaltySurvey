@@ -38,7 +38,7 @@ namespace LoyaltySurvey {
 				surveyLabel.HorizontalContentAlignment = HorizontalAlignment.Left;
 			}
 
-			DisableTimerResetByClick();
+			DisablePageAutoCloseTimerResetByClick();
 		}
 	}
 }

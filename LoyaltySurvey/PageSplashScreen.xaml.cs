@@ -17,8 +17,10 @@ namespace LoyaltySurvey {
 	/// </summary>
 	public partial class PageSplashScreen : ClassPageTemplate {
 		private Dictionary<string, List<Doctor>> dictionaryOfDoctors = new Dictionary<string, List<Doctor>>();
-		private BackgroundWorker backgroundWorker;
+		private BackgroundWorker backgroundWorkerUpdateData;
 		private PageDepartmentSelect pageDepartmentSelect;
+		private Timer timerUpdateData;
+
 
 		public PageSplashScreen() {
 			InitializeComponent();
@@ -46,24 +48,50 @@ namespace LoyaltySurvey {
 			mediaElement.MediaEnded += MediaElement_MediaEnded;
 
 			//need to work previewmouseleftbutton on full screen area
-			ControlsFactory.CreateLabel("", Colors.Transparent, Colors.Transparent, FontFamily, FontSize, FontWeights.Normal, ScreenWidth, ScreenHeight, 0, 0, CanvasMain);
+			Label labelToHandleMousePreview = ControlsFactory.CreateLabel(
+				"", 
+				Colors.Transparent, 
+				Colors.Transparent, 
+				FontFamily, 
+				FontSize, 
+				FontWeights.Normal, 
+				ScreenWidth, 
+				ScreenHeight, 
+				0, 
+				0, 
+				CanvasMain);
+			Canvas.SetZIndex(labelToHandleMousePreview, -1);
 
 			PreviewMouseLeftButtonDown += PageSplashScreen_PreviewMouseDown;
 			HideButtonBack();
 
-			backgroundWorker = new BackgroundWorker();
-			backgroundWorker.DoWork += BackgroundWorker_DoWork;
-			backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-			backgroundWorker.RunWorkerAsync();
+			backgroundWorkerUpdateData = new BackgroundWorker();
+			backgroundWorkerUpdateData.DoWork += BackgroundWorker_DoWork;
+			backgroundWorkerUpdateData.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+			backgroundWorkerUpdateData.RunWorkerAsync(true);
 
-			DisableTimer();
-			DisableTimerResetByClick();
+			DisablePageAutoCloseTimer();
+			DisablePageAutoCloseTimerResetByClick();
 
-			MidnightNotifier.DayChanged += MidnightNotifier_DayChanged;
+			TimerUpdateDataSetup();
 		}
 
-		private void MidnightNotifier_DayChanged(object sender, EventArgs e) {
-			backgroundWorker.RunWorkerAsync();
+		private void TimerUpdateDataSetup() {
+			DateTime nowTime = DateTime.Now;
+			DateTime fireTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 7, 0, 0, 0);
+			if (nowTime > fireTime)
+				fireTime = fireTime.AddDays(1);
+
+			double tickTime = (fireTime - nowTime).TotalMilliseconds;
+			timerUpdateData = new Timer(tickTime);
+			timerUpdateData.Elapsed += TimerUpdateData_Elapsed;
+			timerUpdateData.Start();
+		}
+
+		private void TimerUpdateData_Elapsed(object sender, ElapsedEventArgs e) {
+			timerUpdateData.Stop();
+			backgroundWorkerUpdateData.RunWorkerAsync(false);
+			TimerUpdateDataSetup();
 		}
 
 		private void MediaElement_MediaEnded(object sender, RoutedEventArgs e) {
@@ -72,7 +100,18 @@ namespace LoyaltySurvey {
 		}
 
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
-			dictionaryOfDoctors = DataHandleSystem.GetDoctorsDictionary();
+			try {
+				dictionaryOfDoctors = DataHandleSystem.GetDoctorsDictionary();
+
+				if ((bool)e.Argument == true &&
+					Directory.GetFiles(Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\").Length != 0) 
+					return;
+
+				DataHandleSystem.UpdateDoctorsPhoto(dictionaryOfDoctors);
+			} catch (Exception exception) {
+				LoggingSystem.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
+					Environment.NewLine + exception.StackTrace);
+			}
 		}
 
 		private void PageSplashScreen_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
@@ -86,21 +125,24 @@ namespace LoyaltySurvey {
 		}
 
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-			if (dictionaryOfDoctors.Count == 0) {
-				NotificationSystem.EmptyResults();
-				PageError pageError = new PageError();
-				NavigationService.Navigate(pageError);
+			Application.Current.Dispatcher.Invoke(new Action(() => {
+				if (dictionaryOfDoctors.Count == 0) {
+					NotificationSystem.EmptyResults();
+					PageError pageError = new PageError();
+					NavigationService.Navigate(pageError);
 
-				Timer timer = new Timer(60 * 60 * 1000);
-				timer.Elapsed += Timer_Elapsed;
-				timer.Start();
-			} else {
-				pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
-			}
+					Timer timerTryToUpdate = new Timer(30 * 60 * 1000);
+					timerTryToUpdate.Elapsed += TimerTryToUpdate_Elapsed;
+					timerTryToUpdate.Start();
+				} else {
+					pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
+					CloseAllPagesExceptSplashScreen();
+				}
+			}));
 		}
 
-		private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-			backgroundWorker.RunWorkerAsync();
+		private void TimerTryToUpdate_Elapsed(object sender, ElapsedEventArgs e) {
+			backgroundWorkerUpdateData.RunWorkerAsync();
 		}
 	}
 }

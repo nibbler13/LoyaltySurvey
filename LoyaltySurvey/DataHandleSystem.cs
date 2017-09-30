@@ -58,7 +58,7 @@ namespace LoyaltySurvey {
 
 			LoggingSystem.LogMessageToFile("Обработано строк:" + dataTable.Rows.Count);
 
-			UpdateDoctorsPhoto(dictionary);
+			//UpdateDoctorsPhoto(dictionary);
 
 			return dictionary;
 		}
@@ -105,11 +105,14 @@ namespace LoyaltySurvey {
 					}
 
 					if (String.IsNullOrEmpty(photoLink))
-						missedPhotos.Add(doctor.Code + " | " + doctor.Department + " | " + doctor.Name);
+						missedPhotos.Add(doctor.Name + " | " + doctor.Code + " | " + doctor.Department);
 				}
 
-			if (missedPhotos.Count != 0)
-				NotificationSystem.DoctorsPhotoMissed(missedPhotos);
+			if (missedPhotos.Count == 0)
+				return;
+
+			missedPhotos.Sort();
+			NotificationSystem.DoctorsPhotoMissed(missedPhotos);
 		}
 	}
 }

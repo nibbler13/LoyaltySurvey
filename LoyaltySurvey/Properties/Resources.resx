@@ -204,7 +204,7 @@
     <value>Для выбора коснитесь кнопки с врачом</value>
   </data>
   <data name="StringPageDoctorSelectTitle" xml:space="preserve">
-    <value>Выберите врача у которого Вы были на приеме</value>
+    <value>Выберите врача, у которого Вы были на приеме</value>
   </data>
   <data name="StringPageErrorSubtitle" xml:space="preserve">
     <value>Приносим свои извинения за доставленные неудобства. Администрация.</value>

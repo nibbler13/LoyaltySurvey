@@ -47,6 +47,7 @@ namespace LoyaltySurvey {
 				"о его негативной оценке качества приема у врача." + 
 				Environment.NewLine + Environment.NewLine +
 				"Врач: " + surveyResult.DocName + Environment.NewLine +
+				"Отделение: " + surveyResult.DocDepartment + Environment.NewLine +
 				"Оценка качества приема: " + ControlsFactory.GetNameForRate(surveyResult.DocRate) + Environment.NewLine +
 				"Комментарий: " +
 				(surveyResult.Comment.Equals("Refused") ? "отказался" : surveyResult.Comment) + Environment.NewLine +

@@ -248,7 +248,7 @@ namespace LoyaltySurvey {
 
 		[DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteObject([In] IntPtr hObject);
+		private static extern bool DeleteObject([In] IntPtr hObject);
 		public static ImageSource ImageSourceForBitmap(System.Drawing.Bitmap bmp) {
 			var handle = bmp.GetHbitmap();
 			try {

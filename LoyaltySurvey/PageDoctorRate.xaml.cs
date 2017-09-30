@@ -85,7 +85,7 @@ namespace LoyaltySurvey {
 		private void ButtonRate_Click(object sender, EventArgs e) {
 			string tag = (sender as Control).Tag.ToString();
 			LoggingSystem.LogMessageToFile("Выбрана оценка: " + tag);
-			surveyResult = new SurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag);
+			surveyResult = new SurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag, doctor.Department);
 			Page page;
 
 			if (Properties.Settings.Default.WebCamWriteAll)

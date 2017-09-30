@@ -9,7 +9,8 @@ namespace LoyaltySurvey {
 		public static void SendMail (string subject, string body, string receiver, string attachmentPath = "") {
 			LoggingSystem.LogMessageToFile("Отправка сообщения, тема: " + subject + ", текст: " + body);
 
-			if (string.IsNullOrEmpty(receiver))
+			if (Properties.Settings.Default.IsDebug ||
+				string.IsNullOrEmpty(receiver))
 				return;
 
 			try {
