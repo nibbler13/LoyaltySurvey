@@ -123,8 +123,14 @@ namespace LoyaltySurvey {
 			if (isNextPressed)
 				NotificationSystem.CallbackAccepted(surveyResult);
 
-			PageClinicRate pageClinicRate = new PageClinicRate(surveyResult);
-			NavigationService.Navigate(pageClinicRate);
+			Page page;
+			if (((MainWindow)Application.Current.MainWindow).skipClinicRate) {
+				surveyResult.SetClinicRecommendMark("Don't need");
+				page = new PageThanks(surveyResult);
+			} else
+				page = new PageClinicRate(surveyResult);
+
+			NavigationService.Navigate(page);
 		}
 	}
 }

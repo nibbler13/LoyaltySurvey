@@ -28,9 +28,9 @@ namespace LoyaltySurvey {
 			double currentY = StartY + AvailableHeight;
 
 			List<string> labels = new List<string>() {
-				Properties.Resources.StringPageClinicRateNotAtAll,
+				Properties.Resources.StringPageClinicRateMostLikely,
 				Properties.Resources.StringPageClinicRateDontKnow,
-				Properties.Resources.StringPageClinicRateMostLikely
+				Properties.Resources.StringPageClinicRateNotAtAll
 			};
 
 			for (int i = 0; i < labels.Count; i++) {
@@ -67,7 +67,7 @@ namespace LoyaltySurvey {
 			currentX = StartX;
 			currentY -= rateSide;
 
-			for (int i = 0; i < maxRate; i++) {
+			for (int i = maxRate - 1; i >= 0; i--) {
 				Button button = ControlsFactory.CreateButtonWithTextOnly(
 					i.ToString(),
 					rateSide,

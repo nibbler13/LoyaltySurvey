@@ -40,8 +40,9 @@ namespace LoyaltySurvey {
 					string docname = dataRow["DOCNAME"].ToString();
 					string docposition = dataRow["DOCPOSITION"].ToString();
 					string dcode = dataRow["DCODE"].ToString();
+					string deptCode = dataRow["DEPNUM"].ToString();
 
-					Doctor doctor = new Doctor(docname, docposition, department, dcode);
+					Doctor doctor = new Doctor(docname, docposition, department, dcode, deptCode);
 
 					if (dictionary.ContainsKey(department)) {
 						if (dictionary[department].Contains(doctor))

@@ -21,7 +21,6 @@ namespace LoyaltySurvey {
 		private PageDepartmentSelect pageDepartmentSelect;
 		private Timer timerUpdateData;
 
-
 		public PageSplashScreen() {
 			InitializeComponent();
 
@@ -46,21 +45,6 @@ namespace LoyaltySurvey {
 			CanvasMain.Children.Add(mediaElement);
 			mediaElement.UnloadedBehavior = MediaState.Manual;
 			mediaElement.MediaEnded += MediaElement_MediaEnded;
-
-			//need to work previewmouseleftbutton on full screen area
-			Label labelToHandleMousePreview = ControlsFactory.CreateLabel(
-				"", 
-				Colors.Transparent, 
-				Colors.Transparent, 
-				FontFamily, 
-				FontSize, 
-				FontWeights.Normal, 
-				ScreenWidth, 
-				ScreenHeight, 
-				0, 
-				0, 
-				CanvasMain);
-			Canvas.SetZIndex(labelToHandleMousePreview, -1);
 
 			PreviewMouseLeftButtonDown += PageSplashScreen_PreviewMouseDown;
 			HideButtonBack();
@@ -120,7 +104,11 @@ namespace LoyaltySurvey {
 				NavigationService.Navigate(pageError);
 				return;
 			}
-			
+
+			if ((DateTime.Now - ((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime).TotalSeconds <= 
+				Properties.Settings.Default.PageAutocloseTimeoutInSeconds / 2)
+				((MainWindow)Application.Current.MainWindow).skipClinicRate = true;
+
 			NavigationService.Navigate(pageDepartmentSelect);
 		}
 

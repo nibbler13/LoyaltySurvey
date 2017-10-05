@@ -72,7 +72,7 @@ namespace LoyaltySurvey {
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
 			string docname = (sender as Control).Tag.ToString().Split('|')[1];
 			LoggingSystem.LogMessageToFile("Выбран доктор: " + docname);
-			Doctor selectedDoctor = new Doctor("", "", "", "");
+			Doctor selectedDoctor = new Doctor("", "", "", "", "");
 
 			foreach (Doctor doctor in doctors) {
 				if (doctor.Name.Equals(docname)) {

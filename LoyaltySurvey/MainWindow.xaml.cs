@@ -8,6 +8,9 @@ namespace LoyaltySurvey {
 	/// Логика взаимодействия для MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : NavigationWindow {
+		public bool skipClinicRate = false;
+		public DateTime previousThankPageCloseTime = DateTime.Now;
+
 		public MainWindow() {
 			InitializeComponent();
 

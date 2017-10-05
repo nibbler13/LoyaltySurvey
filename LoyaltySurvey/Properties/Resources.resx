@@ -346,4 +346,7 @@
   <data name="StringPageSplashScreenSubtitle" xml:space="preserve">
     <value>Для продолжения коснитесь экрана</value>
   </data>
+  <data name="StringPageThanksSubtitle" xml:space="preserve">
+    <value>Для продолжения коснитесь экрана</value>
+  </data>
 </root>

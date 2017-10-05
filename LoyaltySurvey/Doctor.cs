@@ -19,13 +19,15 @@ namespace LoyaltySurvey {
 
 		public string Position { get; private set; }
 		public string Department { get; private set; }
+		public string DeptCode { get; private set; }
 		public string Code { get; private set; }
 		
-		public Doctor(string name, string position, string department, string code) {
+		public Doctor(string name, string position, string department, string code, string deptCode) {
 			Name = name;
 			Position = position;
 			Department = department;
 			Code = code;
+			DeptCode = deptCode;
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageThanksTitleLeftTop,
 				Properties.Resources.StringPageThanksTitleLeftBottom,
 				Properties.Resources.StringPageThanksTitleLeftRight,
-				"",
+				Properties.Resources.StringPageThanksSubtitle,
 				false);
 
 			Image imageThanks = ControlsFactory.CreateImage(
@@ -39,6 +39,11 @@ namespace LoyaltySurvey {
 			}
 
 			DisablePageAutoCloseTimerResetByClick();
+			PreviewMouseDown += PageThanks_PreviewMouseDown;
+		}
+
+		private void PageThanks_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+			FireUpTimerPageAutoClose(false);
 		}
 	}
 }

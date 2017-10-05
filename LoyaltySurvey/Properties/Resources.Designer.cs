@@ -699,6 +699,15 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Для продолжения коснитесь экрана.
+        /// </summary>
+        internal static string StringPageThanksSubtitle {
+            get {
+                return ResourceManager.GetString("StringPageThanksSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на за участие в нашем опросе!.
         /// </summary>
         internal static string StringPageThanksTitleLeftBottom {

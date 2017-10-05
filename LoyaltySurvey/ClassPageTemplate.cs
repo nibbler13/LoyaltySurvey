@@ -340,6 +340,21 @@ namespace LoyaltySurvey {
 					CanvasMain);
 			}
 
+			//need to work previewmouseleftbutton on full screen area
+			Label labelToHandleMousePreview = ControlsFactory.CreateLabel(
+				"",
+				Colors.Transparent,
+				Colors.Transparent,
+				FontFamily,
+				FontSize,
+				FontWeights.Normal,
+				ScreenWidth,
+				ScreenHeight,
+				0,
+				0,
+				CanvasMain);
+			Canvas.SetZIndex(labelToHandleMousePreview, -1);
+
 			return rect;
 		}
 
@@ -456,30 +471,30 @@ namespace LoyaltySurvey {
 			RoutedEventHandler buttonNoHandler, RoutedEventHandler buttonYesHandler) {
 			double buttonWidth = DefaultButtonWidth * 3;
 
-			buttonNoQuestion = ControlsFactory.CreateButtonWithImageAndText(
-				"Нет",
+			buttonYesQuestion = ControlsFactory.CreateButtonWithImageAndText(
+				"Да",
 				buttonWidth,
 				DefaultButtonHeight,
 				ControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
-				Properties.Resources.ButtonClose,
+				Properties.Resources.ButtonOk,
 				StartX + AvailableWidth / 2 - Gap * 2 - buttonWidth,
 				StartY + AvailableHeight - DefaultButtonHeight,
 				CanvasMain);
 
-			buttonYesQuestion = ControlsFactory.CreateButtonWithImageAndText(
-				"Да",
-				buttonNoQuestion.Width,
-				buttonNoQuestion.Height,
+			buttonNoQuestion = ControlsFactory.CreateButtonWithImageAndText(
+				"Нет",
+				buttonYesQuestion.Width,
+				buttonYesQuestion.Height,
 				ControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
-				Properties.Resources.ButtonOk,
-				Canvas.GetLeft(buttonNoQuestion) + buttonNoQuestion.Width + Gap * 4,
-				Canvas.GetTop(buttonNoQuestion),
+				Properties.Resources.ButtonClose,
+				Canvas.GetLeft(buttonYesQuestion) + buttonYesQuestion.Width + Gap * 4,
+				Canvas.GetTop(buttonYesQuestion),
 				CanvasMain);
 			buttonYesQuestion.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
 			buttonYesQuestion.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
@@ -684,12 +699,18 @@ namespace LoyaltySurvey {
 			}
 		}
 
-		protected void CloseAllPagesExceptSplashScreen() {
+		protected void CloseAllPagesExceptSplashScreen(bool toSpashCreen = true) {
 			LoggingSystem.LogMessageToFile("<<< Возвращение к стартовой странице");
 
 			try {
 				while (NavigationService.CanGoBack)
 					NavigationService.GoBack();
+
+				if (!toSpashCreen && NavigationService.CanGoForward)
+					NavigationService.GoForward();
+
+				((MainWindow)Application.Current.MainWindow).skipClinicRate = !toSpashCreen;
+				((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime = DateTime.Now;
 			} catch (Exception e) {
 				LoggingSystem.LogMessageToFile("CloseAllFormsExceptMain exception: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
@@ -711,7 +732,8 @@ namespace LoyaltySurvey {
 				{ "@comment", surveyResult.Comment },
 				{ "@phonenumber", surveyResult.PhoneNumber },
 				{ "@clinicrate", surveyResult.ClinicRecommendMark },
-				{ "@photopath", surveyResult.PhotoLink }
+				{ "@photopath", surveyResult.PhotoLink },
+				{ "@depnum", surveyResult.DocDeptCode }
 			};
 
 			bool isSuccessful = fBClient.ExecuteUpdateQuery(
@@ -739,20 +761,7 @@ namespace LoyaltySurvey {
 
 		private void DispatcherTimerPageAutoClose_Tick(object sender, EventArgs e) {
 			LoggingSystem.LogMessageToFile("Истекло время таймера автозакрытия страницы");
-
-			if (surveyResult != null) {
-				if (this is PageCallback)
-					surveyResult.SetPhoneNumber("timeout");
-				else if (this is PageClinicRate)
-					surveyResult.SetClinicRecommendMark("timeout");
-				else if (this is PageComment)
-					surveyResult.SetComment("timeout");
-
-				WriteSurveyResultToDb(surveyResult);
-			}
-
-			dispatcherTimerPageAutoClose.Stop();
-			CloseAllPagesExceptSplashScreen();
+			FireUpTimerPageAutoClose();
 		}
 
 		private void ClassPageTemplate_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
@@ -770,6 +779,22 @@ namespace LoyaltySurvey {
 		private void ResetTimer() {
 			dispatcherTimerPageAutoClose.Stop();
 			dispatcherTimerPageAutoClose.Start();
+		}
+
+		protected void FireUpTimerPageAutoClose(bool returnToSplahScreen = true) {
+			if (surveyResult != null) {
+				if (this is PageCallback)
+					surveyResult.SetPhoneNumber("timeout");
+				else if (this is PageClinicRate)
+					surveyResult.SetClinicRecommendMark("timeout");
+				else if (this is PageComment)
+					surveyResult.SetComment("timeout");
+
+				WriteSurveyResultToDb(surveyResult);
+			}
+
+			dispatcherTimerPageAutoClose.Stop();
+			CloseAllPagesExceptSplashScreen(returnToSplahScreen);
 		}
 	}
 }

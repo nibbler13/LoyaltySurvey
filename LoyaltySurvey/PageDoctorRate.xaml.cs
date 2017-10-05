@@ -85,7 +85,7 @@ namespace LoyaltySurvey {
 		private void ButtonRate_Click(object sender, EventArgs e) {
 			string tag = (sender as Control).Tag.ToString();
 			LoggingSystem.LogMessageToFile("Выбрана оценка: " + tag);
-			surveyResult = new SurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag, doctor.Department);
+			surveyResult = new SurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag, doctor.Department, doctor.DeptCode);
 			Page page;
 
 			if (Properties.Settings.Default.WebCamWriteAll)
@@ -101,7 +101,12 @@ namespace LoyaltySurvey {
 				tag.Equals("5")) {
 				surveyResult.SetComment("Don't need");
 				surveyResult.SetPhoneNumber("Don't need");
-				page = new PageClinicRate(surveyResult);
+
+				if (((MainWindow)Application.Current.MainWindow).skipClinicRate) {
+					surveyResult.SetClinicRecommendMark("Don't need");
+					page = new PageThanks(surveyResult);
+				} else
+					page = new PageClinicRate(surveyResult);
 			} else {
 				page = new PageComment(surveyResult);
 			}
