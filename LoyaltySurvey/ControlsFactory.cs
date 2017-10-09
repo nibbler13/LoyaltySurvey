@@ -73,7 +73,7 @@ namespace LoyaltySurvey {
 
 		public static Button CreateButtonWithImageAndText(string str, double width, double height, ElementType type,
 			FontFamily fontFamily, double fontSize, FontWeight fontWeight,
-			System.Drawing.Image imageInside = null, double left = -1, double top = -1, Panel panel = null) {
+			System.Drawing.Image imageInside = null, double left = -1, double top = -1, Panel panel = null, string dcode = "") {
 			string normalizedStr = str;
 			Orientation orientation = Orientation.Vertical;
 			double maxSizeCoefficient = 1.0;
@@ -98,7 +98,7 @@ namespace LoyaltySurvey {
 				normalizedStr = GetNameForRate(str);
 				maxSizeCoefficient = 0.8;
 			} else if (type == ElementType.Search) {
-				imageInside = GetImageForDoctor("?");
+				imageInside = GetImageForDoctor(dcode);
 				normalizedStr = str.Replace(" ", Environment.NewLine);
 				maxSizeCoefficient = 0.65;
 			}
@@ -276,11 +276,19 @@ namespace LoyaltySurvey {
 				string[] files = Directory.GetFiles(folderToSearchPhotos, "*.jpg");
 
 				string wantedFile = "";
-				foreach (string file in files)
-					if (file.Contains(dcode)) {
+				foreach (string file in files) {
+					string fileName = Path.GetFileNameWithoutExtension(file);
+
+					if (!fileName.Contains("@"))
+						continue;
+
+					string fileDcode = fileName.Split('@')[1];
+
+					if (fileDcode.Equals(dcode)) {
 						wantedFile = file;
 						break;
 					}
+				}
 
 				if (string.IsNullOrEmpty(wantedFile)) {
 					LoggingSystem.LogMessageToFile("Не удалось найти изображение для доктора с кодом: " + dcode);

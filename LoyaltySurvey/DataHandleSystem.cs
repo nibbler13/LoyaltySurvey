@@ -42,24 +42,31 @@ namespace LoyaltySurvey {
 					string dcode = dataRow["DCODE"].ToString();
 					string deptCode = dataRow["DEPNUM"].ToString();
 
+					if (string.IsNullOrEmpty(department) ||
+						string.IsNullOrEmpty(docname))
+						continue;
+
 					Doctor doctor = new Doctor(docname, docposition, department, dcode, deptCode);
 
 					if (dictionary.ContainsKey(department)) {
-						if (dictionary[department].Contains(doctor))
-							continue;
+						bool isAlreadyExist = false;
 
-						dictionary[department].Add(doctor);
-					} else {
+						foreach (Doctor existedDoctor in dictionary[department])
+							if (existedDoctor.Name.ToLower().Equals(doctor.Name.ToLower())) {
+								isAlreadyExist = true;
+								break;
+							}
+
+						if (!isAlreadyExist)
+							dictionary[department].Add(doctor);
+					} else
 						dictionary.Add(department, new List<Doctor>() { doctor });
-					}
 				} catch (Exception e) {
 					LoggingSystem.LogMessageToFile("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
 				}
 			}
 
 			LoggingSystem.LogMessageToFile("Обработано строк:" + dataTable.Rows.Count);
-
-			//UpdateDoctorsPhoto(dictionary);
 
 			return dictionary;
 		}
@@ -83,11 +90,12 @@ namespace LoyaltySurvey {
 					string photoLink = "";
 
 					foreach (string photo in photos) {
-						if (!photo.ToLower().Replace('ё', 'е').Replace("  ", " ").Contains(doctor.Name.ToLower().Replace('ё', 'е')))
+						string fileName = Path.GetFileNameWithoutExtension(photo);
+						if (!fileName.ToLower().Replace('ё', 'е').Replace("  ", " ").Contains(doctor.Name.ToLower().Replace('ё', 'е')))
 							continue;
 
 						photoLink = photo;
-						string destFileName = destinationPath + doctor.Code + " " + doctor.Name + ".jpg";
+						string destFileName = destinationPath + doctor.Name + "@" + doctor.Code + ".jpg";
 						
 						try {
 							if (File.Exists(destFileName) && File.GetLastWriteTime(destFileName).Equals(File.GetLastWriteTime(photo))) {

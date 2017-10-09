@@ -88,7 +88,7 @@ namespace LoyaltySurvey {
 				dictionaryOfDoctors = DataHandleSystem.GetDoctorsDictionary();
 
 				if ((bool)e.Argument == true &&
-					Directory.GetFiles(Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\").Length != 0) 
+					Directory.GetFiles(Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\", "*.jpg", SearchOption.AllDirectories).Length != 0) 
 					return;
 
 				DataHandleSystem.UpdateDoctorsPhoto(dictionaryOfDoctors);

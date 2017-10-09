@@ -5,7 +5,11 @@ namespace LoyaltySurvey {
 		private string _name;
 		public string Name {
 			get {
-				string[] parts = _name.Replace("  ", " ").TrimStart(' ').TrimEnd(' ').Split(' ');
+				string clearedName = _name.Replace("  ", " ").TrimStart(' ').TrimEnd(' ');
+				if (clearedName.Contains("("))
+					clearedName = clearedName.Substring(0, clearedName.IndexOf('('));
+
+				string[] parts = clearedName.Split(' ');
 
 				if (parts.Length < 3)
 					return _name;

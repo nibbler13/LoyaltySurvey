@@ -52,7 +52,8 @@ namespace LoyaltySurvey {
 			CanvasMain.Children.Add(wrapPanel);
 
 			this.doctors = doctors;
-			
+			this.doctors.Sort(delegate (Doctor doc1, Doctor doc2) { return doc1.Name.CompareTo(doc2.Name); });
+
 			CreateRootPanel(
 				Properties.Settings.Default.PageDoctorSelectElementsInLine,
 				Properties.Settings.Default.PageDoctorSelectElementsLinesCount,

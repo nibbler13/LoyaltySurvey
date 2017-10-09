@@ -650,7 +650,7 @@ namespace LoyaltySurvey {
 			double currentY = leftCornerShadow;
 
 			bool isLastLineCentered = false;
-			elements.Sort();
+			//elements.Sort();
 			foreach (string element in elements) {
 				if (string.IsNullOrEmpty(element))
 					continue;

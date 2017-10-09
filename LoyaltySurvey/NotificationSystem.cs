@@ -43,11 +43,9 @@ namespace LoyaltySurvey {
 
 		public static void CallbackAccepted(SurveyResult surveyResult) {
 			if (surveyResult.PhoneNumber.Length != 10 ||
-				!surveyResult.PhoneNumber.StartsWith("9"))
-				if (string.IsNullOrEmpty(surveyResult.Comment) ||
-					surveyResult.Comment.Equals("Refused")) {
+				!surveyResult.PhoneNumber.StartsWith("9")) { 
 					LoggingSystem.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
-						"неверный формат номера телефона и нет комментария");
+						"неверный формат номера телефона");
 					return;
 				}
 

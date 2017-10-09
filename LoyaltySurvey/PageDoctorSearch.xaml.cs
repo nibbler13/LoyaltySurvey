@@ -174,7 +174,8 @@ namespace LoyaltySurvey {
 					ControlsFactory.ElementType.Search,
 					FontFamilySub,
 					FontSizeMain,
-					FontWeights.Normal);
+					FontWeights.Normal,
+					dcode: doctors[i].Code);
 				buttonDoctor.Margin = new Thickness(0, 0, i != doctors.Count - 1 ? Gap : rightCornerShadow, 0);
 				CanvasForElements.Children.Add(buttonDoctor);
 
