@@ -25,7 +25,7 @@ namespace LoyaltySurvey {
 				NotificationSystem.DataBaseEmptyResponse();
 			}
 
-			bool isAdultMedicine = Properties.Settings.Default.IsAdultMedicine;
+			int clinicRestriction = Properties.Settings.Default.ClinicRestrictions1AdultOnly2ChildOnly;
 			string[] adultSections = { "стоматология", "медицина - взрослая" };
 			string[] kidsSections = { "педиатрия", "пнд-педиатрия" };
 
@@ -33,7 +33,8 @@ namespace LoyaltySurvey {
 				try {
 					string sectionName = dataRow["SECTIONNAME"].ToString().ToLower();
 
-					if ((isAdultMedicine ? kidsSections : adultSections).Contains(sectionName))
+					if ((clinicRestriction == 1 && kidsSections.Contains(sectionName)) ||
+						(clinicRestriction == 2 && adultSections.Contains(sectionName)))
 						continue;
 
 					string department = dataRow["DEPARTMENT"].ToString().ToLower();

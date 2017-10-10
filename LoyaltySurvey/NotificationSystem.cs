@@ -40,34 +40,44 @@ namespace LoyaltySurvey {
 
 			MailSystem.SendMail(subject, body, receiver);
 		}
+		
+		public static void NegativeMark(SurveyResult surveyResult) {
+			string header = "";
 
-		public static void CallbackAccepted(SurveyResult surveyResult) {
-			if (surveyResult.PhoneNumber.Length != 10 ||
-				!surveyResult.PhoneNumber.StartsWith("9")) { 
-					LoggingSystem.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
-						"неверный формат номера телефона");
-					return;
-				}
+			if (surveyResult.PhoneNumber.Length == 10 &&
+				surveyResult.PhoneNumber.StartsWith("9"))
+				header = "Пациент указал, что ему можно позвонить для уточнения подробностей " +
+				"о его негативной оценке качества приема у врача.";
+			else if (!string.IsNullOrEmpty(surveyResult.Comment) &&
+				!string.IsNullOrWhiteSpace(surveyResult.Comment))
+				header = "Пациент оставил комментарий к своей негативной оценке качества приема у врача";
+			
+			if (string.IsNullOrEmpty(header)) {
+				LoggingSystem.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
+					"неверный формат номера телефона и отсутствует комментарий");
+				return;
+			}
 
 			string subject = Properties.Settings.Default.ClinicName + " - обратная связь с пациентом через монитор лояльности";
 			string body =
-				"Пациент указал, что ему можно позвонить для уточнения подробностей " +
-				"о его негативной оценке качества приема у врача." +
-				Environment.NewLine + Environment.NewLine +
-				"Врач: " + surveyResult.DocName + Environment.NewLine +
-				"Отделение: " + surveyResult.DocDepartment + Environment.NewLine +
-				"Оценка качества приема: " + ControlsFactory.GetNameForRate(surveyResult.DocRate) + Environment.NewLine +
-				"Комментарий: " +
-				(surveyResult.Comment.Equals("Refused") ? "отказался" : surveyResult.Comment) + Environment.NewLine +
-				"Номер телефона для связи: " + surveyResult.PhoneNumber +
-				Environment.NewLine + Environment.NewLine;
+				header + "<br><br>" +
+				"<table border=\"1\">" +
+				"<tr><td>Врач</td><td><b>" + surveyResult.DocName + "</b></td></tr>" +
+				"<tr><td>Отделение</td><td><b>" + surveyResult.DocDepartment + "</b></td></tr>" +
+				"<tr><td>Оценка качества приема</td><td><b>" + ControlsFactory.GetNameForRate(surveyResult.DocRate) + "</b></td></tr>" +
+				"<tr><td>Комментарий</td><td><b>" +
+				(surveyResult.Comment.Equals("Refused") ? "отказался" : surveyResult.Comment) + "</b></td></tr>" +
+				"<tr><td>Номер телефона для связи</td><td><b>" +
+				(surveyResult.PhoneNumber.Equals("Refused") ? "отказался" : surveyResult.PhoneNumber) + "</b></td></tr>" +
+				"</table><br>";
 			string receiver = Properties.Settings.Default.MailCallbackTo;
 			string attachmentPath = surveyResult.PhotoLink;
 
 			if (File.Exists(attachmentPath))
-				body += "Фотография с камеры терминала во вложении";
+				body += "Фотография с камеры терминала:";
 			else
 				body += "Фотография отсутствует";
+			body += "</b>";
 
 			MailSystem.SendMail(subject, body, receiver, attachmentPath);
 		}

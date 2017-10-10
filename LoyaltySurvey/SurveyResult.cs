@@ -39,6 +39,10 @@ namespace LoyaltySurvey {
 			ClinicRecommendMark = mark;
 		}
 
+		public void SetDocRate(string docRate) {
+			DocRate = docRate;
+		}
+
 		public override string ToString() {
 			return base.ToString() + Environment.NewLine +
 				"SurveyDateTime: " + SurveyDateTime.ToString() + Environment.NewLine +

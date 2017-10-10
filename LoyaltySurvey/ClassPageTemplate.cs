@@ -699,17 +699,16 @@ namespace LoyaltySurvey {
 			}
 		}
 
-		protected void CloseAllPagesExceptSplashScreen(bool toSpashCreen = true) {
+		protected void CloseAllPagesExceptSplashScreen(bool showDepartmentSelect = false) {
 			LoggingSystem.LogMessageToFile("<<< Возвращение к стартовой странице");
 
 			try {
 				while (NavigationService.CanGoBack)
 					NavigationService.GoBack();
 
-				if (!toSpashCreen && NavigationService.CanGoForward)
+				if (showDepartmentSelect && NavigationService.CanGoForward)
 					NavigationService.GoForward();
 
-				((MainWindow)Application.Current.MainWindow).skipClinicRate = !toSpashCreen;
 				((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime = DateTime.Now;
 			} catch (Exception e) {
 				LoggingSystem.LogMessageToFile("CloseAllFormsExceptMain exception: " + e.Message + 
@@ -718,6 +717,11 @@ namespace LoyaltySurvey {
 		}
 
 		protected void WriteSurveyResultToDb(SurveyResult surveyResult) {
+			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Contains(surveyResult.DCode))
+				surveyResult.SetDocRate("Duplicate");
+			else
+				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Add(surveyResult.DCode);
+
 			LoggingSystem.LogMessageToFile("Запись результата в базу данных: " + surveyResult.ToString());
 
 			FBClient fBClient = new FBClient(
@@ -781,7 +785,7 @@ namespace LoyaltySurvey {
 			dispatcherTimerPageAutoClose.Start();
 		}
 
-		protected void FireUpTimerPageAutoClose(bool returnToSplahScreen = true) {
+		protected void FireUpTimerPageAutoClose(bool showDepartmentSelect = false) {
 			if (surveyResult != null) {
 				if (this is PageCallback)
 					surveyResult.SetPhoneNumber("timeout");
@@ -794,7 +798,7 @@ namespace LoyaltySurvey {
 			}
 
 			dispatcherTimerPageAutoClose.Stop();
-			CloseAllPagesExceptSplashScreen(returnToSplahScreen);
+			CloseAllPagesExceptSplashScreen(showDepartmentSelect);
 		}
 	}
 }

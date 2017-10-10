@@ -119,12 +119,10 @@ namespace LoyaltySurvey {
 				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
 
 			surveyResult.SetPhoneNumber(phoneNumber);
-
-			if (isNextPressed)
-				NotificationSystem.CallbackAccepted(surveyResult);
+			NotificationSystem.NegativeMark(surveyResult);
 
 			Page page;
-			if (((MainWindow)Application.Current.MainWindow).skipClinicRate) {
+			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
 				surveyResult.SetClinicRecommendMark("Don't need");
 				page = new PageThanks(surveyResult);
 			} else

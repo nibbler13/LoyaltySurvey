@@ -105,9 +105,9 @@ namespace LoyaltySurvey {
 				return;
 			}
 
-			if ((DateTime.Now - ((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime).TotalSeconds <= 
-				Properties.Settings.Default.PageAutocloseTimeoutInSeconds / 2)
-				((MainWindow)Application.Current.MainWindow).skipClinicRate = true;
+			TimeSpan timeSpanTimeAfterClosing = DateTime.Now - ((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime;
+			if (timeSpanTimeAfterClosing.TotalSeconds > Properties.Settings.Default.PageAutocloseTimeoutInSeconds / 2)
+				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Clear();
 
 			NavigationService.Navigate(pageDepartmentSelect);
 		}

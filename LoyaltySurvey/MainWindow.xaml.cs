@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -8,7 +9,7 @@ namespace LoyaltySurvey {
 	/// Логика взаимодействия для MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : NavigationWindow {
-		public bool skipClinicRate = false;
+		public List<string> previousRatesDcodes = new List<string>();
 		public DateTime previousThankPageCloseTime = DateTime.Now;
 
 		public MainWindow() {

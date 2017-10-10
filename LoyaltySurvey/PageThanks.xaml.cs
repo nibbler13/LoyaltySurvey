@@ -43,7 +43,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void PageThanks_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-			FireUpTimerPageAutoClose(false);
+			FireUpTimerPageAutoClose(true);
 		}
 	}
 }

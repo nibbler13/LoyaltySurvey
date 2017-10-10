@@ -102,7 +102,7 @@ namespace LoyaltySurvey {
 				surveyResult.SetComment("Don't need");
 				surveyResult.SetPhoneNumber("Don't need");
 
-				if (((MainWindow)Application.Current.MainWindow).skipClinicRate) {
+				if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
 					surveyResult.SetClinicRecommendMark("Don't need");
 					page = new PageThanks(surveyResult);
 				} else
