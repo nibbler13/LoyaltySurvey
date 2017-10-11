@@ -49,7 +49,8 @@ namespace LoyaltySurvey {
 				header = "Пациент указал, что ему можно позвонить для уточнения подробностей " +
 				"о его негативной оценке качества приема у врача.";
 			else if (!string.IsNullOrEmpty(surveyResult.Comment) &&
-				!string.IsNullOrWhiteSpace(surveyResult.Comment))
+				!string.IsNullOrWhiteSpace(surveyResult.Comment) &&
+				!surveyResult.Comment.Equals("Refused"))
 				header = "Пациент оставил комментарий к своей негативной оценке качества приема у врача";
 			
 			if (string.IsNullOrEmpty(header)) {
