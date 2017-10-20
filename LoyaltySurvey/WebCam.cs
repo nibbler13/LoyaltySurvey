@@ -18,7 +18,7 @@ namespace LoyaltySurvey {
 				return;
 			}
 
-			string photoSavePath = Properties.Settings.Default.WebCamSavePath;
+			string photoSavePath = Properties.Settings.Default.PathWebCamSaveTo;
 
 			if (string.IsNullOrEmpty(photoSavePath))
 				photoSavePath = Directory.GetCurrentDirectory() + "\\Photos\\";

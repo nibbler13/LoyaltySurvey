@@ -74,7 +74,7 @@ namespace LoyaltySurvey {
 
 		public static void UpdateDoctorsPhoto(Dictionary<string, List<Doctor>> departments) {
 			LoggingSystem.LogMessageToFile("Обновление фотографий докторов");
-			string searchPath = @Properties.Settings.Default.DoctorsPhotoPath;
+			string searchPath = @Properties.Settings.Default.PathDoctorsPhotoSource;
 			string destinationPath = Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\";
 			if (!Directory.Exists(destinationPath))
 				Directory.CreateDirectory(destinationPath);

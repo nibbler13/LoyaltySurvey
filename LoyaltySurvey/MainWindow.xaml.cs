@@ -19,7 +19,8 @@ namespace LoyaltySurvey {
 				Environment.NewLine + "Создание основного окна");
 			NotificationSystem.AppStart();
 
-			if (!Properties.Settings.Default.IsDebug) {
+			if (!Properties.Settings.Default.IsDebug &&
+				!Environment.MachineName.Equals("MSSU-DEV")) {
 				Topmost = true;
 				Cursor = Cursors.None;
 			}

@@ -40,6 +40,7 @@ namespace LoyaltySurvey {
 			mediaElement.Width = mediaElementWidth;
 			mediaElement.Height = mediaElementHeight;
 			mediaElement.Stretch = Stretch.Uniform;
+			mediaElement.IsEnabled = false;
 			Canvas.SetLeft(mediaElement, rect.Location.X);
 			Canvas.SetTop(mediaElement, rect.Location.Y);
 			CanvasMain.Children.Add(mediaElement);
@@ -63,8 +64,14 @@ namespace LoyaltySurvey {
 		private void TimerUpdateDataSetup() {
 			DateTime nowTime = DateTime.Now;
 			DateTime fireTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 7, 0, 0, 0);
-			if (nowTime > fireTime)
+			LoggingSystem.LogMessageToFile("---TimerUpdateDataSetup---");
+			LoggingSystem.LogMessageToFile("nowTime: " + nowTime.ToString());
+			LoggingSystem.LogMessageToFile("fireTime: " + fireTime.ToString());
+			if (Math.Abs((nowTime - fireTime).TotalMinutes) < 10) {
+				LoggingSystem.LogMessageToFile("Math.Abs((nowTime - fireTime).TotalMinutes) < 10");
 				fireTime = fireTime.AddDays(1);
+			} else
+				LoggingSystem.LogMessageToFile("Math.Abs((nowTime - fireTime).TotalMinutes) >= 10");
 
 			double tickTime = (fireTime - nowTime).TotalMilliseconds;
 			timerUpdateData = new Timer(tickTime);
@@ -106,7 +113,7 @@ namespace LoyaltySurvey {
 			}
 
 			TimeSpan timeSpanTimeAfterClosing = DateTime.Now - ((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime;
-			if (timeSpanTimeAfterClosing.TotalSeconds > Properties.Settings.Default.PageAutocloseTimeoutInSeconds / 2)
+			if (timeSpanTimeAfterClosing.TotalSeconds > Properties.Settings.Default.PageAutocloseTimeoutInSeconds * 2)
 				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Clear();
 
 			NavigationService.Navigate(pageDepartmentSelect);

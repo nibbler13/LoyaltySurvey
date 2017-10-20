@@ -12,7 +12,7 @@ namespace LoyaltySurvey {
 	public partial class PageDoctorSearch : ClassPageTemplate {
 		private Dictionary<string, List<Doctor>> dictionaryOfDoctors;
 		private Label labelInfo;
-		private int minTextBoxSearchLength = 3;
+		private int minTextBoxSearchLength = 1;
 		private TextBox textBox;
 
 
@@ -147,7 +147,7 @@ namespace LoyaltySurvey {
 						doctors.Add(doctor);
 
 			if (doctors.Count == 0) {
-				LoggingSystem.LogMessageToFile("По заданной тексту докторов не найдено");
+				LoggingSystem.LogMessageToFile("По заданному тексту докторов не найдено");
 				SetLabelInfoToNothingFound();
 				return;
 			}

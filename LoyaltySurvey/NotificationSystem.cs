@@ -14,7 +14,7 @@ namespace LoyaltySurvey {
 				"Приложению " + Assembly.GetExecutingAssembly().GetName().Name + 
 				" не удалось разобрать список докторов, полученный из базы ИК." +
 				Environment.NewLine + "Произведен переход на страницу с ошибкой.";
-			string receiver = Properties.Settings.Default.MailTo;
+			string receiver = Properties.Settings.Default.MailErrorsReceiverAddress;
 
 			MailSystem.SendMail(subject, body, receiver);
 		}
@@ -28,7 +28,7 @@ namespace LoyaltySurvey {
 				Properties.Settings.Default.MisInfoclinicaDbName +
 				Environment.NewLine +
 				"Запрос: " + Properties.Settings.Default.SqlQueryDoctors;
-			string receiver = Properties.Settings.Default.MailTo;
+			string receiver = Properties.Settings.Default.MailErrorsReceiverAddress;
 
 			MailSystem.SendMail(subject, body, receiver);
 		}
@@ -71,7 +71,7 @@ namespace LoyaltySurvey {
 				"<tr><td>Номер телефона для связи</td><td><b>" +
 				(surveyResult.PhoneNumber.Equals("Refused") ? "отказался" : surveyResult.PhoneNumber) + "</b></td></tr>" +
 				"</table><br>";
-			string receiver = Properties.Settings.Default.MailCallbackTo;
+			string receiver = Properties.Settings.Default.MailNegativesMarkReceiverAddress;
 			string attachmentPath = surveyResult.PhotoLink;
 
 			if (File.Exists(attachmentPath))
@@ -85,23 +85,34 @@ namespace LoyaltySurvey {
 
 		public static void DoctorsPhotoPathError() {
 			string subject = "Ошибка обработки фотографий докторов";
-			string body = "Папка с фотографиями " + Properties.Settings.Default.DoctorsPhotoPath + 
+			string body = "Папка с фотографиями " + Properties.Settings.Default.PathDoctorsPhotoSource + 
 				" не существует, или к ней нет доступа";
-			string receiver = Properties.Settings.Default.MailTo;
+			string receiver = Properties.Settings.Default.MailErrorsReceiverAddress;
 
 			MailSystem.SendMail(subject, body, receiver);
 		}
 
 		public static void DoctorsPhotoMissed(List<string> missedPhotos) {
 			string subject = "Отсутствуют фотографии докторов";
-			string body = "Приложению " + Assembly.GetExecutingAssembly().GetName().Name + " (" + Environment.MachineName + 
-				") не удалось найти фотографии в папке '" + Properties.Settings.Default.DoctorsPhotoPath + 
-				"' для следующих докторов: " + Environment.NewLine + Environment.NewLine;
+			string body = "Приложению " + Assembly.GetExecutingAssembly().GetName().Name + " (" + Environment.MachineName +
+				") не удалось найти фотографии в папке '" + Properties.Settings.Default.PathDoctorsPhotoSource +
+				"' для сотрудников перечисленных ниже." + Environment.NewLine;
+
+			string receiver = Properties.Settings.Default.MailMissedPhotosReceiverAddress;
+			if (!receiver.ToLower().Contains("stp"))
+				body = "На мониторе лояльности имеются сотрудники без фотографий. Просьба сфотографировать указанных " +
+					"сотрудников на светлом ровном фоне и отправить фотографии в службу технической поддержки для дальнейшей " +
+					"обработки и добавления на монитор лояльности." + Environment.NewLine;
+
+			body += Environment.NewLine;
+
 			foreach (string missedPhoto in missedPhotos)
 				body += missedPhoto + Environment.NewLine;
-			string receiver = Properties.Settings.Default.MailMissedPhotosTo;
 
-			MailSystem.SendMail(subject, body, receiver);
+			if (!string.IsNullOrEmpty(receiver))
+				MailSystem.SendMail(subject, body, receiver);
+
+			LoggingSystem.WriteStringToFile(body, Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\MissedPhotos.txt");
 		}
 	}
 }

@@ -788,11 +788,11 @@ namespace LoyaltySurvey {
 		protected void FireUpTimerPageAutoClose(bool showDepartmentSelect = false) {
 			if (surveyResult != null) {
 				if (this is PageCallback)
-					surveyResult.SetPhoneNumber("timeout");
+					surveyResult.SetPhoneNumber("Timeout");
 				else if (this is PageClinicRate)
-					surveyResult.SetClinicRecommendMark("timeout");
+					surveyResult.SetClinicRecommendMark("Timeout");
 				else if (this is PageComment)
-					surveyResult.SetComment("timeout");
+					surveyResult.SetComment("Timeout");
 
 				WriteSurveyResultToDb(surveyResult);
 			}
