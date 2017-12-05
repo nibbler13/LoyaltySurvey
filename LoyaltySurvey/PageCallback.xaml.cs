@@ -118,12 +118,12 @@ namespace LoyaltySurvey {
 			} else
 				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
 
-			surveyResult.SetPhoneNumber(phoneNumber);
+			surveyResult.PhoneNumber = phoneNumber;
 			NotificationSystem.NegativeMark(surveyResult);
 
 			Page page;
 			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
-				surveyResult.SetClinicRecommendMark("Don't need");
+				surveyResult. ClinicRecommendMark = "Don't need";
 				page = new PageThanks(surveyResult);
 			} else
 				page = new PageClinicRate(surveyResult);

@@ -88,22 +88,23 @@ namespace LoyaltySurvey {
 			surveyResult = new SurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag, doctor.Department, doctor.DeptCode);
 			Page page;
 
+			WebCam webCam = new WebCam(surveyResult);
 			if (Properties.Settings.Default.WebCamWriteAll)
-				WebCam.CaptureImageFromWebCamAndSave(ref surveyResult);
+				webCam.CaptureImageFromWebCamAndSave();
 			else if ((tag.Equals("1") || tag.Equals("2")) &&
 				Properties.Settings.Default.WebCamWriteOnlyNegative)
-				WebCam.CaptureImageFromWebCamAndSave(ref surveyResult);
+				webCam.CaptureImageFromWebCamAndSave();
 			else
-				surveyResult.SetPhotoLink("don't need");
+				surveyResult.PhotoLink = "Don't need";
 
 			if (tag.Equals("3") ||
 				tag.Equals("4") ||
 				tag.Equals("5")) {
-				surveyResult.SetComment("Don't need");
-				surveyResult.SetPhoneNumber("Don't need");
+				surveyResult.Comment = "Don't need";
+				surveyResult.PhoneNumber = "Don't need";
 
 				if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
-					surveyResult.SetClinicRecommendMark("Don't need");
+					surveyResult.ClinicRecommendMark = "Don't need";
 					page = new PageThanks(surveyResult);
 				} else
 					page = new PageClinicRate(surveyResult);

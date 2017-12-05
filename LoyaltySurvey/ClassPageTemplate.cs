@@ -718,7 +718,7 @@ namespace LoyaltySurvey {
 
 		protected void WriteSurveyResultToDb(SurveyResult surveyResult) {
 			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Contains(surveyResult.DCode))
-				surveyResult.SetDocRate("Duplicate");
+				surveyResult.DocRate = "Duplicate";
 			else
 				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Add(surveyResult.DCode);
 
@@ -730,7 +730,7 @@ namespace LoyaltySurvey {
 				Properties.Settings.Default.MisInfoclinicaDbUser,
 				Properties.Settings.Default.MisInfoclinicaDbPassword);
 
-			Dictionary<string, string> surveyResults = new Dictionary<string, string>() {
+			Dictionary<string, object> surveyResults = new Dictionary<string, object>() {
 				{ "@dcode", surveyResult.DCode },
 				{ "@docrate", surveyResult.DocRate },
 				{ "@comment", surveyResult.Comment },
@@ -740,11 +740,23 @@ namespace LoyaltySurvey {
 				{ "@depnum", surveyResult.DocDeptCode }
 			};
 
-			bool isSuccessful = fBClient.ExecuteUpdateQuery(
-				Properties.Settings.Default.SqlInsertSurveyResult,
-				surveyResults);
+			string query = Properties.Settings.Default.SqlInsertSurveyResultWithoutEmotion;
 
-			LoggingSystem.LogMessageToFile("Результат выполнения: " + isSuccessful);
+			if (surveyResult.EmotionObject != null) {
+				surveyResults.Add("@em_anger", surveyResult.EmotionObject.Scores.Anger);
+				surveyResults.Add("@em_contempt", surveyResult.EmotionObject.Scores.Contempt);
+				surveyResults.Add("@em_disgust", surveyResult.EmotionObject.Scores.Disgust);
+				surveyResults.Add("@em_fear", surveyResult.EmotionObject.Scores.Fear);
+				surveyResults.Add("@em_happiness", surveyResult.EmotionObject.Scores.Happiness);
+				surveyResults.Add("@em_neutral", surveyResult.EmotionObject.Scores.Neutral);
+				surveyResults.Add("@em_sadness", surveyResult.EmotionObject.Scores.Sadness);
+				surveyResults.Add("@em_surprice",  surveyResult.EmotionObject.Scores.Surprise);
+				query = Properties.Settings.Default.SqlInsertSurveyResultWithEmotion;
+			}
+			
+			surveyResult.IsInsertedToDb = fBClient.ExecuteUpdateQuery(query, surveyResults);
+
+			LoggingSystem.LogMessageToFile("Результат выполнения: " + surveyResult.IsInsertedToDb);
 		}
 
 
@@ -788,11 +800,11 @@ namespace LoyaltySurvey {
 		protected void FireUpTimerPageAutoClose(bool showDepartmentSelect = false) {
 			if (surveyResult != null) {
 				if (this is PageCallback)
-					surveyResult.SetPhoneNumber("Timeout");
+					surveyResult.PhoneNumber = "Timeout";
 				else if (this is PageClinicRate)
-					surveyResult.SetClinicRecommendMark("Timeout");
+					surveyResult.ClinicRecommendMark = "Timeout";
 				else if (this is PageComment)
-					surveyResult.SetComment("Timeout");
+					surveyResult.Comment = "Timeout";
 
 				WriteSurveyResultToDb(surveyResult);
 			}

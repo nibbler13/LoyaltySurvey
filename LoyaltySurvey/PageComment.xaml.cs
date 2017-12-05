@@ -91,7 +91,7 @@ namespace LoyaltySurvey {
 			} else
 				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
 
-			surveyResult.SetComment(comment);
+			surveyResult.Comment = comment;
 
 			PageCallback pageCallback = new PageCallback(surveyResult);
 			NavigationService.Navigate(pageCallback);

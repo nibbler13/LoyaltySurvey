@@ -63,15 +63,10 @@ namespace LoyaltySurvey {
 
 		private void TimerUpdateDataSetup() {
 			DateTime nowTime = DateTime.Now;
-			DateTime fireTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 7, 0, 0, 0);
-			LoggingSystem.LogMessageToFile("---TimerUpdateDataSetup---");
-			LoggingSystem.LogMessageToFile("nowTime: " + nowTime.ToString());
-			LoggingSystem.LogMessageToFile("fireTime: " + fireTime.ToString());
-			if (Math.Abs((nowTime - fireTime).TotalMinutes) < 10) {
-				LoggingSystem.LogMessageToFile("Math.Abs((nowTime - fireTime).TotalMinutes) < 10");
+			DateTime fireTime = new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 6, 0, 0, DateTimeKind.Local);
+
+			if (nowTime.CompareTo(new DateTime(nowTime.Year, nowTime.Month, nowTime.Day, 5, 58, 0, DateTimeKind.Local)) > 0)
 				fireTime = fireTime.AddDays(1);
-			} else
-				LoggingSystem.LogMessageToFile("Math.Abs((nowTime - fireTime).TotalMinutes) >= 10");
 
 			double tickTime = (fireTime - nowTime).TotalMilliseconds;
 			timerUpdateData = new Timer(tickTime);
@@ -82,7 +77,7 @@ namespace LoyaltySurvey {
 		private void TimerUpdateData_Elapsed(object sender, ElapsedEventArgs e) {
 			timerUpdateData.Stop();
 			backgroundWorkerUpdateData.RunWorkerAsync(false);
-			TimerUpdateDataSetup();
+			//TimerUpdateDataSetup();
 		}
 
 		private void MediaElement_MediaEnded(object sender, RoutedEventArgs e) {
@@ -99,6 +94,9 @@ namespace LoyaltySurvey {
 					return;
 
 				DataHandleSystem.UpdateDoctorsPhoto(dictionaryOfDoctors);
+				Application.Current.Dispatcher.Invoke(new Action(() => {
+					Application.Current.Shutdown();
+				}));
 			} catch (Exception exception) {
 				LoggingSystem.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
 					Environment.NewLine + exception.StackTrace);

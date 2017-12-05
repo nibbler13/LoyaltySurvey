@@ -7,11 +7,13 @@ namespace LoyaltySurvey {
 		public string DocName { get; private set; }
 		public string DocDepartment { get; private set; }
 		public string DocDeptCode { get; private set; }
-		public string DocRate { get; private set; }
-		public string PhotoLink { get; private set; }
-		public string Comment { get; private set; }
-		public string PhoneNumber { get; private set; }
-		public string ClinicRecommendMark { get; private set; }
+		public string DocRate { get; set; }
+		public string PhotoLink { get; set; }
+		public string Comment { get; set; }
+		public string PhoneNumber { get; set; }
+		public string ClinicRecommendMark { get; set; }
+		public EmotionObject EmotionObject { get; set; }
+		public bool IsInsertedToDb { get; set; }
 
 		public SurveyResult(DateTime dateTime, string dCode, string docName, 
 			string docRate, string docDepartment, string docDeptCode) {
@@ -21,26 +23,7 @@ namespace LoyaltySurvey {
 			DocRate = docRate;
 			DocDepartment = docDepartment;
 			DocDeptCode = docDeptCode;
-		}
-
-		public void SetPhotoLink(string link) {
-			PhotoLink = link;
-		}
-
-		public void SetComment(string comment) {
-			Comment = comment;
-		}
-
-		public void SetPhoneNumber(string phoneNumber) {
-			PhoneNumber = phoneNumber;
-		}
-
-		public void SetClinicRecommendMark(string mark) {
-			ClinicRecommendMark = mark;
-		}
-
-		public void SetDocRate(string docRate) {
-			DocRate = docRate;
+			IsInsertedToDb = false;
 		}
 
 		public override string ToString() {
@@ -54,7 +37,8 @@ namespace LoyaltySurvey {
 				"PhotoLink: " + PhotoLink + Environment.NewLine +
 				"Comment: " + Comment + Environment.NewLine +
 				"PhoneNumber: " + PhoneNumber + Environment.NewLine +
-				"ClinicRecommendMark: " + ClinicRecommendMark;
+				"ClinicRecommendMark: " + ClinicRecommendMark + Environment.NewLine +
+				"EmotionObject: " + (EmotionObject == null ? "null" : EmotionObject.ToString());
 		}
 	}
 }

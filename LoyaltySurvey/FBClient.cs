@@ -41,14 +41,14 @@ namespace LoyaltySurvey {
 			return dataTable;
 		}
 
-		public bool ExecuteUpdateQuery(string query, Dictionary<string, string> parameters) {
+		public bool ExecuteUpdateQuery(string query, Dictionary<string, object> parameters) {
 			bool updated = false;
 			try {
 				connection.Open();
 				FbCommand update = new FbCommand(query, connection);
 
 				if (parameters.Count > 0) {
-					foreach (KeyValuePair<string, string> parameter in parameters)
+					foreach (KeyValuePair<string, object> parameter in parameters)
 						update.Parameters.AddWithValue(parameter.Key, parameter.Value);
 				}
 
