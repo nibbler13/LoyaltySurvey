@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace LoyaltySurvey {
-	public class OnscreenKeyboard {
+	public class PageOnscreenKeyboard {
 		/// <summary>
 		/// virtual keyboard fields
 		private TextBox textBoxInput = null;
@@ -24,7 +24,7 @@ namespace LoyaltySurvey {
 		private KeyboardType keyboardType;
 		/// </summary>
 
-		public OnscreenKeyboard(
+		public PageOnscreenKeyboard(
 			TextBox textBoxInput,
 			double availableWidth,
 			double availableHeight,
@@ -125,7 +125,7 @@ namespace LoyaltySurvey {
 					if (keyName.Equals("Пробел") || keyName.Equals("Ввод"))
 						fontScale = 0.7;
 
-					Button buttonKey = ControlsFactory.CreateButtonWithTextOnly(
+					Button buttonKey = PageControlsFactory.CreateButtonWithTextOnly(
 						keyName,
 						buttonWidth,
 						buttonHeight,
@@ -186,7 +186,7 @@ namespace LoyaltySurvey {
 						buttonKey.Background = new SolidColorBrush(Properties.Settings.Default.ColorDisabled);
 
 					if (imageToButton != null) {
-						Image image = ControlsFactory.CreateImage((System.Drawing.Bitmap)imageToButton);
+						Image image = PageControlsFactory.CreateImage((System.Drawing.Bitmap)imageToButton);
 						buttonKey.Content = image;
 					}
 
@@ -257,7 +257,7 @@ namespace LoyaltySurvey {
 			}
 
 			buttonShift.Background = new SolidColorBrush(color);
-			buttonShift.Content = ControlsFactory.CreateImage((System.Drawing.Bitmap)image);
+			buttonShift.Content = PageControlsFactory.CreateImage((System.Drawing.Bitmap)image);
 			ChangeKeyboardCapitalizeStatus(buttonShift);
 
 			previousShiftKeyPress = new TimeSpan(DateTime.Now.Ticks);

@@ -9,11 +9,11 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageClinicRate.xaml
 	/// </summary>
-	public partial class PageClinicRate : ClassPageTemplate {
-		public PageClinicRate(SurveyResult surveyResult) {
+	public partial class PageClinicRate : PageTemplate {
+		public PageClinicRate(ItemSurveyResult surveyResult) {
 			InitializeComponent();
 
-			this.surveyResult = surveyResult;
+			this._surveyResult = surveyResult;
 
 			HideLogo();
 			HideButtonBack();
@@ -28,9 +28,9 @@ namespace LoyaltySurvey {
 			double currentY = StartY + AvailableHeight;
 
 			List<string> labels = new List<string>() {
-				Properties.Resources.StringPageClinicRateMostLikely,
+				Properties.Resources.StringPageClinicRateNotAtAll,
 				Properties.Resources.StringPageClinicRateDontKnow,
-				Properties.Resources.StringPageClinicRateNotAtAll
+				Properties.Resources.StringPageClinicRateMostLikely
 			};
 
 			for (int i = 0; i < labels.Count; i++) {
@@ -46,7 +46,7 @@ namespace LoyaltySurvey {
 					currentX = StartX + AvailableWidth - labelWidth;
 				}
 
-				Label label = ControlsFactory.CreateLabel(
+				Label label = PageControlsFactory.CreateLabel(
 					labels[i],
 					Colors.Transparent,
 					Properties.Settings.Default.ColorLabelForeground,
@@ -67,8 +67,8 @@ namespace LoyaltySurvey {
 			currentX = StartX;
 			currentY -= rateSide;
 
-			for (int i = maxRate - 1; i >= 0; i--) {
-				Button button = ControlsFactory.CreateButtonWithTextOnly(
+			for (int i = 0; i < maxRate; i++) {
+				Button button = PageControlsFactory.CreateButtonWithTextOnly(
 					i.ToString(),
 					rateSide,
 					rateSide,
@@ -83,11 +83,11 @@ namespace LoyaltySurvey {
 
 				Image image = null;
 				if (i == 0)
-					image = ControlsFactory.CreateImage(Properties.Resources.ClinicRate0);
+					image = PageControlsFactory.CreateImage(Properties.Resources.ClinicRate0);
 				if (i == 5)
-					image = ControlsFactory.CreateImage(Properties.Resources.ClinicRate5);
+					image = PageControlsFactory.CreateImage(Properties.Resources.ClinicRate5);
 				if (i == 10)
-					image = ControlsFactory.CreateImage(Properties.Resources.ClinicRate10);
+					image = PageControlsFactory.CreateImage(Properties.Resources.ClinicRate10);
 
 				if (image != null)
 					button.Content = image;
@@ -95,7 +95,7 @@ namespace LoyaltySurvey {
 				currentX += rateSide + Gap;
 			}
 
-			ControlsFactory.CreateImage(
+			PageControlsFactory.CreateImage(
 				Properties.Resources.BackgroundClinicRecommend,
 				AvailableWidth,
 				currentY - StartY - Gap,
@@ -107,10 +107,10 @@ namespace LoyaltySurvey {
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
 			string tag = (sender as Button).Tag.ToString();
-			LoggingSystem.LogMessageToFile("Выбрана оценка: " + tag);
-			surveyResult.ClinicRecommendMark = tag;
+			SystemLogging.LogMessageToFile("Выбрана оценка: " + tag);
+			_surveyResult.ClinicRecommendMark = tag;
 
-			PageThanks pageThanks = new PageThanks(surveyResult);
+			PageThanks pageThanks = new PageThanks(_surveyResult);
 			NavigationService.Navigate(pageThanks);
 		}
 	}

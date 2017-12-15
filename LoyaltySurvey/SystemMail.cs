@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Net.Mime;
 
 namespace LoyaltySurvey {
-	public class MailSystem {
+	public class SystemMail {
 		public static void SendMail (string subject, string body, string receiver, string attachmentPath = "") {
-			LoggingSystem.LogMessageToFile("Отправка сообщения, тема: " + subject + ", текст: " + body);
-			LoggingSystem.LogMessageToFile("Получатели: " + receiver);
+			SystemLogging.LogMessageToFile("Отправка сообщения, тема: " + subject + ", текст: " + body);
+			SystemLogging.LogMessageToFile("Получатели: " + receiver);
 
 			if (string.IsNullOrEmpty(receiver))
 				return;
@@ -83,12 +83,12 @@ namespace LoyaltySurvey {
 				client.SendCompleted += (s, e) => {
 					client.Dispose();
 					message.Dispose();
-					LoggingSystem.LogMessageToFile("Письмо отправлено успешно");
+					SystemLogging.LogMessageToFile("Письмо отправлено успешно");
 				};
 
 				client.SendAsync(message, null);
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
+				SystemLogging.LogMessageToFile("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
 			}
 		}
 	}

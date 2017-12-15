@@ -1,4 +1,4 @@
-﻿<local:ClassPageTemplate x:Class="LoyaltySurvey.PageClinicRate"
+﻿<local:PageTemplate x:Class="LoyaltySurvey.PageClinicRate"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,4 +7,4 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="PageClinicRate">
-</local:ClassPageTemplate>
+</local:PageTemplate>

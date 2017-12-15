@@ -13,10 +13,10 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageDoctorRate.xaml
 	/// </summary>
-	public partial class PageDoctorRate : ClassPageTemplate {
-		private Doctor doctor;
+	public partial class PageDoctorRate : PageTemplate {
+		private ItemDoctor doctor;
 
-		public PageDoctorRate(Doctor doctor) {
+		public PageDoctorRate(ItemDoctor doctor) {
 			InitializeComponent();
 
 			this.doctor = doctor;
@@ -31,7 +31,7 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageDoctorRateTitle,
 				Properties.Resources.StringPageDoctorRateSubtitle);
 
-			List<string> rates = new List<string>() { "5", "4", "3", "2", "1" };
+			List<string> rates = new List<string>() { "1", "2", "3", "4", "5" };
 
 			double elementsInLine = rates.Count;
 			double elementWidth = (AvailableWidth * 0.66 - Gap * (elementsInLine - 1)) / elementsInLine;
@@ -41,11 +41,11 @@ namespace LoyaltySurvey {
 			double currentY = StartY + AvailableHeight - elementHeight;
 
 			foreach (string rate in rates) {
-				Button buttonRate = ControlsFactory.CreateButtonWithImageAndText(
+				Button buttonRate = PageControlsFactory.CreateButtonWithImageAndText(
 					rate, 
 					elementWidth, 
 					elementHeight,
-					ControlsFactory.ElementType.Rate,
+					PageControlsFactory.ElementType.Rate,
 					FontFamilySub,
 					FontSizeMain,
 					FontWeights.Normal,
@@ -58,7 +58,7 @@ namespace LoyaltySurvey {
 				currentX += elementWidth + Gap;
 			}
 
-			Label labelDocInfo = ControlsFactory.CreateLabel(
+			Label labelDocInfo = PageControlsFactory.CreateLabel(
 				docInfo,
 				Colors.Transparent,
 				Properties.Settings.Default.ColorLabelForeground,
@@ -72,8 +72,8 @@ namespace LoyaltySurvey {
 				CanvasMain);
 
 			double imageSide = AvailableHeight - elementHeight - Gap * 2 - labelDocInfo.Height;
-			Image docPhoto = ControlsFactory.CreateImage(
-				(System.Drawing.Bitmap)ControlsFactory.GetImageForDoctor(doctor.Code),
+			Image docPhoto = PageControlsFactory.CreateImage(
+				(System.Drawing.Bitmap)PageControlsFactory.GetImageForDoctor(doctor.Code),
 				imageSide,
 				imageSide,
 				StartX + AvailableWidth / 2 - imageSide / 2,
@@ -84,32 +84,32 @@ namespace LoyaltySurvey {
 
 		private void ButtonRate_Click(object sender, EventArgs e) {
 			string tag = (sender as Control).Tag.ToString();
-			LoggingSystem.LogMessageToFile("Выбрана оценка: " + tag);
-			surveyResult = new SurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag, doctor.Department, doctor.DeptCode);
+			SystemLogging.LogMessageToFile("Выбрана оценка: " + tag);
+			_surveyResult = new ItemSurveyResult(DateTime.Now, doctor.Code, doctor.Name, tag, doctor.Department, doctor.DeptCode);
 			Page page;
 
-			WebCam webCam = new WebCam(surveyResult);
+			SystemWebCam webCam = new SystemWebCam(_surveyResult);
 			if (Properties.Settings.Default.WebCamWriteAll)
 				webCam.CaptureImageFromWebCamAndSave();
 			else if ((tag.Equals("1") || tag.Equals("2")) &&
 				Properties.Settings.Default.WebCamWriteOnlyNegative)
 				webCam.CaptureImageFromWebCamAndSave();
 			else
-				surveyResult.PhotoLink = "Don't need";
+				_surveyResult.PhotoLink = "Don't need";
 
 			if (tag.Equals("3") ||
 				tag.Equals("4") ||
 				tag.Equals("5")) {
-				surveyResult.Comment = "Don't need";
-				surveyResult.PhoneNumber = "Don't need";
+				_surveyResult.Comment = "Don't need";
+				_surveyResult.PhoneNumber = "Don't need";
 
 				if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
-					surveyResult.ClinicRecommendMark = "Don't need";
-					page = new PageThanks(surveyResult);
+					_surveyResult.ClinicRecommendMark = "Don't need";
+					page = new PageThanks(_surveyResult);
 				} else
-					page = new PageClinicRate(surveyResult);
+					page = new PageClinicRate(_surveyResult);
 			} else {
-				page = new PageComment(surveyResult);
+				page = new PageComment(_surveyResult);
 			}
 
 			NavigationService.Navigate(page);

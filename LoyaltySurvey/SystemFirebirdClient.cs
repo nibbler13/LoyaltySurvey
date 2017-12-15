@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using FirebirdSql.Data.FirebirdClient;
 
 namespace LoyaltySurvey {
-    class FBClient {
+    class SystemFirebirdClient {
         private FbConnection connection;
 
-		public FBClient(string ipAddress, string baseName, string user, string pass) {
-			LoggingSystem.LogMessageToFile("Создание подключения к базе FB: " + 
+		public SystemFirebirdClient(string ipAddress, string baseName, string user, string pass) {
+			SystemLogging.LogMessageToFile("Создание подключения к базе FB: " + 
 				ipAddress + ":" + baseName);
 
 			FbConnectionStringBuilder cs = new FbConnectionStringBuilder();
@@ -32,7 +32,7 @@ namespace LoyaltySurvey {
 				FbDataAdapter fbDataAdapter = new FbDataAdapter(command);
 				fbDataAdapter.Fill(dataTable);
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("GetDataTable exception: " + query + 
+				SystemLogging.LogMessageToFile("GetDataTable exception: " + query + 
 					Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
 			} finally {
 				connection.Close();
@@ -54,7 +54,7 @@ namespace LoyaltySurvey {
 
 				updated = update.ExecuteNonQuery() > 0 ? true : false;
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("ExecuteUpdateQuery exception: " + query +
+				SystemLogging.LogMessageToFile("ExecuteUpdateQuery exception: " + query +
 					Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
 			} finally {
 				connection.Close();

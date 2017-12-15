@@ -90,10 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ControlsFactory.cs" />
-    <Compile Include="DataHandleSystem.cs" />
-    <Compile Include="MsEmotionApi.cs" />
-    <Compile Include="NotificationSystem.cs" />
+    <Compile Include="PageControlsFactory.cs" />
+    <Compile Include="SystemDataHandle.cs" />
+    <Compile Include="SystemMsEmotioni.cs" />
+    <Compile Include="SystemNotification.cs" />
     <Compile Include="PageCallback.xaml.cs">
       <DependentUpon>PageCallback.xaml</DependentUpon>
     </Compile>
@@ -115,11 +115,11 @@
     <Compile Include="PageThanks.xaml.cs">
       <DependentUpon>PageThanks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ScrollAnimationBehavior.cs" />
+    <Compile Include="PageScrollAnimationBehavior.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SurveyResult.cs" />
-    <Compile Include="WebCam.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ItemSurveyResult.cs" />
+    <Compile Include="SystemWebCam.cs" />
+    <Page Include="WindowMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -127,13 +127,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClassPageTemplate.cs" />
-    <Compile Include="Doctor.cs" />
-    <Compile Include="FBClient.cs" />
-    <Compile Include="LoggingSystem.cs" />
-    <Compile Include="MailSystem.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="PageTemplate.cs" />
+    <Compile Include="ItemDoctor.cs" />
+    <Compile Include="SystemFirebirdClient.cs" />
+    <Compile Include="SystemLogging.cs" />
+    <Compile Include="SystemMail.cs" />
+    <Compile Include="WindowMain.xaml.cs">
+      <DependentUpon>WindowMain.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PageCallback.xaml">
@@ -178,7 +178,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OnscreenKeyboard.cs" />
+    <Compile Include="PageOnscreenKeyboard.cs" />
     <Compile Include="PageDepartmentSelect.xaml.cs">
       <DependentUpon>PageDepartmentSelect.xaml</DependentUpon>
     </Compile>
@@ -336,6 +336,15 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PicChristmasTree.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewYearSnowflakes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewYearTinsel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets" Condition="Exists('..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" />

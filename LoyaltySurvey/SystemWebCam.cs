@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoyaltySurvey {
-	public class WebCam {
-		private SurveyResult surveyResult;
+	public class SystemWebCam {
+		private ItemSurveyResult surveyResult;
 
-		public WebCam(SurveyResult surveyResult) {
+		public SystemWebCam(ItemSurveyResult surveyResult) {
 			this.surveyResult = surveyResult;
 		}
 
@@ -23,7 +23,7 @@ namespace LoyaltySurvey {
 				DsDevice[] dsDevices = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
 				if (dsDevices.Length == 0) {
 					surveyResult.PhotoLink = "Camera isn't installed";
-					LoggingSystem.LogMessageToFile("CaptureImageFromWebCamAndSave: There is no video input device available");
+					SystemLogging.LogMessageToFile("CaptureImageFromWebCamAndSave: There is no video input device available");
 					return;
 				}
 
@@ -37,7 +37,7 @@ namespace LoyaltySurvey {
 					try {
 						Directory.CreateDirectory(photoSavePath);
 					} catch (Exception e) {
-						LoggingSystem.LogMessageToFile("CaptureImageFromWebCamAndSave exception: " + e.Message +
+						SystemLogging.LogMessageToFile("CaptureImageFromWebCamAndSave exception: " + e.Message +
 							Environment.NewLine + e.StackTrace);
 						return;
 					}
@@ -65,7 +65,7 @@ namespace LoyaltySurvey {
 				if (!Properties.Settings.Default.IsDebug) {
 					string savePath = surveyResult.PhotoLink;
 
-					LoggingSystem.LogMessageToFile("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
+					SystemLogging.LogMessageToFile("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
 
 					VideoCapture videoCapture = new VideoCapture();
 					System.Drawing.Bitmap bitmap = videoCapture.QueryFrame().Bitmap;
@@ -74,7 +74,7 @@ namespace LoyaltySurvey {
 					videoCapture.Dispose();
 				}
 
-				List<EmotionObject> emotionObjects = MsEmotionApi.GetEmotions(surveyResult.PhotoLink).Result;
+				List<EmotionObject> emotionObjects = SystemMsEmotioni.GetEmotions(surveyResult.PhotoLink).Result;
 				if (emotionObjects.Count == 0)
 					return;
 
@@ -97,16 +97,16 @@ namespace LoyaltySurvey {
 					{ "@photoPath", surveyResult.PhotoLink }
 				};
 
-				FBClient fBClient = new FBClient(
+				SystemFirebirdClient fBClient = new SystemFirebirdClient(
 					Properties.Settings.Default.MisInfoclinicaDbAddress,
 					Properties.Settings.Default.MisInfoclinicaDbName,
 					Properties.Settings.Default.MisInfoclinicaDbUser,
 					Properties.Settings.Default.MisInfoclinicaDbPassword);
 
 				bool result = fBClient.ExecuteUpdateQuery(updateQuery, parameters);
-				LoggingSystem.LogMessageToFile("Результат записи оценок эмоций: " + result);
+				SystemLogging.LogMessageToFile("Результат записи оценок эмоций: " + result);
 			} catch (Exception exception) {
-				LoggingSystem.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
+				SystemLogging.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
 					Environment.NewLine + exception.StackTrace);
 			}
 		}

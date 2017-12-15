@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace LoyaltySurvey {
-	public class SurveyResult {
+	public class ItemSurveyResult {
 		public DateTime SurveyDateTime { get; private set; }
 		public string DCode { get; private set; }
 		public string DocName { get; private set; }
@@ -15,7 +15,7 @@ namespace LoyaltySurvey {
 		public EmotionObject EmotionObject { get; set; }
 		public bool IsInsertedToDb { get; set; }
 
-		public SurveyResult(DateTime dateTime, string dCode, string docName, 
+		public ItemSurveyResult(DateTime dateTime, string dCode, string docName, 
 			string docRate, string docDepartment, string docDeptCode) {
 			SurveyDateTime = dateTime;
 			DCode = dCode;

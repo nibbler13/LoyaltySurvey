@@ -15,9 +15,9 @@ namespace LoyaltySurvey {
 		public MainWindow() {
 			InitializeComponent();
 
-			LoggingSystem.LogMessageToFile("==================================" + 
+			SystemLogging.LogMessageToFile("==================================" + 
 				Environment.NewLine + "Создание основного окна");
-			NotificationSystem.AppStart();
+			SystemNotification.AppStart();
 
 			if (!Properties.Settings.Default.IsDebug &&
 				!Environment.MachineName.Equals("MSSU-DEV")) {
@@ -28,7 +28,7 @@ namespace LoyaltySurvey {
 
 		private void NavigationWindow_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Key.Equals(Key.Escape)) {
-				LoggingSystem.LogMessageToFile("---------------------------------" +
+				SystemLogging.LogMessageToFile("---------------------------------" +
 					Environment.NewLine + "Закрытие по нажатию клавиши ESC");
 				Application.Current.Shutdown();
 			}

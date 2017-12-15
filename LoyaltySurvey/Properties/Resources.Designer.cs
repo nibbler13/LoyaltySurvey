@@ -381,6 +381,36 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewYearSnowflakes {
+            get {
+                object obj = ResourceManager.GetObject("NewYearSnowflakes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewYearTinsel {
+            get {
+                object obj = ResourceManager.GetObject("NewYearTinsel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewYearTree {
+            get {
+                object obj = ResourceManager.GetObject("NewYearTree", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Можно мы позвоним Вам, чтобы узнать подробности?.
         /// </summary>
         internal static string StringPageCallbackQuestion {

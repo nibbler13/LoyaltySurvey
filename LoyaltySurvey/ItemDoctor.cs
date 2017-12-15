@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace LoyaltySurvey {
-	public class Doctor {
+	public class ItemDoctor {
 		private string _name;
 		public string Name {
 			get {
@@ -26,7 +26,7 @@ namespace LoyaltySurvey {
 		public string DeptCode { get; private set; }
 		public string Code { get; private set; }
 		
-		public Doctor(string name, string position, string department, string code, string deptCode) {
+		public ItemDoctor(string name, string position, string department, string code, string deptCode) {
 			Name = name;
 			Position = position;
 			Department = department;

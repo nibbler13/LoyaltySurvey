@@ -9,11 +9,11 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageDoctorSelect.xaml
 	/// </summary>
-	public partial class PageDoctorSelect : ClassPageTemplate {
-		private List<Doctor> doctors;
+	public partial class PageDoctorSelect : PageTemplate {
+		private List<ItemDoctor> doctors;
 		private WrapPanel wrapPanel;
 
-		public PageDoctorSelect(List<Doctor> doctors, string depName) {
+		public PageDoctorSelect(List<ItemDoctor> doctors, string depName) {
 			InitializeComponent();
 
 			HideLogo();
@@ -24,11 +24,11 @@ namespace LoyaltySurvey {
 
 			wrapPanel = new WrapPanel();
 
-			Image imageDepartment = ControlsFactory.CreateImage((System.Drawing.Bitmap)ControlsFactory.GetImageForDepartment(depName));
+			Image imageDepartment = PageControlsFactory.CreateImage((System.Drawing.Bitmap)PageControlsFactory.GetImageForDepartment(depName));
 			wrapPanel.Children.Add(imageDepartment);
 
-			Label labelDep = ControlsFactory.CreateLabel(
-				ControlsFactory.FirstCharToUpper(depName),
+			Label labelDep = PageControlsFactory.CreateLabel(
+				PageControlsFactory.FirstCharToUpper(depName),
 				Colors.Transparent,
 				Properties.Settings.Default.ColorLabelForeground,
 				FontFamilySub,
@@ -52,7 +52,7 @@ namespace LoyaltySurvey {
 			CanvasMain.Children.Add(wrapPanel);
 
 			this.doctors = doctors;
-			this.doctors.Sort(delegate (Doctor doc1, Doctor doc2) { return doc1.Name.CompareTo(doc2.Name); });
+			this.doctors.Sort(delegate (ItemDoctor doc1, ItemDoctor doc2) { return doc1.Name.CompareTo(doc2.Name); });
 
 			CreateRootPanel(
 				Properties.Settings.Default.PageDoctorSelectElementsInLine,
@@ -60,10 +60,10 @@ namespace LoyaltySurvey {
 				doctors.Count);
 
 			List<string> keys = new List<string>();
-			foreach (Doctor doctor in doctors)
+			foreach (ItemDoctor doctor in doctors)
 				keys.Add(doctor.Code + "|" + doctor.Name); //doctor.Code is using to find a photo
 
-			FillPanelWithElements(keys, ControlsFactory.ElementType.Doctor, PanelDoctor_Click);
+			FillPanelWithElements(keys, PageControlsFactory.ElementType.Doctor, PanelDoctor_Click);
 		}
 
 		private void PageDoctorSelect_Loaded(object sender, RoutedEventArgs e) {
@@ -72,10 +72,10 @@ namespace LoyaltySurvey {
 
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
 			string docname = (sender as Control).Tag.ToString().Split('|')[1];
-			LoggingSystem.LogMessageToFile("Выбран доктор: " + docname);
-			Doctor selectedDoctor = new Doctor("", "", "", "", "");
+			SystemLogging.LogMessageToFile("Выбран доктор: " + docname);
+			ItemDoctor selectedDoctor = new ItemDoctor("", "", "", "", "");
 
-			foreach (Doctor doctor in doctors) {
+			foreach (ItemDoctor doctor in doctors) {
 				if (doctor.Name.Equals(docname)) {
 					selectedDoctor = doctor;
 					break;

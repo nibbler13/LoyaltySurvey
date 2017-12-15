@@ -6,13 +6,14 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 
 namespace LoyaltySurvey {
-	public class ControlsFactory {
+	public class PageControlsFactory {
 		public enum ElementType { Department, Doctor, Rate, Search, Custom };
 
 		public static TextBox CreateTextBox(FontFamily fontFamily, double fontSize, bool isContentCentered = true, double width = -1, double height = -1,
@@ -103,34 +104,36 @@ namespace LoyaltySurvey {
 				maxSizeCoefficient = 0.65;
 			}
 
-			if (type == ElementType.Department) {
-				orientation = Orientation.Horizontal;
-				horizontalAlignment = HorizontalAlignment.Left;
-				textAlignment = TextAlignment.Left;
-			}
-
 			Grid grid = new Grid();
 			grid.Width = width;
 			grid.Height = height;
 
-			if (type == ElementType.Custom)
-				orientation = Orientation.Horizontal;
-
 			Button button = CreateButton(width, height, left, top, panel);
 			Image image = CreateImage((System.Drawing.Bitmap)imageInside, -1, -1, -1, -1, null, true, 10);
 			TextBlock textBlock = CreateTextBlock(normalizedStr, fontFamily, fontSize * fontCoefficient, fontWeight);
+			
+			if (type == ElementType.Department) {
+				orientation = Orientation.Horizontal;
+				horizontalAlignment = HorizontalAlignment.Left;
+				textAlignment = TextAlignment.Left;
 
+				textBlock.Text = string.Empty;
+				textBlock.Inlines.Add(new Bold(new Run(normalizedStr.Substring(0, 1)) { FontSize = fontSize * fontCoefficient * 1.5 }));
+				textBlock.Inlines.Add(normalizedStr.Substring(1, normalizedStr.Length - 1));
+			}
+
+			if (type == ElementType.Custom)
+				orientation = Orientation.Horizontal;
 
 			if (type == ElementType.Search)
 				orientation = Orientation.Horizontal;
 
-			if (orientation == Orientation.Horizontal &&
-				horizontalAlignment == HorizontalAlignment.Center)
-				image.Margin = new Thickness(10, 10, 0, 10);
-
 			if (type == ElementType.Doctor)
 				image.Margin = new Thickness(10, 10, 10, 0);
 
+			if (orientation == Orientation.Horizontal &&
+				horizontalAlignment == HorizontalAlignment.Center)
+				image.Margin = new Thickness(10, 10, 0, 10);
 
 			if (orientation == Orientation.Horizontal) {
 				ColumnDefinition col0 = new ColumnDefinition();
@@ -178,6 +181,7 @@ namespace LoyaltySurvey {
 			textBlock.FontSize = fontSize;
 			textBlock.FontWeight = fontWeight;
 			textBlock.TextWrapping = TextWrapping.Wrap;
+			textBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
 			if (colorForeground != null)
 				textBlock.Foreground = new SolidColorBrush((Color)colorForeground);
@@ -258,13 +262,23 @@ namespace LoyaltySurvey {
 			}
 		}
 
-		public static void AddDropShadow(Control control) {
-			control.Effect = new DropShadowEffect {
+		public static void AddDropShadow(UIElement element, bool heavyShadow = false) {
+			int depth = 5;
+			double opacity = 0.4;
+			int blurRadius = 5;
+
+			if (heavyShadow) {
+				depth = 8;
+				opacity = 0.6;
+				blurRadius = 8;
+			}
+
+			element.Effect = new DropShadowEffect {
 				Color = Colors.Black,
 				Direction = 315,
-				ShadowDepth = 5,
-				Opacity = 0.4,
-				BlurRadius = 5
+				ShadowDepth = depth,
+				Opacity = opacity,
+				BlurRadius = blurRadius
 			};
 		}
 
@@ -291,13 +305,13 @@ namespace LoyaltySurvey {
 				}
 
 				if (string.IsNullOrEmpty(wantedFile)) {
-					LoggingSystem.LogMessageToFile("Не удалось найти изображение для доктора с кодом: " + dcode);
+					SystemLogging.LogMessageToFile("Не удалось найти изображение для доктора с кодом: " + dcode);
 					return Properties.Resources.DoctorWithoutAPhoto;
 				}
 
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message + 
+				SystemLogging.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DoctorWithoutAPhoto;
 			}
@@ -309,13 +323,13 @@ namespace LoyaltySurvey {
 				string wantedFile = mask.Replace("*", depname);
 
 				if (!File.Exists(wantedFile)) {
-					LoggingSystem.LogMessageToFile("Не удалось найти изображение для подразделения: " + depname);
+					SystemLogging.LogMessageToFile("Не удалось найти изображение для подразделения: " + depname);
 					return Properties.Resources.DepartmentWithoutAPhoto;
 				}
 
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message +
+				SystemLogging.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message +
 					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DepartmentWithoutAPhoto;
 			}

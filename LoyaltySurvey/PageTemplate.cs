@@ -4,10 +4,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 
 namespace LoyaltySurvey {
-	public partial class ClassPageTemplate : Page {
+	public partial class PageTemplate : Page {
 		protected double ScreenWidth { get; private set; }
 		protected double ScreenHeight { get; private set; }
 		protected double Gap { get; private set; }
@@ -30,35 +31,36 @@ namespace LoyaltySurvey {
 		protected double ElementWidth { get; private set; }
 		protected double ElementHeight { get; private set; }
 
-		private Label labelTitle;
-		private Label labelSubtitle;
-		private Image imageLogo;
-		private Image imageBottomLineSolid;
-		private Image imageBottomLineColors;
-		private Button buttonBack;
+		private Label _labelTitle;
+		private Label _labelSubtitle;
+		private Image _imageLogo;
+		private Image _imageBottomLineSolid;
+		private Image _imageBottomLineColors;
+		private Button _buttonBack;
 
-		private Button buttonScrollUp;
-		private Button buttonScrollDown;
-		private Button buttonScrollLeft;
-		private Button buttonScrollRight;
+		private Button _buttonScrollUp;
+		private Button _buttonScrollDown;
+		private Button _buttonScrollLeft;
+		private Button _buttonScrollRight;
 		
-		private Image imageQuestion;
-		private Label labelQuestion;
-		private Button buttonNoQuestion;
-		private Button buttonYesQuestion;
+		private Image _imageQuestion;
+		private Label _labelQuestion;
+		private Button _buttonNoQuestion;
+		private Button _buttonYesQuestion;
 
-		protected double leftCornerShadow = 0;
-		protected double rightCornerShadow = 5;
-		private double elementsInLine = 0;
-		private double elementsLineCount = 0;
+		protected double _leftCornerShadow = 0;
+		protected double _rightCornerShadow = 5;
+		private double _elementsInLine = 0;
+		private double _elementsLineCount = 0;
+		private double _elementsGap = 0;
 
-		protected SurveyResult surveyResult = null;
-		private DispatcherTimer dispatcherTimerPageAutoClose;
+		protected ItemSurveyResult _surveyResult = null;
+		private DispatcherTimer _dispatcherTimerPageAutoClose;
 
 
 
-		public ClassPageTemplate() {
-			LoggingSystem.LogMessageToFile("---> Создание страницы " + this.GetType().Name);
+		public PageTemplate() {
+			SystemLogging.LogMessageToFile("---> Создание страницы " + this.GetType().Name);
 
 			ScreenWidth = SystemParameters.PrimaryScreenWidth;
 			ScreenHeight = SystemParameters.PrimaryScreenHeight;
@@ -80,34 +82,34 @@ namespace LoyaltySurvey {
 			CreateMainControls();
 
 			StartX = Gap;
-			StartY = (double)(labelTitle.Height + Gap);
+			StartY = (double)(_labelTitle.Height + Gap);
 			AvailableWidth = ScreenWidth - Gap * 2;
-			AvailableHeight = (double)(Canvas.GetTop(labelSubtitle) - HeaderHeight - Gap * 2);
+			AvailableHeight = (double)(Canvas.GetTop(_labelSubtitle) - HeaderHeight - Gap * 2);
 
 			IsVisibleChanged += ClassPageTemplate_IsVisibleChanged;
 		}
 
 		protected void HideLogo() {
-			imageLogo.Visibility = Visibility.Hidden;
+			_imageLogo.Visibility = Visibility.Hidden;
 		}
 
 		protected void HideButtonBack() {
-			buttonBack.Visibility = Visibility.Hidden;
+			_buttonBack.Visibility = Visibility.Hidden;
 		}
 
 		protected void HideTitlesLabel() {
-			labelTitle.Visibility = Visibility.Hidden;
-			labelSubtitle.Visibility = Visibility.Hidden;
+			_labelTitle.Visibility = Visibility.Hidden;
+			_labelSubtitle.Visibility = Visibility.Hidden;
 		}
 
 		protected void SetLabelsContent(string title, string subtitle) {
-			labelTitle.Content = ControlsFactory.CreateTextBlock(
+			_labelTitle.Content = PageControlsFactory.CreateTextBlock(
 				title, 
 				FontFamilyMain, 
 				FontSizeMain, 
 				FontWeights.Bold);
 
-			labelSubtitle.Content = ControlsFactory.CreateTextBlock(
+			_labelSubtitle.Content = PageControlsFactory.CreateTextBlock(
 				subtitle, 
 				FontFamilySub, 
 				FontSizeMain, 
@@ -115,7 +117,7 @@ namespace LoyaltySurvey {
 		}
 
 		protected void SetLabelSubtitleText(string text) {
-			labelSubtitle.Content = ControlsFactory.CreateTextBlock(
+			_labelSubtitle.Content = PageControlsFactory.CreateTextBlock(
 				text, 
 				FontFamilySub, 
 				FontSizeMain, 
@@ -142,7 +144,7 @@ namespace LoyaltySurvey {
 			colorLineHeight = logoHeight * 0.058f;
 			colorLineWidth = colorLineHeight * colorLineScale;
 
-			imageBottomLineColors = ControlsFactory.CreateImage(
+			_imageBottomLineColors = PageControlsFactory.CreateImage(
 				Properties.Resources.BottomLineContinuesClear,
 				colorLineWidth,
 				colorLineHeight,
@@ -151,7 +153,7 @@ namespace LoyaltySurvey {
 				CanvasMain,
 				false);
 
-			imageBottomLineSolid = ControlsFactory.CreateImage(
+			_imageBottomLineSolid = PageControlsFactory.CreateImage(
 				Properties.Resources.BottomLineTemplate,
 				ScreenWidth - colorLineWidth,
 				colorLineHeight,
@@ -159,10 +161,10 @@ namespace LoyaltySurvey {
 				ScreenHeight - colorLineHeight,
 				CanvasMain,
 				false);
-			imageBottomLineSolid.Stretch = Stretch.Fill;
-			imageBottomLineSolid.HorizontalAlignment = HorizontalAlignment.Left;
+			_imageBottomLineSolid.Stretch = Stretch.Fill;
+			_imageBottomLineSolid.HorizontalAlignment = HorizontalAlignment.Left;
 
-			imageLogo = ControlsFactory.CreateImage(
+			_imageLogo = PageControlsFactory.CreateImage(
 				Properties.Resources.LogoBzSmall,
 				logoWidth,
 				logoHeight,
@@ -170,9 +172,9 @@ namespace LoyaltySurvey {
 				ScreenHeight - Gap - colorLineHeight - logoHeight,
 				CanvasMain,
 				false);
-			Canvas.SetZIndex(imageLogo, 99);
+			Canvas.SetZIndex(_imageLogo, 99);
 			
-			labelTitle = ControlsFactory.CreateLabel(
+			_labelTitle = PageControlsFactory.CreateLabel(
 				"Title" + Environment.NewLine + "Title",
 				(this is PageError) ? 
 				Properties.Settings.Default.ColorPageErrorHeaderBackground : 
@@ -187,7 +189,7 @@ namespace LoyaltySurvey {
 				0,
 				CanvasMain);
 
-			labelSubtitle = ControlsFactory.CreateLabel(
+			_labelSubtitle = PageControlsFactory.CreateLabel(
 				"Subtitle",
 				Colors.Transparent,
 				Properties.Settings.Default.ColorDisabled,
@@ -200,23 +202,23 @@ namespace LoyaltySurvey {
 				ScreenHeight - DefaultButtonHeight - colorLineHeight - Gap,
 				CanvasMain);
 
-			buttonBack = ControlsFactory.CreateButtonWithImageOnly(
+			_buttonBack = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonBack,
 				DefaultButtonWidth,
 				DefaultButtonHeight,
 				Gap,
-				Canvas.GetTop(labelSubtitle),
+				Canvas.GetTop(_labelSubtitle),
 				CanvasMain);
-			buttonBack.Click += ButtonBack_Click;
+			_buttonBack.Click += ButtonBack_Click;
 			
-			dispatcherTimerPageAutoClose = new DispatcherTimer();
+			_dispatcherTimerPageAutoClose = new DispatcherTimer();
 
 			int timeoutSeconds = Properties.Settings.Default.PageAutocloseTimeoutInSeconds;
 			if (this is PageThanks)
 				timeoutSeconds /= 2;
 
-			dispatcherTimerPageAutoClose.Interval = new TimeSpan(0, 0, timeoutSeconds);
-			dispatcherTimerPageAutoClose.Tick += DispatcherTimerPageAutoClose_Tick;
+			_dispatcherTimerPageAutoClose.Interval = new TimeSpan(0, 0, timeoutSeconds);
+			_dispatcherTimerPageAutoClose.Tick += DispatcherTimerPageAutoClose_Tick;
 			PreviewMouseLeftButtonDown += ClassPageTemplate_PreviewMouseLeftButtonDown;
 		}
 
@@ -230,11 +232,24 @@ namespace LoyaltySurvey {
 				leftPartWidthCoefficient = 40;
 				leftPartHeightCoefficient = 50;
 			}
+
+			PageControlsFactory.CreateLabel(
+				string.Empty, 
+				Properties.Settings.Default.ColorHeaderFirstLastBackground, 
+				Colors.Transparent, 
+				FontFamily, 
+				FontSize, 
+				FontWeights.Normal, 
+				ScreenWidth, 
+				StartY * 1.5, 
+				0, 
+				0, 
+				CanvasMain);
 			
 			Grid gridTitle = new Grid();
 			gridTitle.Width = ScreenWidth;
 			gridTitle.Height = StartY * 1.5;
-			gridTitle.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderFirstLastBackground);
+			gridTitle.Background = Brushes.Transparent;
 			CanvasMain.Children.Add(gridTitle);
 			Canvas.SetLeft(gridTitle, 0);
 			Canvas.SetTop(gridTitle, 0);
@@ -259,7 +274,7 @@ namespace LoyaltySurvey {
 			gridTitleLeftParts.RowDefinitions.Add(rowDefinition1);
 
 			Viewbox viewboxLeftTop = new Viewbox();
-			viewboxLeftTop.Child = ControlsFactory.CreateTextBlock(
+			viewboxLeftTop.Child = PageControlsFactory.CreateTextBlock(
 				leftTopText, 
 				FontFamilySub, 
 				FontSizeMain, 
@@ -274,7 +289,7 @@ namespace LoyaltySurvey {
 			gridTitleLeftParts.Children.Add(viewboxLeftTop);
 			
 			Viewbox viewboxLeftBottom = new Viewbox();
-			viewboxLeftBottom.Child = ControlsFactory.CreateTextBlock(
+			viewboxLeftBottom.Child = PageControlsFactory.CreateTextBlock(
 				leftBottomText, 
 				FontFamilySub, 
 				FontSizeMain, 
@@ -289,7 +304,7 @@ namespace LoyaltySurvey {
 			viewboxLeftBottom.Margin = new Thickness(Gap, 0, Gap / 2, Gap);
 
 			Viewbox viewboxRight = new Viewbox();
-			viewboxRight.Child = ControlsFactory.CreateTextBlock(
+			viewboxRight.Child = PageControlsFactory.CreateTextBlock(
 				rightText, 
 				FontFamilyMain, 
 				FontSizeMain, 
@@ -309,7 +324,7 @@ namespace LoyaltySurvey {
 			logoBzFullHeight = ScreenHeight * 0.25f;
 			logoBzFullWidth = logoBzFullHeight * logoBzFullScale;
 
-			Image imageLogoBzFull = ControlsFactory.CreateImage(
+			Image imageLogoBzFull = PageControlsFactory.CreateImage(
 				Properties.Resources.LogoBzFull,
 				logoBzFullWidth,
 				logoBzFullHeight,
@@ -326,7 +341,7 @@ namespace LoyaltySurvey {
 
 			if (!string.IsNullOrEmpty(subtitleText)) {
 				rect.Height = rect.Height - DefaultButtonHeight;
-				ControlsFactory.CreateLabel(
+				PageControlsFactory.CreateLabel(
 					subtitleText,
 					Colors.Transparent,
 					Properties.Settings.Default.ColorDisabled,
@@ -341,7 +356,7 @@ namespace LoyaltySurvey {
 			}
 
 			//need to work previewmouseleftbutton on full screen area
-			Label labelToHandleMousePreview = ControlsFactory.CreateLabel(
+			Label labelToHandleMousePreview = PageControlsFactory.CreateLabel(
 				"",
 				Colors.Transparent,
 				Colors.Transparent,
@@ -355,17 +370,62 @@ namespace LoyaltySurvey {
 				CanvasMain);
 			Canvas.SetZIndex(labelToHandleMousePreview, -1);
 
+
+			int day = DateTime.Now.Day;
+			int month = DateTime.Now.Month;
+			if ((month == 12 && day >= 10) || (month == 1 && day < 10)) {
+				PageControlsFactory.AddDropShadow(viewboxLeftBottom, true);
+				PageControlsFactory.AddDropShadow(viewboxLeftTop, true);
+				PageControlsFactory.AddDropShadow(viewboxRight, true);
+
+				Image imageNewYearTree = PageControlsFactory.CreateImage(
+					Properties.Resources.NewYearTree,
+					logoBzFullWidth,
+					logoBzFullHeight,
+					Gap,
+					ScreenHeight - logoBzFullHeight - Gap,
+					CanvasMain,
+					false);
+				imageNewYearTree.HorizontalAlignment = HorizontalAlignment.Left;
+
+				Image imageNewYearSnowflakes = PageControlsFactory.CreateImage(
+					Properties.Resources.NewYearSnowflakes,
+					ScreenWidth,
+					StartY * 1.5,
+					0,
+					0,
+					CanvasMain,
+					false);
+				imageNewYearSnowflakes.Opacity = 0.8;
+				Canvas.SetZIndex(gridTitle, 1);
+
+				Image imageNewYearTinsel = PageControlsFactory.CreateImage(
+					Properties.Resources.NewYearTinsel,
+					ScreenWidth,
+					80,
+					0,
+					StartY * 1.5 - 20,
+					CanvasMain,
+					false);
+			}
+
 			return rect;
 		}
 
 		protected void CreateRootPanel(double elementsInLine, double elementsLineCount, double totalElements, 
-			Orientation orientation = Orientation.Vertical, double width = 0, double height = 0, double left = 0, double top = 0) {
+			Orientation orientation = Orientation.Vertical, double width = 0, double height = 0, double left = 0, double top = 0, 
+			PageControlsFactory.ElementType? type = null) {
 
-			this.elementsInLine = elementsInLine;
-			this.elementsLineCount = elementsLineCount;
+			_elementsGap = Gap;
+			if (type == PageControlsFactory.ElementType.Department &&
+				Properties.Settings.Default.PageDepartmentUseSmallDistanceBetweenElements)
+				_elementsGap = _rightCornerShadow;
 
-			ElementWidth = (AvailableWidth - Gap * (elementsInLine - 1)) / elementsInLine;
-			ElementHeight = (AvailableHeight - DefaultButtonHeight - Gap - Gap * (elementsLineCount - 1)) / elementsLineCount;
+			_elementsInLine = elementsInLine;
+			_elementsLineCount = elementsLineCount;
+
+			ElementWidth = (AvailableWidth - _elementsGap * (elementsInLine - 1)) / elementsInLine;
+			ElementHeight = (AvailableHeight - DefaultButtonHeight - Gap - _elementsGap * (elementsLineCount - 1)) / elementsLineCount;
 
 			VerticalAlignment verticalAlignment = VerticalAlignment.Bottom;
 			HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left;
@@ -378,17 +438,10 @@ namespace LoyaltySurvey {
 			}
 
 			if (width == 0 & height == 0) {
-				width = AvailableWidth + leftCornerShadow + rightCornerShadow;
-				height = AvailableHeight + leftCornerShadow + rightCornerShadow - DefaultButtonHeight - Gap;
-				left = StartX - leftCornerShadow;
-				top = StartY - leftCornerShadow + DefaultButtonWidth + Gap;
-			}
-
-			if (totalElements > elementsInLine && totalElements < (elementsInLine * elementsLineCount) - 1) {
-				double half = Math.Ceiling(totalElements / 2);
-				width = ElementWidth * half + Gap * (half - 1) + leftCornerShadow + rightCornerShadow;
-				left = StartX + AvailableWidth / 2 - width / 2 - leftCornerShadow;
-				this.elementsInLine = half;
+				width = AvailableWidth + _leftCornerShadow + _rightCornerShadow;
+				height = AvailableHeight + _leftCornerShadow + _rightCornerShadow - DefaultButtonHeight - Gap;
+				left = StartX - _leftCornerShadow;
+				top = StartY - _leftCornerShadow + DefaultButtonWidth + Gap;
 			}
 
 			ScrollViewer = new ScrollViewer();
@@ -421,61 +474,71 @@ namespace LoyaltySurvey {
 		}
 
 		private void CreateLeftRightButtons() {
-			buttonScrollLeft = ControlsFactory.CreateButtonWithImageOnly(
+			_buttonScrollLeft = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonLeft,
 				DefaultButtonHeight,
 				DefaultButtonHeight,
 				StartX,
 				Canvas.GetTop(ScrollViewer) + ScrollViewer.Height + Gap,
 				CanvasMain);
-			buttonScrollLeft.Click += ButtonScrollLeft_Click;
-			buttonScrollLeft.Visibility = Visibility.Hidden;
-			buttonScrollLeft.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			_buttonScrollLeft.Click += ButtonScrollLeft_Click;
+			_buttonScrollLeft.Visibility = Visibility.Hidden;
+			_buttonScrollLeft.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
-			buttonScrollRight = ControlsFactory.CreateButtonWithImageOnly(
+			_buttonScrollRight = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonRight,
 				DefaultButtonHeight,
 				DefaultButtonHeight,
 				StartX + AvailableWidth - DefaultButtonHeight,
-				Canvas.GetTop(buttonScrollLeft),
+				Canvas.GetTop(_buttonScrollLeft),
 				CanvasMain);
-			buttonScrollRight.Click += ButtonScrollRight_Click;
-			buttonScrollRight.Visibility = Visibility.Hidden;
-			buttonScrollRight.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			_buttonScrollRight.Click += ButtonScrollRight_Click;
+			_buttonScrollRight.Visibility = Visibility.Hidden;
+			_buttonScrollRight.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 		}
 
 		private void CreateUpDownButtons() {
-			buttonScrollUp = ControlsFactory.CreateButtonWithImageOnly(
+			_buttonScrollUp = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonUp,
 				DefaultButtonHeight,
 				DefaultButtonHeight,
 				StartX + AvailableWidth - DefaultButtonHeight,
 				StartY,
 				CanvasMain);
-			buttonScrollUp.Click += ButtonScrollUp_Click;
-			buttonScrollUp.Visibility = Visibility.Hidden;
-			buttonScrollUp.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			_buttonScrollUp.Click += ButtonScrollUp_Click;
+			_buttonScrollUp.Visibility = Visibility.Hidden;
+			_buttonScrollUp.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
-			buttonScrollDown = ControlsFactory.CreateButtonWithImageOnly(
+			_buttonScrollDown = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonDown,
 				DefaultButtonHeight,
 				DefaultButtonHeight,
 				StartX + AvailableWidth - DefaultButtonHeight,
-				Canvas.GetTop(buttonBack),
+				Canvas.GetTop(_buttonBack),
 				CanvasMain);
-			buttonScrollDown.Click += ButtonScrollDown_Click;
-			buttonScrollDown.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			_buttonScrollDown.Click += ButtonScrollDown_Click;
+			_buttonScrollDown.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+
+			ColorAnimation animation = new ColorAnimation();
+			animation.From = Properties.Settings.Default.ColorButtonBackground;
+			animation.To = Properties.Settings.Default.ColorScrollButton;
+			animation.Duration = new TimeSpan(0, 0, 1);
+			animation.RepeatBehavior = RepeatBehavior.Forever;
+			animation.AutoReverse = true;
+			
+			_buttonScrollUp.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
+			_buttonScrollDown.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 		}
 
 		protected void CreateQuestionControlsAnd(string question, System.Drawing.Bitmap image, 
 			RoutedEventHandler buttonNoHandler, RoutedEventHandler buttonYesHandler) {
 			double buttonWidth = DefaultButtonWidth * 3;
 
-			buttonYesQuestion = ControlsFactory.CreateButtonWithImageAndText(
+			_buttonYesQuestion = PageControlsFactory.CreateButtonWithImageAndText(
 				"Да",
 				buttonWidth,
 				DefaultButtonHeight,
-				ControlsFactory.ElementType.Custom,
+				PageControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
@@ -484,26 +547,26 @@ namespace LoyaltySurvey {
 				StartY + AvailableHeight - DefaultButtonHeight,
 				CanvasMain);
 
-			buttonNoQuestion = ControlsFactory.CreateButtonWithImageAndText(
+			_buttonNoQuestion = PageControlsFactory.CreateButtonWithImageAndText(
 				"Нет",
-				buttonYesQuestion.Width,
-				buttonYesQuestion.Height,
-				ControlsFactory.ElementType.Custom,
+				_buttonYesQuestion.Width,
+				_buttonYesQuestion.Height,
+				PageControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
 				Properties.Resources.ButtonClose,
-				Canvas.GetLeft(buttonYesQuestion) + buttonYesQuestion.Width + Gap * 4,
-				Canvas.GetTop(buttonYesQuestion),
+				Canvas.GetLeft(_buttonYesQuestion) + _buttonYesQuestion.Width + Gap * 4,
+				Canvas.GetTop(_buttonYesQuestion),
 				CanvasMain);
-			buttonYesQuestion.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
-			buttonYesQuestion.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
+			_buttonYesQuestion.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
+			_buttonYesQuestion.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
 
-			buttonNoQuestion.Click += buttonNoHandler;
-			buttonYesQuestion.Click += buttonYesHandler;
-			buttonYesQuestion.Click += ButtonYesQuestion_Click;
+			_buttonNoQuestion.Click += buttonNoHandler;
+			_buttonYesQuestion.Click += buttonYesHandler;
+			_buttonYesQuestion.Click += ButtonYesQuestion_Click;
 
-			labelQuestion = ControlsFactory.CreateLabel(
+			_labelQuestion = PageControlsFactory.CreateLabel(
 				question,
 				Colors.Transparent,
 				Properties.Settings.Default.ColorLabelForeground,
@@ -513,13 +576,13 @@ namespace LoyaltySurvey {
 				AvailableWidth,
 				DefaultButtonHeight,
 				StartX,
-				Canvas.GetTop(buttonNoQuestion) - Gap - DefaultButtonHeight,
+				Canvas.GetTop(_buttonNoQuestion) - Gap - DefaultButtonHeight,
 				CanvasMain);
 
-			imageQuestion = ControlsFactory.CreateImage(
+			_imageQuestion = PageControlsFactory.CreateImage(
 				image,
 				AvailableWidth,
-				Canvas.GetTop(labelQuestion) - StartY - Gap,
+				Canvas.GetTop(_labelQuestion) - StartY - Gap,
 				StartX,
 				StartY,
 				CanvasMain,
@@ -530,27 +593,27 @@ namespace LoyaltySurvey {
 
 
 		private void ButtonScrollRight_Click(object sender, RoutedEventArgs e) {
-			double newOffset = ScrollViewer.HorizontalOffset + ScrollViewer.Width + Gap - leftCornerShadow - rightCornerShadow;
+			double newOffset = ScrollViewer.HorizontalOffset + ScrollViewer.Width + Gap - _leftCornerShadow - _rightCornerShadow;
 			ScrollHorizontalWithAnimation(newOffset);
-			buttonScrollLeft.Visibility = Visibility.Visible;
+			_buttonScrollLeft.Visibility = Visibility.Visible;
 		}
 
 		private void ButtonScrollLeft_Click(object sender, RoutedEventArgs e) {
-			double newOffset = ScrollViewer.HorizontalOffset - ScrollViewer.Width - Gap + leftCornerShadow + rightCornerShadow;
+			double newOffset = ScrollViewer.HorizontalOffset - ScrollViewer.Width - Gap + _leftCornerShadow + _rightCornerShadow;
 			ScrollHorizontalWithAnimation(newOffset);
-			buttonScrollRight.Visibility = Visibility.Visible;
+			_buttonScrollRight.Visibility = Visibility.Visible;
 		}
 
 		private void ButtonScrollDown_Click(object sender, RoutedEventArgs e) {
-			double newOffset = ScrollViewer.VerticalOffset + ScrollViewer.Height + Gap - leftCornerShadow - rightCornerShadow;
+			double newOffset = ScrollViewer.VerticalOffset + ScrollViewer.Height + Gap - _leftCornerShadow - _rightCornerShadow;
 			ScrollVerticalWithAnimation(newOffset);
-			buttonScrollUp.Visibility = Visibility.Visible;
+			_buttonScrollUp.Visibility = Visibility.Visible;
 		}
 
 		private void ButtonScrollUp_Click(object sender, RoutedEventArgs e) {
-			double newOffset = ScrollViewer.VerticalOffset - ScrollViewer.Height - Gap + leftCornerShadow + rightCornerShadow;
+			double newOffset = ScrollViewer.VerticalOffset - ScrollViewer.Height - Gap + _leftCornerShadow + _rightCornerShadow;
 			ScrollVerticalWithAnimation(newOffset);
-			buttonScrollDown.Visibility = Visibility.Visible;
+			_buttonScrollDown.Visibility = Visibility.Visible;
 		}
 
 
@@ -565,7 +628,7 @@ namespace LoyaltySurvey {
 			Storyboard storyboard = new Storyboard();
 			storyboard.Children.Add(verticalAnimation);
 			Storyboard.SetTarget(verticalAnimation, ScrollViewer);
-			Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(ScrollAnimationBehavior.VerticalOffsetProperty));
+			Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(PageScrollAnimationBehavior.VerticalOffsetProperty));
 			storyboard.Begin();
 		}
 
@@ -578,40 +641,40 @@ namespace LoyaltySurvey {
 			Storyboard storyboard = new Storyboard();
 			storyboard.Children.Add(horizontalAnimation);
 			Storyboard.SetTarget(horizontalAnimation, ScrollViewer);
-			Storyboard.SetTargetProperty(horizontalAnimation, new PropertyPath(ScrollAnimationBehavior.HorizontalOffsetProperty));
+			Storyboard.SetTargetProperty(horizontalAnimation, new PropertyPath(PageScrollAnimationBehavior.HorizontalOffsetProperty));
 			storyboard.Begin();
 		}
 
 		private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
-			if (buttonScrollDown != null || buttonScrollUp != null) {
+			if (_buttonScrollDown != null || _buttonScrollUp != null) {
 				if (ScrollViewer.ScrollableHeight == 0) {
-					buttonScrollUp.Visibility = Visibility.Hidden;
-					buttonScrollDown.Visibility = Visibility.Hidden;
+					_buttonScrollUp.Visibility = Visibility.Hidden;
+					_buttonScrollDown.Visibility = Visibility.Hidden;
 					return;
 				}
 
 				if (e.VerticalOffset >= ScrollViewer.ScrollableHeight) {
-					buttonScrollDown.Visibility = Visibility.Hidden;
-					buttonScrollUp.Visibility = Visibility.Visible;
+					_buttonScrollDown.Visibility = Visibility.Hidden;
+					_buttonScrollUp.Visibility = Visibility.Visible;
 				} else if (e.VerticalOffset <= 0) {
-					buttonScrollUp.Visibility = Visibility.Hidden;
-					buttonScrollDown.Visibility = Visibility.Visible;
+					_buttonScrollUp.Visibility = Visibility.Hidden;
+					_buttonScrollDown.Visibility = Visibility.Visible;
 				}
 			}
 
-			if (buttonScrollLeft != null || buttonScrollRight != null) {
+			if (_buttonScrollLeft != null || _buttonScrollRight != null) {
 				if ((int)ScrollViewer.ScrollableWidth == 0) {
-					buttonScrollLeft.Visibility = Visibility.Hidden;
-					buttonScrollRight.Visibility = Visibility.Hidden;
+					_buttonScrollLeft.Visibility = Visibility.Hidden;
+					_buttonScrollRight.Visibility = Visibility.Hidden;
 					return;
 				}
 
 				if (e.HorizontalOffset >= ScrollViewer.ScrollableWidth) {
-					buttonScrollRight.Visibility = Visibility.Hidden;
-					buttonScrollLeft.Visibility = Visibility.Visible;
+					_buttonScrollRight.Visibility = Visibility.Hidden;
+					_buttonScrollLeft.Visibility = Visibility.Visible;
 				} else if (e.HorizontalOffset <= 0) {
-					buttonScrollLeft.Visibility = Visibility.Hidden;
-					buttonScrollRight.Visibility = Visibility.Visible;
+					_buttonScrollLeft.Visibility = Visibility.Hidden;
+					_buttonScrollRight.Visibility = Visibility.Visible;
 				}
 			}
 		}
@@ -619,7 +682,7 @@ namespace LoyaltySurvey {
 
 
 		private void ButtonBack_Click(object sender, RoutedEventArgs e) {
-			LoggingSystem.LogMessageToFile("<-- Нажатие кнопки назад");
+			SystemLogging.LogMessageToFile("<-- Нажатие кнопки назад");
 			NavigationService.GoBack();
 		}
 
@@ -627,12 +690,12 @@ namespace LoyaltySurvey {
 			HideLogo();
 
 			List<Control> controlsToRemove = new List<Control>() {
-				labelQuestion,
-				buttonNoQuestion,
-				buttonYesQuestion,
+				_labelQuestion,
+				_buttonNoQuestion,
+				_buttonYesQuestion,
 			};
 
-			CanvasMain.Children.Remove(imageQuestion);
+			CanvasMain.Children.Remove(_imageQuestion);
 
 			foreach (Control control in controlsToRemove)
 				CanvasMain.Children.Remove(control);
@@ -640,22 +703,21 @@ namespace LoyaltySurvey {
 
 
 
-		protected void FillPanelWithElements(List<string> elements, ControlsFactory.ElementType type, RoutedEventHandler eventHandler) {
+		protected void FillPanelWithElements(List<string> elements, PageControlsFactory.ElementType type, RoutedEventHandler eventHandler) {
 			double elementsCreated = 0;
 			double totalElementsCreated = 0;
 			double linesCreated = 0;
-			double totalLines = Math.Ceiling(elements.Count / elementsInLine);
+			double totalLines = Math.Ceiling(elements.Count / _elementsInLine);
 
-			double currentX = leftCornerShadow;
-			double currentY = leftCornerShadow;
+			double currentX = _leftCornerShadow;
+			double currentY = _leftCornerShadow;
 
 			bool isLastLineCentered = false;
-			//elements.Sort();
 			foreach (string element in elements) {
 				if (string.IsNullOrEmpty(element))
 					continue;
 
-				Button innerButton = ControlsFactory.CreateButtonWithImageAndText(
+				Button innerButton = PageControlsFactory.CreateButtonWithImageAndText(
 					element, 
 					ElementWidth, 
 					ElementHeight,
@@ -664,25 +726,24 @@ namespace LoyaltySurvey {
 					FontSizeMain,
 					FontWeights.Normal);
 
-				double bottomMargin = Gap;
-				double rightMargin = Gap;
+				double bottomMargin = _elementsGap;
+				double rightMargin = _elementsGap;
 				double leftMargin = 0;
 
-				if (elementsCreated == elementsInLine - 1)
+				if (elementsCreated == _elementsInLine - 1)
 					rightMargin = 0;
 
 				if (linesCreated == totalLines - 1) {
-					bottomMargin = rightCornerShadow;
+					bottomMargin = _rightCornerShadow;
 
 					if (totalLines > 1 && !isLastLineCentered) {
 						double lastElements = elements.Count - totalElementsCreated;
-						double lastElementsWidth = lastElements * ElementWidth + Gap * (lastElements - 1);
-						leftMargin = (ScrollViewer.Width - lastElementsWidth ) / 2;
-
+						double lastElementsWidth = lastElements * ElementWidth + _elementsGap * (lastElements - 1);
+						leftMargin = (ScrollViewer.Width - _rightCornerShadow - lastElementsWidth) / 2.0d;
 						isLastLineCentered = true;
 					}
 				}
-				
+
 				innerButton.Margin = new Thickness(leftMargin, 0, rightMargin, bottomMargin);
 
 				CanvasForElements.Children.Add(innerButton);
@@ -690,17 +751,17 @@ namespace LoyaltySurvey {
 				elementsCreated++;
 				totalElementsCreated++;
 
-				if (elementsCreated >= elementsInLine) {
+				if (elementsCreated >= _elementsInLine) {
 					elementsCreated = 0;
 					linesCreated++;
-					currentX = leftCornerShadow;
-					currentY += ElementHeight + Gap;
+					currentX = _leftCornerShadow;
+					currentY += ElementHeight + _elementsGap;
 				}
 			}
 		}
 
 		protected void CloseAllPagesExceptSplashScreen(bool showDepartmentSelect = false) {
-			LoggingSystem.LogMessageToFile("<<< Возвращение к стартовой странице");
+			SystemLogging.LogMessageToFile("<<< Возвращение к стартовой странице");
 
 			try {
 				while (NavigationService.CanGoBack)
@@ -711,20 +772,20 @@ namespace LoyaltySurvey {
 
 				((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime = DateTime.Now;
 			} catch (Exception e) {
-				LoggingSystem.LogMessageToFile("CloseAllFormsExceptMain exception: " + e.Message + 
+				SystemLogging.LogMessageToFile("CloseAllFormsExceptMain exception: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
 			}
 		}
 
-		protected void WriteSurveyResultToDb(SurveyResult surveyResult) {
+		protected void WriteSurveyResultToDb(ItemSurveyResult surveyResult) {
 			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Contains(surveyResult.DCode))
 				surveyResult.DocRate = "Duplicate";
 			else
 				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Add(surveyResult.DCode);
 
-			LoggingSystem.LogMessageToFile("Запись результата в базу данных: " + surveyResult.ToString());
+			SystemLogging.LogMessageToFile("Запись результата в базу данных: " + surveyResult.ToString());
 
-			FBClient fBClient = new FBClient(
+			SystemFirebirdClient fBClient = new SystemFirebirdClient(
 				Properties.Settings.Default.MisInfoclinicaDbAddress,
 				Properties.Settings.Default.MisInfoclinicaDbName,
 				Properties.Settings.Default.MisInfoclinicaDbUser,
@@ -756,13 +817,13 @@ namespace LoyaltySurvey {
 			
 			surveyResult.IsInsertedToDb = fBClient.ExecuteUpdateQuery(query, surveyResults);
 
-			LoggingSystem.LogMessageToFile("Результат выполнения: " + surveyResult.IsInsertedToDb);
+			SystemLogging.LogMessageToFile("Результат выполнения: " + surveyResult.IsInsertedToDb);
 		}
 
 
 
 		private void ClassPageTemplate_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-			LoggingSystem.LogMessageToFile("Видимость страницы " + sender.GetType().Name +
+			SystemLogging.LogMessageToFile("Видимость страницы " + sender.GetType().Name +
 				" изменилась с " + e.OldValue + " на " + e.NewValue);
 
 			if (this is PageSplashScreen ||
@@ -776,7 +837,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void DispatcherTimerPageAutoClose_Tick(object sender, EventArgs e) {
-			LoggingSystem.LogMessageToFile("Истекло время таймера автозакрытия страницы");
+			SystemLogging.LogMessageToFile("Истекло время таймера автозакрытия страницы");
 			FireUpTimerPageAutoClose();
 		}
 
@@ -789,27 +850,27 @@ namespace LoyaltySurvey {
 		}
 
 		protected void DisablePageAutoCloseTimer() {
-			dispatcherTimerPageAutoClose.Stop();
+			_dispatcherTimerPageAutoClose.Stop();
 		}
 
 		private void ResetTimer() {
-			dispatcherTimerPageAutoClose.Stop();
-			dispatcherTimerPageAutoClose.Start();
+			_dispatcherTimerPageAutoClose.Stop();
+			_dispatcherTimerPageAutoClose.Start();
 		}
 
 		protected void FireUpTimerPageAutoClose(bool showDepartmentSelect = false) {
-			if (surveyResult != null) {
+			if (_surveyResult != null) {
 				if (this is PageCallback)
-					surveyResult.PhoneNumber = "Timeout";
+					_surveyResult.PhoneNumber = "Timeout";
 				else if (this is PageClinicRate)
-					surveyResult.ClinicRecommendMark = "Timeout";
+					_surveyResult.ClinicRecommendMark = "Timeout";
 				else if (this is PageComment)
-					surveyResult.Comment = "Timeout";
+					_surveyResult.Comment = "Timeout";
 
-				WriteSurveyResultToDb(surveyResult);
+				WriteSurveyResultToDb(_surveyResult);
 			}
 
-			dispatcherTimerPageAutoClose.Stop();
+			_dispatcherTimerPageAutoClose.Stop();
 			CloseAllPagesExceptSplashScreen(showDepartmentSelect);
 		}
 	}

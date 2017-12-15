@@ -17,7 +17,7 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageError.xaml
 	/// </summary>
-	public partial class PageError : ClassPageTemplate {
+	public partial class PageError : PageTemplate {
 		public PageError() {
 			InitializeComponent();
 
@@ -27,7 +27,7 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageErrorTitle,
 				Properties.Resources.StringPageErrorSubtitle);
 
-			Label labelMessage = ControlsFactory.CreateLabel(
+			Label labelMessage = PageControlsFactory.CreateLabel(
 				Properties.Resources.StringPageErrorMessage,
 				Colors.Transparent,
 				Properties.Settings.Default.ColorLabelForeground,
@@ -40,7 +40,7 @@ namespace LoyaltySurvey {
 				StartY + AvailableHeight - DefaultButtonHeight * 1.5,
 				CanvasMain);
 
-			ControlsFactory.CreateImage(
+			PageControlsFactory.CreateImage(
 				Properties.Resources.BackgroundError,
 				AvailableWidth,
 				AvailableHeight - Gap - labelMessage.Height,

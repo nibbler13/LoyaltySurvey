@@ -9,15 +9,15 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageComment.xaml
 	/// </summary>
-	public partial class PageComment : ClassPageTemplate {
+	public partial class PageComment : PageTemplate {
 		private Button buttonNext;
 		private TextBox textBox;
 		private double buttonWidth;
 
-		public PageComment(SurveyResult surveyResult) {
+		public PageComment(ItemSurveyResult surveyResult) {
 			InitializeComponent();
 
-			this.surveyResult = surveyResult;
+			this._surveyResult = surveyResult;
 
 			buttonWidth = DefaultButtonWidth * 3;
 
@@ -32,11 +32,11 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
-			LoggingSystem.LogMessageToFile("Нажата кнопка 'Да'");
+			SystemLogging.LogMessageToFile("Нажата кнопка 'Да'");
 
-			textBox = ControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain, false);
-			OnscreenKeyboard onscreenKeyboard = new OnscreenKeyboard(textBox, AvailableWidth, AvailableHeight,
-				StartX, StartY, Gap, FontSizeMain, OnscreenKeyboard.KeyboardType.Full);
+			textBox = PageControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain, false);
+			PageOnscreenKeyboard onscreenKeyboard = new PageOnscreenKeyboard(textBox, AvailableWidth, AvailableHeight,
+				StartX, StartY, Gap, FontSizeMain, PageOnscreenKeyboard.KeyboardType.Full);
 			Canvas canvasKeyboard = onscreenKeyboard.CreateOnscreenKeyboard();
 			Canvas.SetLeft(canvasKeyboard, StartX + AvailableWidth / 2 - canvasKeyboard.Width / 2);
 			Canvas.SetTop(canvasKeyboard, StartY + AvailableHeight - canvasKeyboard.Height);
@@ -52,11 +52,11 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageCommentTitleTextBox,
 				Properties.Resources.StringPageCommentSubtitleTextBox);
 			
-			buttonNext = ControlsFactory.CreateButtonWithImageAndText(
+			buttonNext = PageControlsFactory.CreateButtonWithImageAndText(
 				"Далее",
 				buttonWidth,
 				DefaultButtonWidth,
-				ControlsFactory.ElementType.Custom,
+				PageControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
@@ -68,7 +68,7 @@ namespace LoyaltySurvey {
 			buttonNext.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
 			buttonNext.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
 
-			Button buttonClear = ControlsFactory.CreateButtonWithImageOnly(
+			Button buttonClear = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonClear, 
 				DefaultButtonWidth, 
 				DefaultButtonWidth,
@@ -87,13 +87,13 @@ namespace LoyaltySurvey {
 
 			if ((sender as Button).Tag.ToString().Equals("Далее")) {
 				comment = textBox.Text;
-				LoggingSystem.LogMessageToFile("Нажата кнопка 'Далее', введенный комментарий: " + comment);
+				SystemLogging.LogMessageToFile("Нажата кнопка 'Далее', введенный комментарий: " + comment);
 			} else
-				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
+				SystemLogging.LogMessageToFile("Нажата кнопка 'Нет'");
 
-			surveyResult.Comment = comment;
+			_surveyResult.Comment = comment;
 
-			PageCallback pageCallback = new PageCallback(surveyResult);
+			PageCallback pageCallback = new PageCallback(_surveyResult);
 			NavigationService.Navigate(pageCallback);
 		}
 	}

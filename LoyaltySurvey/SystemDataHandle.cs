@@ -7,22 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoyaltySurvey {
-	public class DataHandleSystem {
-		public static Dictionary<string, List<Doctor>> GetDoctorsDictionary() {
-			FBClient fbClient = new FBClient(
+	public class SystemDataHandle {
+		public static Dictionary<string, List<ItemDoctor>> GetDoctorsDictionary() {
+			SystemFirebirdClient fbClient = new SystemFirebirdClient(
 				Properties.Settings.Default.MisInfoclinicaDbAddress,
 				Properties.Settings.Default.MisInfoclinicaDbName,
 				Properties.Settings.Default.MisInfoclinicaDbUser,
 				Properties.Settings.Default.MisInfoclinicaDbPassword);
 
-			LoggingSystem.LogMessageToFile("Обновление данных из базы ИК");
+			SystemLogging.LogMessageToFile("Обновление данных из базы ИК");
 			DataTable dataTable = fbClient.GetDataTable(Properties.Settings.Default.SqlQueryDoctors);
 
-			Dictionary<string, List<Doctor>> dictionary = new Dictionary<string, List<Doctor>>();
+			Dictionary<string, List<ItemDoctor>> dictionary = new Dictionary<string, List<ItemDoctor>>();
 
 			if (dataTable.Rows.Count == 0) {
-				LoggingSystem.LogMessageToFile("Из базы ИК вернулась пустая таблица");
-				NotificationSystem.DataBaseEmptyResponse();
+				SystemLogging.LogMessageToFile("Из базы ИК вернулась пустая таблица");
+				SystemNotification.DataBaseEmptyResponse();
 			}
 
 			int clinicRestriction = Properties.Settings.Default.ClinicRestrictions1AdultOnly2ChildOnly;
@@ -47,12 +47,12 @@ namespace LoyaltySurvey {
 						string.IsNullOrEmpty(docname))
 						continue;
 
-					Doctor doctor = new Doctor(docname, docposition, department, dcode, deptCode);
+					ItemDoctor doctor = new ItemDoctor(docname, docposition, department, dcode, deptCode);
 
 					if (dictionary.ContainsKey(department)) {
 						bool isAlreadyExist = false;
 
-						foreach (Doctor existedDoctor in dictionary[department])
+						foreach (ItemDoctor existedDoctor in dictionary[department])
 							if (existedDoctor.Name.ToLower().Equals(doctor.Name.ToLower())) {
 								isAlreadyExist = true;
 								break;
@@ -61,33 +61,33 @@ namespace LoyaltySurvey {
 						if (!isAlreadyExist)
 							dictionary[department].Add(doctor);
 					} else
-						dictionary.Add(department, new List<Doctor>() { doctor });
+						dictionary.Add(department, new List<ItemDoctor>() { doctor });
 				} catch (Exception e) {
-					LoggingSystem.LogMessageToFile("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
+					SystemLogging.LogMessageToFile("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
 				}
 			}
 
-			LoggingSystem.LogMessageToFile("Обработано строк:" + dataTable.Rows.Count);
+			SystemLogging.LogMessageToFile("Обработано строк:" + dataTable.Rows.Count);
 
 			return dictionary;
 		}
 
-		public static void UpdateDoctorsPhoto(Dictionary<string, List<Doctor>> departments) {
-			LoggingSystem.LogMessageToFile("Обновление фотографий докторов");
+		public static void UpdateDoctorsPhoto(Dictionary<string, List<ItemDoctor>> departments) {
+			SystemLogging.LogMessageToFile("Обновление фотографий докторов");
 			string searchPath = @Properties.Settings.Default.PathDoctorsPhotoSource;
 			string destinationPath = Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\";
 			if (!Directory.Exists(destinationPath))
 				Directory.CreateDirectory(destinationPath);
 
 			if (!Directory.Exists(searchPath)) {
-				NotificationSystem.DoctorsPhotoPathError();
+				SystemNotification.DoctorsPhotoPathError();
 				return;
 			}
 
 			string[] photos = Directory.GetFiles(searchPath, "*.jpg", SearchOption.AllDirectories);
 			List<string> missedPhotos = new List<string>();
-			foreach (KeyValuePair<string, List<Doctor>> department in departments)
-				foreach (Doctor doctor in department.Value) {
+			foreach (KeyValuePair<string, List<ItemDoctor>> department in departments)
+				foreach (ItemDoctor doctor in department.Value) {
 					string photoLink = "";
 
 					foreach (string photo in photos) {
@@ -100,15 +100,15 @@ namespace LoyaltySurvey {
 						
 						try {
 							if (File.Exists(destFileName) && File.GetLastWriteTime(destFileName).Equals(File.GetLastWriteTime(photo))) {
-								LoggingSystem.LogMessageToFile("Пропуск копирования файла (скопирован ранее) " + photo);
+								SystemLogging.LogMessageToFile("Пропуск копирования файла (скопирован ранее) " + photo);
 								break;
 							}
 
 							File.Copy(photo, destFileName);
-							LoggingSystem.LogMessageToFile("Копирование файла " + photo + " в файл " + destFileName);
+							SystemLogging.LogMessageToFile("Копирование файла " + photo + " в файл " + destFileName);
 							break;
 						} catch (Exception e) {
-							LoggingSystem.LogMessageToFile("UpdateDoctorsPhoto exception: " + e.Message +
+							SystemLogging.LogMessageToFile("UpdateDoctorsPhoto exception: " + e.Message +
 								Environment.NewLine + e.StackTrace);
 							photoLink = "";
 						}
@@ -122,7 +122,7 @@ namespace LoyaltySurvey {
 				return;
 
 			missedPhotos.Sort();
-			NotificationSystem.DoctorsPhotoMissed(missedPhotos);
+			SystemNotification.DoctorsPhotoMissed(missedPhotos);
 		}
 	}
 }

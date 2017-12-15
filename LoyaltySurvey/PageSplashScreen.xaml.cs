@@ -15,8 +15,8 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageSplashScreen.xaml
 	/// </summary>
-	public partial class PageSplashScreen : ClassPageTemplate {
-		private Dictionary<string, List<Doctor>> dictionaryOfDoctors = new Dictionary<string, List<Doctor>>();
+	public partial class PageSplashScreen : PageTemplate {
+		private Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors = new Dictionary<string, List<ItemDoctor>>();
 		private BackgroundWorker backgroundWorkerUpdateData;
 		private PageDepartmentSelect pageDepartmentSelect;
 		private Timer timerUpdateData;
@@ -87,18 +87,19 @@ namespace LoyaltySurvey {
 
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
 			try {
-				dictionaryOfDoctors = DataHandleSystem.GetDoctorsDictionary();
+				dictionaryOfDoctors = SystemDataHandle.GetDoctorsDictionary();
 
 				if ((bool)e.Argument == true &&
 					Directory.GetFiles(Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\", "*.jpg", SearchOption.AllDirectories).Length != 0) 
 					return;
 
-				DataHandleSystem.UpdateDoctorsPhoto(dictionaryOfDoctors);
+				SystemDataHandle.UpdateDoctorsPhoto(dictionaryOfDoctors);
 				Application.Current.Dispatcher.Invoke(new Action(() => {
+					System.Threading.Thread.Sleep(60 * 1000);
 					Application.Current.Shutdown();
 				}));
 			} catch (Exception exception) {
-				LoggingSystem.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
+				SystemLogging.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
 					Environment.NewLine + exception.StackTrace);
 			}
 		}
@@ -120,7 +121,7 @@ namespace LoyaltySurvey {
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
 			Application.Current.Dispatcher.Invoke(new Action(() => {
 				if (dictionaryOfDoctors.Count == 0) {
-					NotificationSystem.EmptyResults();
+					SystemNotification.EmptyResults();
 					PageError pageError = new PageError();
 					NavigationService.Navigate(pageError);
 

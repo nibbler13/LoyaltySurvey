@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LoyaltySurvey {
-	public class NotificationSystem {
+	public class SystemNotification {
 		public static void EmptyResults() {
 			string subject = "Ошибка обработки данных";
 			string body = 
@@ -16,7 +16,7 @@ namespace LoyaltySurvey {
 				Environment.NewLine + "Произведен переход на страницу с ошибкой.";
 			string receiver = Properties.Settings.Default.MailErrorsReceiverAddress;
 
-			MailSystem.SendMail(subject, body, receiver);
+			SystemMail.SendMail(subject, body, receiver);
 		}
 
 		public static void DataBaseEmptyResponse() {
@@ -30,7 +30,7 @@ namespace LoyaltySurvey {
 				"Запрос: " + Properties.Settings.Default.SqlQueryDoctors;
 			string receiver = Properties.Settings.Default.MailErrorsReceiverAddress;
 
-			MailSystem.SendMail(subject, body, receiver);
+			SystemMail.SendMail(subject, body, receiver);
 		}
 
 		public static void AppStart() {
@@ -38,10 +38,10 @@ namespace LoyaltySurvey {
 			string body = "Приложение успешно запущено";
 			string receiver = Properties.Settings.Default.MailCopy;
 
-			MailSystem.SendMail(subject, body, receiver);
+			SystemMail.SendMail(subject, body, receiver);
 		}
 		
-		public static void NegativeMark(SurveyResult surveyResult) {
+		public static void NegativeMark(ItemSurveyResult surveyResult) {
 			string header = "";
 
 			if (surveyResult.PhoneNumber.Length == 10 &&
@@ -54,7 +54,7 @@ namespace LoyaltySurvey {
 				header = "Пациент оставил комментарий к своей негативной оценке качества приема у врача";
 			
 			if (string.IsNullOrEmpty(header)) {
-				LoggingSystem.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
+				SystemLogging.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
 					"неверный формат номера телефона и отсутствует комментарий");
 				return;
 			}
@@ -65,7 +65,7 @@ namespace LoyaltySurvey {
 				"<table border=\"1\">" +
 				"<tr><td>Врач</td><td><b>" + surveyResult.DocName + "</b></td></tr>" +
 				"<tr><td>Отделение</td><td><b>" + surveyResult.DocDepartment + "</b></td></tr>" +
-				"<tr><td>Оценка качества приема</td><td><b>" + ControlsFactory.GetNameForRate(surveyResult.DocRate) + "</b></td></tr>" +
+				"<tr><td>Оценка качества приема</td><td><b>" + PageControlsFactory.GetNameForRate(surveyResult.DocRate) + "</b></td></tr>" +
 				"<tr><td>Комментарий</td><td><b>" +
 				(surveyResult.Comment.Equals("Refused") ? "отказался" : surveyResult.Comment) + "</b></td></tr>" +
 				"<tr><td>Номер телефона для связи</td><td><b>" +
@@ -80,7 +80,7 @@ namespace LoyaltySurvey {
 				body += "Фотография отсутствует";
 			body += "</b>";
 
-			MailSystem.SendMail(subject, body, receiver, attachmentPath);
+			SystemMail.SendMail(subject, body, receiver, attachmentPath);
 		}
 
 		public static void DoctorsPhotoPathError() {
@@ -89,7 +89,7 @@ namespace LoyaltySurvey {
 				" не существует, или к ней нет доступа";
 			string receiver = Properties.Settings.Default.MailErrorsReceiverAddress;
 
-			MailSystem.SendMail(subject, body, receiver);
+			SystemMail.SendMail(subject, body, receiver);
 		}
 
 		public static void DoctorsPhotoMissed(List<string> missedPhotos) {
@@ -110,9 +110,9 @@ namespace LoyaltySurvey {
 				body += missedPhoto + Environment.NewLine;
 
 			if (!string.IsNullOrEmpty(receiver))
-				MailSystem.SendMail(subject, body, receiver);
+				SystemMail.SendMail(subject, body, receiver);
 
-			LoggingSystem.WriteStringToFile(body, Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\MissedPhotos.txt");
+			SystemLogging.WriteStringToFile(body, Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\MissedPhotos.txt");
 		}
 	}
 }

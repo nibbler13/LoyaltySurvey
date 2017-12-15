@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 
 namespace LoyaltySurvey {
-	class LoggingSystem {
+	class SystemLogging {
 		private const string LOG_FILE_NAME = "LoyaltySurvey_*.log";
 		private const int MAX_LOGFILES_QUANTITY = 7;
 

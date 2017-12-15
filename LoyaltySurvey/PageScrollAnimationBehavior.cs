@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace LoyaltySurvey {
-	public static class ScrollAnimationBehavior {
+	public static class PageScrollAnimationBehavior {
 		#region Private ScrollViewer for ListBox
 
 		private static ScrollViewer _listBoxScroller = new ScrollViewer();
@@ -18,7 +18,7 @@ namespace LoyaltySurvey {
 		public static DependencyProperty VerticalOffsetProperty =
 			DependencyProperty.RegisterAttached("VerticalOffset",
 												typeof(double),
-												typeof(ScrollAnimationBehavior),
+												typeof(PageScrollAnimationBehavior),
 												new UIPropertyMetadata(0.0, OnVerticalOffsetChanged));
 
 		public static void SetVerticalOffset(FrameworkElement target, double value) {
@@ -36,7 +36,7 @@ namespace LoyaltySurvey {
 		public static DependencyProperty HorizontalOffsetProperty =
 			DependencyProperty.RegisterAttached("HorizontalOffset",
 												typeof(double),
-												typeof(ScrollAnimationBehavior),
+												typeof(PageScrollAnimationBehavior),
 												new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
 
 		public static void SetHorizontalOffset(FrameworkElement target, double value) {
@@ -66,7 +66,7 @@ namespace LoyaltySurvey {
 		public static DependencyProperty TimeDurationProperty =
 			DependencyProperty.RegisterAttached("TimeDuration",
 												typeof(TimeSpan),
-												typeof(ScrollAnimationBehavior),
+												typeof(PageScrollAnimationBehavior),
 												new PropertyMetadata(new TimeSpan(0, 0, 0, 0, 0)));
 
 		public static void SetTimeDuration(FrameworkElement target, TimeSpan value) {
@@ -84,7 +84,7 @@ namespace LoyaltySurvey {
 		public static DependencyProperty PointsToScrollProperty =
 			DependencyProperty.RegisterAttached("PointsToScroll",
 												typeof(double),
-												typeof(ScrollAnimationBehavior),
+												typeof(PageScrollAnimationBehavior),
 												new PropertyMetadata(0.0));
 
 		public static void SetPointsToScroll(FrameworkElement target, double value) {
@@ -114,7 +114,7 @@ namespace LoyaltySurvey {
 		public static DependencyProperty IsEnabledProperty =
 												DependencyProperty.RegisterAttached("IsEnabled",
 												typeof(bool),
-												typeof(ScrollAnimationBehavior),
+												typeof(PageScrollAnimationBehavior),
 												new UIPropertyMetadata(false, OnIsEnabledChanged));
 
 		public static void SetIsEnabled(FrameworkElement target, bool value) {
@@ -158,7 +158,7 @@ namespace LoyaltySurvey {
 
 			storyboard.Children.Add(verticalAnimation);
 			Storyboard.SetTarget(verticalAnimation, scrollViewer);
-			Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(ScrollAnimationBehavior.VerticalOffsetProperty));
+			Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(PageScrollAnimationBehavior.VerticalOffsetProperty));
 			storyboard.Begin();
 		}
 

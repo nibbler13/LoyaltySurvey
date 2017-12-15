@@ -8,11 +8,11 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageThanks.xaml
 	/// </summary>
-	public partial class PageThanks : ClassPageTemplate {
-		public PageThanks(SurveyResult surveyResult) {
+	public partial class PageThanks : PageTemplate {
+		public PageThanks(ItemSurveyResult surveyResult) {
 			InitializeComponent();
 
-			this.surveyResult = surveyResult;
+			this._surveyResult = surveyResult;
 
 			Rect rect = CreateFirstOrLastPageControls(
 				Properties.Resources.StringPageThanksTitleLeftTop,
@@ -21,7 +21,7 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageThanksSubtitle,
 				false);
 
-			Image imageThanks = ControlsFactory.CreateImage(
+			Image imageThanks = PageControlsFactory.CreateImage(
 				Properties.Resources.BackgroundThanks,
 				rect.Width,
 				rect.Height,
@@ -31,7 +31,7 @@ namespace LoyaltySurvey {
 				false);
 
 			if (IsDebug) {
-				Label surveyLabel = ControlsFactory.CreateLabel(surveyResult.ToString(), Colors.White, Colors.DarkGray, FontFamilySub, FontSizeMain / 2,
+				Label surveyLabel = PageControlsFactory.CreateLabel(surveyResult.ToString(), Colors.White, Colors.DarkGray, FontFamilySub, FontSizeMain / 2,
 					FontWeights.Normal, AvailableWidth / 2, AvailableHeight / 2, StartX, StartY, CanvasMain);
 				(surveyLabel.Content as TextBlock).TextAlignment = TextAlignment.Left;
 				surveyLabel.VerticalContentAlignment = VerticalAlignment.Top;

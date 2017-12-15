@@ -10,17 +10,17 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageDepartmentsSelect.xaml
 	/// </summary>
-	public partial class PageDepartmentSelect : ClassPageTemplate {
-		private Dictionary<string, List<Doctor>> dictionaryOfDoctors;
+	public partial class PageDepartmentSelect : PageTemplate {
+		private Dictionary<string, List<ItemDoctor>> _dictionaryOfDoctors;
 
-		public PageDepartmentSelect(Dictionary<string, List<Doctor>> dictionaryOfDoctors) {
+		public PageDepartmentSelect(Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors) {
 			InitializeComponent();
 
 			KeepAlive = true;
 
-			this.dictionaryOfDoctors = dictionaryOfDoctors;
+			this._dictionaryOfDoctors = dictionaryOfDoctors;
 
-			LoggingSystem.LogMessageToFile("Количество отделений: " + dictionaryOfDoctors.Count);
+			SystemLogging.LogMessageToFile("Количество отделений: " + dictionaryOfDoctors.Count);
 
 			SetLabelsContent(
 				Properties.Resources.StringPageDepartmentSelectTitle,
@@ -34,16 +34,16 @@ namespace LoyaltySurvey {
 			CreateRootPanel(
 				Properties.Settings.Default.PageDepartmentSelectElementsInLine,
 				Properties.Settings.Default.PageDepartmentSelectElementsLinesCount,
-				dictionaryOfDoctors.Count);
+				dictionaryOfDoctors.Count, type: PageControlsFactory.ElementType.Department);
 
 			List<string> keys = dictionaryOfDoctors.Keys.ToList();
-			FillPanelWithElements(keys, ControlsFactory.ElementType.Department, PanelDepartment_Click);
+			FillPanelWithElements(keys, PageControlsFactory.ElementType.Department, PanelDepartment_Click);
 
-			Button buttonSearch = ControlsFactory.CreateButtonWithImageAndText(
+			Button buttonSearch = PageControlsFactory.CreateButtonWithImageAndText(
 				Properties.Resources.StringPageDepartmentSelectSearchButton, 
 				DefaultButtonWidth * 6, 
 				DefaultButtonHeight,
-				ControlsFactory.ElementType.Custom,
+				PageControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal, 
@@ -64,17 +64,17 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonSearch_Click(object sender, RoutedEventArgs e) {
-			LoggingSystem.LogMessageToFile("Нажата кнопка 'Поиск'");
+			SystemLogging.LogMessageToFile("Нажата кнопка 'Поиск'");
 
-			PageDoctorSearch pageDoctorSearch = new PageDoctorSearch(dictionaryOfDoctors);
+			PageDoctorSearch pageDoctorSearch = new PageDoctorSearch(_dictionaryOfDoctors);
 			NavigationService.Navigate(pageDoctorSearch);
 		}
 
 		private void PanelDepartment_Click(object sender, RoutedEventArgs e) {
 			string depname = (sender as Control).Tag.ToString();
-			LoggingSystem.LogMessageToFile("Выбрано отделение: " + depname);
+			SystemLogging.LogMessageToFile("Выбрано отделение: " + depname);
 
-			PageDoctorSelect pageDoctorSelect = new PageDoctorSelect(dictionaryOfDoctors[depname], depname);
+			PageDoctorSelect pageDoctorSelect = new PageDoctorSelect(_dictionaryOfDoctors[depname], depname);
 			NavigationService.Navigate(pageDoctorSelect);
 		}
 	}

@@ -10,17 +10,17 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageCallback.xaml
 	/// </summary>
-	public partial class PageCallback : ClassPageTemplate {
+	public partial class PageCallback : PageTemplate {
 		private Button buttonNext;
 		private TextBox textBoxData;
 		private TextBox textBoxVisible;
 		private double buttonWidth;
 		private string mask = "+7 (___) ___-__-__";
 
-		public PageCallback(SurveyResult surveyResult) {
+		public PageCallback(ItemSurveyResult surveyResult) {
 			InitializeComponent();
 
-			this.surveyResult = surveyResult;
+			this._surveyResult = surveyResult;
 
 			buttonWidth = DefaultButtonWidth * 3;
 
@@ -35,14 +35,14 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
-			LoggingSystem.LogMessageToFile("Нажата кнопка 'Да'");
+			SystemLogging.LogMessageToFile("Нажата кнопка 'Да'");
 
 			textBoxData = new TextBox();
 			textBoxData.TextChanged += TextBoxData_TextChanged;
 
-			textBoxVisible = ControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain * 1.3);
-			OnscreenKeyboard onscreenKeyboard = new OnscreenKeyboard(textBoxData, AvailableWidth, AvailableHeight,
-				StartX, StartY, Gap, FontSizeMain, OnscreenKeyboard.KeyboardType.Number);
+			textBoxVisible = PageControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain * 1.3);
+			PageOnscreenKeyboard onscreenKeyboard = new PageOnscreenKeyboard(textBoxData, AvailableWidth, AvailableHeight,
+				StartX, StartY, Gap, FontSizeMain, PageOnscreenKeyboard.KeyboardType.Number);
 			Canvas canvasKeyboard = onscreenKeyboard.CreateOnscreenKeyboard();
 			Canvas.SetLeft(canvasKeyboard, StartX + AvailableWidth / 2 - canvasKeyboard.Width / 2);
 			Canvas.SetTop(canvasKeyboard, StartY + AvailableHeight / 2 - (canvasKeyboard.Height - Gap - DefaultButtonWidth) / 2);
@@ -59,11 +59,11 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageCallbackTitleTextBox,
 				Properties.Resources.StringPageCallbackSubtitleTextBox);
 			
-			buttonNext = ControlsFactory.CreateButtonWithImageAndText(
+			buttonNext = PageControlsFactory.CreateButtonWithImageAndText(
 				"Далее",
 				buttonWidth,
 				DefaultButtonWidth,
-				ControlsFactory.ElementType.Custom,
+				PageControlsFactory.ElementType.Custom,
 				FontFamilySub,
 				FontSizeMain,
 				FontWeights.Normal,
@@ -75,7 +75,7 @@ namespace LoyaltySurvey {
 			buttonNext.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
 			buttonNext.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
 
-			Button buttonClear = ControlsFactory.CreateButtonWithImageOnly(
+			Button buttonClear = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonClear, 
 				DefaultButtonWidth, 
 				DefaultButtonWidth,
@@ -114,19 +114,19 @@ namespace LoyaltySurvey {
 
 			if (isNextPressed) {
 				phoneNumber = textBoxData.Text;
-				LoggingSystem.LogMessageToFile("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
+				SystemLogging.LogMessageToFile("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
 			} else
-				LoggingSystem.LogMessageToFile("Нажата кнопка 'Нет'");
+				SystemLogging.LogMessageToFile("Нажата кнопка 'Нет'");
 
-			surveyResult.PhoneNumber = phoneNumber;
-			NotificationSystem.NegativeMark(surveyResult);
+			_surveyResult.PhoneNumber = phoneNumber;
+			SystemNotification.NegativeMark(_surveyResult);
 
 			Page page;
 			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
-				surveyResult. ClinicRecommendMark = "Don't need";
-				page = new PageThanks(surveyResult);
+				_surveyResult. ClinicRecommendMark = "Don't need";
+				page = new PageThanks(_surveyResult);
 			} else
-				page = new PageClinicRate(surveyResult);
+				page = new PageClinicRate(_surveyResult);
 
 			NavigationService.Navigate(page);
 		}

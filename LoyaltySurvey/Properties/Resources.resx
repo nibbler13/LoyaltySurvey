@@ -349,4 +349,13 @@
   <data name="StringPageThanksSubtitle" xml:space="preserve">
     <value>Для продолжения коснитесь экрана</value>
   </data>
+  <data name="NewYearSnowflakes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewYearSnowflakes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewYearTinsel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewYearTinsel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewYearTree" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PicChristmasTree.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

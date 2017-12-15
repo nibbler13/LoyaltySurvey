@@ -9,14 +9,14 @@ namespace LoyaltySurvey {
 	/// <summary>
 	/// Логика взаимодействия для PageDoctorSearch.xaml
 	/// </summary>
-	public partial class PageDoctorSearch : ClassPageTemplate {
-		private Dictionary<string, List<Doctor>> dictionaryOfDoctors;
+	public partial class PageDoctorSearch : PageTemplate {
+		private Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors;
 		private Label labelInfo;
 		private int minTextBoxSearchLength = 1;
 		private TextBox textBox;
 
 
-		public PageDoctorSearch(Dictionary<string, List<Doctor>> dictionaryOfDoctors) {
+		public PageDoctorSearch(Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors) {
 			InitializeComponent();
 			
 			this.dictionaryOfDoctors = dictionaryOfDoctors;
@@ -27,13 +27,13 @@ namespace LoyaltySurvey {
 
 			HideLogo();
 
-			textBox = ControlsFactory.CreateTextBox(
+			textBox = PageControlsFactory.CreateTextBox(
 				FontFamilySub, 
 				FontSizeMain);
 
-			OnscreenKeyboard onscreenKeyboard = new OnscreenKeyboard(
+			PageOnscreenKeyboard onscreenKeyboard = new PageOnscreenKeyboard(
 				textBox, AvailableWidth, AvailableHeight,
-				StartX, StartY, Gap, FontSizeMain, OnscreenKeyboard.KeyboardType.Short);
+				StartX, StartY, Gap, FontSizeMain, PageOnscreenKeyboard.KeyboardType.Short);
 			Canvas canvasKeyboard = onscreenKeyboard.CreateOnscreenKeyboard();
 			CanvasMain.Children.Add(canvasKeyboard);
 			Canvas.SetLeft(canvasKeyboard, StartX + AvailableWidth / 2 - canvasKeyboard.Width / 2);
@@ -46,7 +46,7 @@ namespace LoyaltySurvey {
 			CanvasMain.Children.Add(textBox);
 			textBox.TextChanged += TextBox_TextChanged;
 
-			Button buttonClear = ControlsFactory.CreateButtonWithImageOnly(
+			Button buttonClear = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonClear, 
 				DefaultButtonWidth, 
 				DefaultButtonWidth,
@@ -55,18 +55,18 @@ namespace LoyaltySurvey {
 				CanvasMain);
 			buttonClear.Click += ButtonClear_Click;
 
-			double scrollViewerX = StartX - leftCornerShadow;
-			double scrollViewerY = Canvas.GetTop(textBox) + textBox.Height + Gap - rightCornerShadow;
-			double scrollViewerWidth = AvailableWidth + leftCornerShadow + rightCornerShadow;
-			double scrollViewerHeight = Canvas.GetTop(canvasKeyboard) - Gap - scrollViewerY + leftCornerShadow + rightCornerShadow;
+			double scrollViewerX = StartX - _leftCornerShadow;
+			double scrollViewerY = Canvas.GetTop(textBox) + textBox.Height + Gap - _rightCornerShadow;
+			double scrollViewerWidth = AvailableWidth + _leftCornerShadow + _rightCornerShadow;
+			double scrollViewerHeight = Canvas.GetTop(canvasKeyboard) - Gap - scrollViewerY + _leftCornerShadow + _rightCornerShadow;
 
 			CreateRootPanel(3, 1, 0, Orientation.Horizontal, scrollViewerWidth, scrollViewerHeight, scrollViewerX, scrollViewerY);
 			
-			double elementHeight = ScrollViewer.Height - leftCornerShadow - rightCornerShadow;
-			double elementWidth = (ScrollViewer.Width - leftCornerShadow - rightCornerShadow - Gap * 2) / 3;
+			double elementHeight = ScrollViewer.Height - _leftCornerShadow - _rightCornerShadow;
+			double elementWidth = (ScrollViewer.Width - _leftCornerShadow - _rightCornerShadow - Gap * 2) / 3;
 			SetElementsWidthAndHeight(elementWidth, elementHeight);
 
-			labelInfo = ControlsFactory.CreateLabel(
+			labelInfo = PageControlsFactory.CreateLabel(
 				"", 
 				Colors.Transparent, 
 				Properties.Settings.Default.ColorLabelForeground,
@@ -109,7 +109,7 @@ namespace LoyaltySurvey {
 		private void SetLabelInfoText(string str) {
 			SetPanelResultVisible(false);
 			SetLabelSubtitleText(Properties.Resources.StringPageDoctorSearchSubtitleEmpty);
-			labelInfo.Content = ControlsFactory.CreateTextBlock(
+			labelInfo.Content = PageControlsFactory.CreateTextBlock(
 				str, 
 				FontFamilySub, 
 				FontSizeMain, 
@@ -131,7 +131,7 @@ namespace LoyaltySurvey {
 
 		private void StartSearch() {
 			string text = textBox.Text;
-			LoggingSystem.LogMessageToFile("Поиск докторов по тексту: " + text);
+			SystemLogging.LogMessageToFile("Поиск докторов по тексту: " + text);
 
 			if (string.IsNullOrWhiteSpace(text) ||
 				string.IsNullOrEmpty(text)) {
@@ -139,25 +139,25 @@ namespace LoyaltySurvey {
 				return;
 			}
 
-			List<Doctor> doctors = new List<Doctor>();
+			List<ItemDoctor> doctors = new List<ItemDoctor>();
 
-			foreach (KeyValuePair<string, List<Doctor>> dictionaryDepartment in dictionaryOfDoctors)
-				foreach (Doctor doctor in dictionaryDepartment.Value)
+			foreach (KeyValuePair<string, List<ItemDoctor>> dictionaryDepartment in dictionaryOfDoctors)
+				foreach (ItemDoctor doctor in dictionaryDepartment.Value)
 					if (NormalizeString(doctor.Name).StartsWith(NormalizeString(textBox.Text)))
 						doctors.Add(doctor);
 
 			if (doctors.Count == 0) {
-				LoggingSystem.LogMessageToFile("По заданному тексту докторов не найдено");
+				SystemLogging.LogMessageToFile("По заданному тексту докторов не найдено");
 				SetLabelInfoToNothingFound();
 				return;
 			}
 
-			doctors.Sort(delegate (Doctor doc1, Doctor doc2) { return doc1.Name.CompareTo(doc2.Name); });
+			doctors.Sort(delegate (ItemDoctor doc1, ItemDoctor doc2) { return doc1.Name.CompareTo(doc2.Name); });
 			UpdateResultPanelContent(doctors);
 		}
 
-		private void UpdateResultPanelContent(List<Doctor> doctors) {
-			LoggingSystem.LogMessageToFile("Количество найденных докторов: " + doctors.Count);
+		private void UpdateResultPanelContent(List<ItemDoctor> doctors) {
+			SystemLogging.LogMessageToFile("Количество найденных докторов: " + doctors.Count);
 
 			CanvasForElements.Children.Clear();
 			SetLabelSubtitleText(Properties.Resources.StringPageDoctorSearchSubtitleFound);
@@ -167,16 +167,16 @@ namespace LoyaltySurvey {
 				string info = doctors[i].Name + Environment.NewLine + Environment.NewLine +
 					doctors[i].Position;
 
-				Button buttonDoctor = ControlsFactory.CreateButtonWithImageAndText(
+				Button buttonDoctor = PageControlsFactory.CreateButtonWithImageAndText(
 					info,
 					ElementWidth,
 					ElementHeight,
-					ControlsFactory.ElementType.Search,
+					PageControlsFactory.ElementType.Search,
 					FontFamilySub,
 					FontSizeMain,
 					FontWeights.Normal,
 					dcode: doctors[i].Code);
-				buttonDoctor.Margin = new Thickness(0, 0, i != doctors.Count - 1 ? Gap : rightCornerShadow, 0);
+				buttonDoctor.Margin = new Thickness(0, 0, i != doctors.Count - 1 ? Gap : _rightCornerShadow, 0);
 				CanvasForElements.Children.Add(buttonDoctor);
 
 				buttonDoctor.Tag = doctors[i];
@@ -190,8 +190,8 @@ namespace LoyaltySurvey {
 		}
 
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
-			Doctor doctor = (sender as Control).Tag as Doctor;
-			LoggingSystem.LogMessageToFile("Выбран доктор: " + doctor.Name);
+			ItemDoctor doctor = (sender as Control).Tag as ItemDoctor;
+			SystemLogging.LogMessageToFile("Выбран доктор: " + doctor.Name);
 			PageDoctorRate pageDoctorRate = new PageDoctorRate(doctor);
 			NavigationService.Navigate(pageDoctorRate);
 		}
