@@ -9,16 +9,42 @@ using System.Threading.Tasks;
 namespace LoyaltySurvey {
 	public class SystemDataHandle {
 		public static Dictionary<string, List<ItemDoctor>> GetDoctorsDictionary() {
+			string misDbAddress = Properties.Settings.Default.MisInfoclinicaDbAddress;
+			string misDbName = Properties.Settings.Default.MisInfoclinicaDbName;
+			string misDbUser = Properties.Settings.Default.MisInfoclinicaDbUser;
+			string misDbPass = Properties.Settings.Default.MisInfoclinicaDbPassword;
+			string sqlQueryDoctors = Properties.Settings.Default.SqlQueryDoctors;
+
 			SystemFirebirdClient fbClient = new SystemFirebirdClient(
-				Properties.Settings.Default.MisInfoclinicaDbAddress,
-				Properties.Settings.Default.MisInfoclinicaDbName,
-				Properties.Settings.Default.MisInfoclinicaDbUser,
-				Properties.Settings.Default.MisInfoclinicaDbPassword);
+				misDbAddress,
+				misDbName,
+				misDbUser,
+				misDbPass);
 
 			SystemLogging.LogMessageToFile("Обновление данных из базы ИК");
 			DataTable dataTable = fbClient.GetDataTable(Properties.Settings.Default.SqlQueryDoctors);
 
 			Dictionary<string, List<ItemDoctor>> dictionary = new Dictionary<string, List<ItemDoctor>>();
+
+			string misDbAddressPnd = Properties.Settings.Default.MisInfoclinicaDbAddressPnd;
+			string misDbNamePnd = Properties.Settings.Default.MisInfoclinicaDbNamePnd;
+			if (!string.IsNullOrEmpty(misDbAddressPnd) && 
+				!string.IsNullOrEmpty(misDbNamePnd)) {
+				SystemFirebirdClient fbClientPnd = new SystemFirebirdClient(
+					misDbAddressPnd,
+					misDbNamePnd,
+					misDbUser,
+					misDbPass);
+				SystemLogging.LogMessageToFile("Обновление данных из базы ИК для ПНД");
+				DataTable dataTablePnd = fbClientPnd.GetDataTable(sqlQueryDoctors);
+
+				foreach (DataRow row in dataTablePnd.Rows) {
+					if (!row["DEPNUM"].ToString().Equals("10029098"))
+						continue;
+
+					dataTable.ImportRow(row);
+				}
+			}
 
 			if (dataTable.Rows.Count == 0) {
 				SystemLogging.LogMessageToFile("Из базы ИК вернулась пустая таблица");
@@ -48,6 +74,8 @@ namespace LoyaltySurvey {
 						continue;
 
 					ItemDoctor doctor = new ItemDoctor(docname, docposition, department, dcode, deptCode);
+
+					Console.WriteLine("doctor: " + doctor.Name + ", " + doctor.Department);
 
 					if (dictionary.ContainsKey(department)) {
 						bool isAlreadyExist = false;

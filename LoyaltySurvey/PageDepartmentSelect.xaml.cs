@@ -12,13 +12,15 @@ namespace LoyaltySurvey {
 	/// </summary>
 	public partial class PageDepartmentSelect : PageTemplate {
 		private Dictionary<string, List<ItemDoctor>> _dictionaryOfDoctors;
+		private Dictionary<string, PageDoctorSelect> _dictionarySelectDoctorPages;
 
 		public PageDepartmentSelect(Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors) {
 			InitializeComponent();
 
 			KeepAlive = true;
 
-			this._dictionaryOfDoctors = dictionaryOfDoctors;
+			_dictionaryOfDoctors = dictionaryOfDoctors;
+			_dictionarySelectDoctorPages = new Dictionary<string, PageDoctorSelect>();
 
 			SystemLogging.LogMessageToFile("Количество отделений: " + dictionaryOfDoctors.Count);
 
@@ -37,6 +39,7 @@ namespace LoyaltySurvey {
 				dictionaryOfDoctors.Count, type: PageControlsFactory.ElementType.Department);
 
 			List<string> keys = dictionaryOfDoctors.Keys.ToList();
+			keys.Sort();
 			FillPanelWithElements(keys, PageControlsFactory.ElementType.Department, PanelDepartment_Click);
 
 			Button buttonSearch = PageControlsFactory.CreateButtonWithImageAndText(
@@ -56,6 +59,9 @@ namespace LoyaltySurvey {
 			buttonSearch.Background = new SolidColorBrush(Colors.Beige);
 
 			IsVisibleChanged += PageDepartmentSelect_IsVisibleChanged;
+
+			foreach (string key in keys)
+				_dictionarySelectDoctorPages.Add(key, new PageDoctorSelect(_dictionaryOfDoctors[key], key));
 		}
 
 		private void PageDepartmentSelect_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
@@ -74,7 +80,12 @@ namespace LoyaltySurvey {
 			string depname = (sender as Control).Tag.ToString();
 			SystemLogging.LogMessageToFile("Выбрано отделение: " + depname);
 
-			PageDoctorSelect pageDoctorSelect = new PageDoctorSelect(_dictionaryOfDoctors[depname], depname);
+			PageDoctorSelect pageDoctorSelect;
+			if (_dictionarySelectDoctorPages.ContainsKey(depname))
+				pageDoctorSelect = _dictionarySelectDoctorPages[depname];
+			else
+				pageDoctorSelect = new PageDoctorSelect(_dictionaryOfDoctors[depname], depname);
+
 			NavigationService.Navigate(pageDoctorSelect);
 		}
 	}

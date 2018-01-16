@@ -21,7 +21,7 @@ namespace LoyaltySurvey {
 
 			buttonWidth = DefaultButtonWidth * 3;
 
-			HideButtonBack();
+			//HideButtonBack();
 
 			SetLabelsContent(
 				Properties.Resources.StringPageCommentTitle,

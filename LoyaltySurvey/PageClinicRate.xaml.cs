@@ -16,7 +16,7 @@ namespace LoyaltySurvey {
 			this._surveyResult = surveyResult;
 
 			HideLogo();
-			HideButtonBack();
+			//HideButtonBack();
 
 			SetLabelsContent(
 				Properties.Resources.StringPageClinicRateTitle,
@@ -27,40 +27,40 @@ namespace LoyaltySurvey {
 			double currentX = StartX;
 			double currentY = StartY + AvailableHeight;
 
-			List<string> labels = new List<string>() {
-				Properties.Resources.StringPageClinicRateNotAtAll,
-				Properties.Resources.StringPageClinicRateDontKnow,
-				Properties.Resources.StringPageClinicRateMostLikely
-			};
+			//List<string> labels = new List<string>() {
+			//	Properties.Resources.StringPageClinicRateNotAtAll,
+			//	Properties.Resources.StringPageClinicRateDontKnow,
+			//	Properties.Resources.StringPageClinicRateMostLikely
+			//};
 
-			for (int i = 0; i < labels.Count; i++) {
-				HorizontalAlignment horizontalAlignment;
-				if (i == 0) {
-					horizontalAlignment = HorizontalAlignment.Left;
-					currentX = StartX;
-				} else if (i == 1) {
-					horizontalAlignment = HorizontalAlignment.Center;
-					currentX = StartX + AvailableWidth / 2 - labelWidth / 2;
-				} else {
-					horizontalAlignment = HorizontalAlignment.Right;
-					currentX = StartX + AvailableWidth - labelWidth;
-				}
+			//for (int i = 0; i < labels.Count; i++) {
+			//	HorizontalAlignment horizontalAlignment;
+			//	if (i == 0) {
+			//		horizontalAlignment = HorizontalAlignment.Left;
+			//		currentX = StartX;
+			//	} else if (i == 1) {
+			//		horizontalAlignment = HorizontalAlignment.Center;
+			//		currentX = StartX + AvailableWidth / 2 - labelWidth / 2;
+			//	} else {
+			//		horizontalAlignment = HorizontalAlignment.Right;
+			//		currentX = StartX + AvailableWidth - labelWidth;
+			//	}
 
-				Label label = PageControlsFactory.CreateLabel(
-					labels[i],
-					Colors.Transparent,
-					Properties.Settings.Default.ColorLabelForeground,
-					FontFamilySub,
-					FontSizeMain * 0.7,
-					FontWeights.Normal,
-					labelWidth,
-					labelHeight,
-					currentX,
-					currentY,
-					CanvasMain);
+			//	Label label = PageControlsFactory.CreateLabel(
+			//		labels[i],
+			//		Colors.Transparent,
+			//		Properties.Settings.Default.ColorLabelForeground,
+			//		FontFamilySub,
+			//		FontSizeMain * 0.7,
+			//		FontWeights.Normal,
+			//		labelWidth,
+			//		labelHeight,
+			//		currentX,
+			//		currentY,
+			//		CanvasMain);
 
-				label.HorizontalContentAlignment = horizontalAlignment;
-			}
+			//	label.HorizontalContentAlignment = horizontalAlignment;
+			//}
 
 			int maxRate = 11;
 			double rateSide = (AvailableWidth - (Gap * (maxRate - 1))) / maxRate;

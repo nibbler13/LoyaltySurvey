@@ -407,6 +407,25 @@ namespace LoyaltySurvey {
 					StartY * 1.5 - 20,
 					CanvasMain,
 					false);
+			} else {
+				string devInfo = "Разработка приложения:" + Environment.NewLine +
+					"ООО \"Клиника ЛМС\"" + Environment.NewLine +
+					"dev@bzklinika.ru";
+
+
+				Label label = PageControlsFactory.CreateLabel(
+					devInfo,
+					Colors.Transparent,
+					Colors.LightGray,
+					FontFamilySub,
+					FontSizeMain * 0.7,
+					FontWeights.Normal,
+					-1,
+					-1,
+					Gap * 0.7,
+					ScreenHeight - (FontSizeMain * 0.7) * 3 - Gap,
+					CanvasMain);
+				(label.Content as TextBlock).TextAlignment = TextAlignment.Left;
 			}
 
 			return rect;
@@ -495,6 +514,8 @@ namespace LoyaltySurvey {
 			_buttonScrollRight.Click += ButtonScrollRight_Click;
 			_buttonScrollRight.Visibility = Visibility.Hidden;
 			_buttonScrollRight.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+
+			AddBlickingEffectToButton(new List<Button>() { _buttonScrollLeft, _buttonScrollRight });
 		}
 
 		private void CreateUpDownButtons() {
@@ -519,15 +540,19 @@ namespace LoyaltySurvey {
 			_buttonScrollDown.Click += ButtonScrollDown_Click;
 			_buttonScrollDown.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
+			AddBlickingEffectToButton(new List<Button>() { _buttonScrollUp, _buttonScrollDown });
+		}
+
+		private void AddBlickingEffectToButton(List<Button> buttons) {
 			ColorAnimation animation = new ColorAnimation();
 			animation.From = Properties.Settings.Default.ColorButtonBackground;
 			animation.To = Properties.Settings.Default.ColorScrollButton;
 			animation.Duration = new TimeSpan(0, 0, 1);
 			animation.RepeatBehavior = RepeatBehavior.Forever;
 			animation.AutoReverse = true;
-			
-			_buttonScrollUp.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
-			_buttonScrollDown.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
+
+			foreach (Button button in buttons)
+				button.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 		}
 
 		protected void CreateQuestionControlsAnd(string question, System.Drawing.Bitmap image, 
@@ -623,7 +648,7 @@ namespace LoyaltySurvey {
 			DoubleAnimation verticalAnimation = new DoubleAnimation();
 			verticalAnimation.From = ScrollViewer.VerticalOffset;
 			verticalAnimation.To = to;
-			verticalAnimation.Duration = new Duration(new TimeSpan(0, 0, 1));
+			verticalAnimation.Duration = new Duration(new TimeSpan(0, 0, 0));
 
 			Storyboard storyboard = new Storyboard();
 			storyboard.Children.Add(verticalAnimation);
@@ -636,7 +661,7 @@ namespace LoyaltySurvey {
 			DoubleAnimation horizontalAnimation = new DoubleAnimation();
 			horizontalAnimation.From = ScrollViewer.HorizontalOffset;
 			horizontalAnimation.To = to;
-			horizontalAnimation.Duration = new Duration(new TimeSpan(0, 0, 1));
+			horizontalAnimation.Duration = new Duration(new TimeSpan(0, 0, 0));
 
 			Storyboard storyboard = new Storyboard();
 			storyboard.Children.Add(horizontalAnimation);
@@ -647,16 +672,16 @@ namespace LoyaltySurvey {
 
 		private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
 			if (_buttonScrollDown != null || _buttonScrollUp != null) {
-				if (ScrollViewer.ScrollableHeight == 0) {
+				if ((int)ScrollViewer.ScrollableHeight == 0) {
 					_buttonScrollUp.Visibility = Visibility.Hidden;
 					_buttonScrollDown.Visibility = Visibility.Hidden;
 					return;
 				}
 
-				if (e.VerticalOffset >= ScrollViewer.ScrollableHeight) {
+				if ((int)e.VerticalOffset >= (int)ScrollViewer.ScrollableHeight) {
 					_buttonScrollDown.Visibility = Visibility.Hidden;
 					_buttonScrollUp.Visibility = Visibility.Visible;
-				} else if (e.VerticalOffset <= 0) {
+				} else if ((int)e.VerticalOffset <= 0) {
 					_buttonScrollUp.Visibility = Visibility.Hidden;
 					_buttonScrollDown.Visibility = Visibility.Visible;
 				}
@@ -669,10 +694,10 @@ namespace LoyaltySurvey {
 					return;
 				}
 
-				if (e.HorizontalOffset >= ScrollViewer.ScrollableWidth) {
+				if ((int)e.HorizontalOffset >= (int)ScrollViewer.ScrollableWidth) {
 					_buttonScrollRight.Visibility = Visibility.Hidden;
 					_buttonScrollLeft.Visibility = Visibility.Visible;
-				} else if (e.HorizontalOffset <= 0) {
+				} else if ((int)e.HorizontalOffset <= 0) {
 					_buttonScrollLeft.Visibility = Visibility.Hidden;
 					_buttonScrollRight.Visibility = Visibility.Visible;
 				}

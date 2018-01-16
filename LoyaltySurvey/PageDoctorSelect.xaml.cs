@@ -18,6 +18,8 @@ namespace LoyaltySurvey {
 
 			HideLogo();
 
+			KeepAlive = true;
+
 			SetLabelsContent(
 				Properties.Resources.StringPageDoctorSelectTitle,
 				Properties.Resources.StringPageDoctorSelectSubtitle);
@@ -64,6 +66,13 @@ namespace LoyaltySurvey {
 				keys.Add(doctor.Code + "|" + doctor.Name); //doctor.Code is using to find a photo
 
 			FillPanelWithElements(keys, PageControlsFactory.ElementType.Doctor, PanelDoctor_Click);
+
+			IsVisibleChanged += PageDoctorSelect_IsVisibleChanged;
+		}
+
+		private void PageDoctorSelect_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
+			if (IsVisible)
+				ScrollViewer.ScrollToTop();
 		}
 
 		private void PageDoctorSelect_Loaded(object sender, RoutedEventArgs e) {
