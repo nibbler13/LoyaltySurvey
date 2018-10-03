@@ -34,7 +34,7 @@ namespace LoyaltySurvey {
 		}
 
 		public static void AppStart() {
-			string subject = "Запуск приложение";
+			string subject = "Запуск приложения";
 			string body = "Приложение успешно запущено";
 			string receiver = Properties.Settings.Default.MailCopy;
 
@@ -47,11 +47,11 @@ namespace LoyaltySurvey {
 			if (surveyResult.PhoneNumber.Length == 10 &&
 				surveyResult.PhoneNumber.StartsWith("9"))
 				header = "Пациент указал, что ему можно позвонить для уточнения подробностей " +
-				"о его негативной оценке качества приема у врача.";
+				"о его негативной оценке.";
 			else if (!string.IsNullOrEmpty(surveyResult.Comment) &&
 				!string.IsNullOrWhiteSpace(surveyResult.Comment) &&
 				!surveyResult.Comment.Equals("Refused"))
-				header = "Пациент оставил комментарий к своей негативной оценке качества приема у врача";
+				header = "Пациент оставил комментарий к своей негативной оценке";
 			
 			if (string.IsNullOrEmpty(header)) {
 				SystemLogging.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
@@ -63,15 +63,28 @@ namespace LoyaltySurvey {
 			string body =
 				header + "<br><br>" +
 				"<table border=\"1\">" +
-				"<tr><td>Врач</td><td><b>" + surveyResult.DocName + "</b></td></tr>" +
+				"<tr><td>Сотрудник</td><td><b>" + surveyResult.DocName + "</b></td></tr>" +
 				"<tr><td>Отделение</td><td><b>" + surveyResult.DocDepartment + "</b></td></tr>" +
-				"<tr><td>Оценка качества приема</td><td><b>" + PageControlsFactory.GetNameForRate(surveyResult.DocRate) + "</b></td></tr>" +
+				"<tr><td>Оценка</td><td><b>" + PageControlsFactory.GetNameForRate(surveyResult.DocRate) + "</b></td></tr>" +
 				"<tr><td>Комментарий</td><td><b>" +
 				(surveyResult.Comment.Equals("Refused") ? "отказался" : surveyResult.Comment) + "</b></td></tr>" +
 				"<tr><td>Номер телефона для связи</td><td><b>" +
 				(surveyResult.PhoneNumber.Equals("Refused") ? "отказался" : surveyResult.PhoneNumber) + "</b></td></tr>" +
 				"</table><br>";
-			string receiver = Properties.Settings.Default.MailNegativesMarkReceiverAddress;
+
+			string receiver;
+			switch (surveyResult.MarkType) {
+				case ItemSurveyResult.Type.Doctor:
+					receiver = Properties.Settings.Default.MailNegativeDoctorMarkReceiverAddress;
+					break;
+				case ItemSurveyResult.Type.Registry:
+					receiver = Properties.Settings.Default.MailNegativeRegistyMarkReceiverAddress;
+					break;
+				default:
+					receiver = Properties.Settings.Default.MailCopy;
+					break;
+			}
+
 			string attachmentPath = surveyResult.PhotoLink;
 
 			if (File.Exists(attachmentPath))

@@ -29,14 +29,17 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageDepartmentSelectSubtitle);
 
 			HideLogo();
-			HideButtonBack();
+
+			if (!Properties.Settings.Default.EnableRegistrySurvey)
+				HideButtonBack();
 
 			double originalAvailableWidth = AvailableWidth;
 
 			CreateRootPanel(
 				Properties.Settings.Default.PageDepartmentSelectElementsInLine,
 				Properties.Settings.Default.PageDepartmentSelectElementsLinesCount,
-				dictionaryOfDoctors.Count, type: PageControlsFactory.ElementType.Department);
+				dictionaryOfDoctors.Count, 
+				type: PageControlsFactory.ElementType.Department);
 
 			List<string> keys = dictionaryOfDoctors.Keys.ToList();
 			keys.Sort();
@@ -54,9 +57,10 @@ namespace LoyaltySurvey {
 				StartX + originalAvailableWidth / 2 - DefaultButtonWidth * 3,
 				StartY,
 				CanvasMain);
+			buttonSearch.Style = Application.Current.MainWindow.FindResource("RoundCornerYellow") as Style;
 			buttonSearch.Click += ButtonSearch_Click;
 
-			buttonSearch.Background = new SolidColorBrush(Colors.Beige);
+			//buttonSearch.Background = new SolidColorBrush(Colors.Beige);
 
 			IsVisibleChanged += PageDepartmentSelect_IsVisibleChanged;
 

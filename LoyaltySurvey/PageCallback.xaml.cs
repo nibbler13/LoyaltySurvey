@@ -24,7 +24,7 @@ namespace LoyaltySurvey {
 
 			buttonWidth = DefaultButtonWidth * 3;
 
-			HideButtonBack();
+			//HideButtonBack();
 
 			SetLabelsContent(
 				Properties.Resources.StringPageCallbackTitle,
@@ -71,6 +71,7 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth - buttonWidth,
 				StartY + AvailableHeight + Gap,
 				CanvasMain);
+			buttonNext.Style = Application.Current.MainWindow.FindResource("RoundCornerGreen") as Style;
 			buttonNext.Click += ButtonNoOrNext_Click;
 			buttonNext.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
 			buttonNext.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);
@@ -122,7 +123,8 @@ namespace LoyaltySurvey {
 			SystemNotification.NegativeMark(_surveyResult);
 
 			Page page;
-			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0) {
+			if (((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Count > 0 ||
+				_surveyResult.DCode.Equals("0")) {
 				_surveyResult. ClinicRecommendMark = "Don't need";
 				page = new PageThanks(_surveyResult);
 			} else

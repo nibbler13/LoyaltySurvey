@@ -170,19 +170,19 @@
     <value>..\Resources\smile_sad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StringPageDepartmentSelectSearchButton" xml:space="preserve">
-    <value>Найти врача по фамилии</value>
+    <value>Поиск врача по фамилии</value>
   </data>
   <data name="StringPageDepartmentSelectSubtitle" xml:space="preserve">
     <value>Для выбора коснитесь нужной кнопки</value>
   </data>
   <data name="StringPageDepartmentSelectTitle" xml:space="preserve">
-    <value>Найдите врача по фамилии или выберите отделение, в котором Вы были</value>
+    <value>Выберите отделение, в котором Вы были или найдите врача по фамилии</value>
   </data>
   <data name="StringPageDoctorRateSubtitle" xml:space="preserve">
     <value>Для выбора коснитесь кнопки с нужной оценкой</value>
   </data>
   <data name="StringPageDoctorRateTitle" xml:space="preserve">
-    <value>Пожалуйста, оцените качество приема у врача</value>
+    <value>Пожалуйста, оцените прием у врача</value>
   </data>
   <data name="StringPageDoctorSearchInitial" xml:space="preserve">
     <value>Начните вводить фамилию врача</value>
@@ -301,7 +301,7 @@
     <value>Напишите свой комментарий</value>
   </data>
   <data name="StringPageSplashScreenWelcome" xml:space="preserve">
-    <value>Просим Вас принять участие в опросе о качестве работы нашей клиники</value>
+    <value>Просим Вас принять участие в опросе о работе нашей клиники</value>
   </data>
   <data name="BackgroundClinicRecommend" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RecommendClinicBz2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -313,7 +313,7 @@
     <value>..\Resources\LogoBzFull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StringPageSplashScreenTitleLeftBottom" xml:space="preserve">
-    <value>Просим Вас уделить пару минут и оценить качество нашей работы</value>
+    <value>Просим Вас уделить пару минут и оценить нашу работу</value>
   </data>
   <data name="StringPageSplashScreenTitleLeftTop" xml:space="preserve">
     <value>МЫ СТРЕМИМСЯ СТАТЬ</value>
@@ -357,5 +357,29 @@
   </data>
   <data name="NewYearTree" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PicChristmasTree.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Doctors" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\doctors.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PicRegistry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\picregistry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StringPageSelectSurveyDoctorsRate" xml:space="preserve">
+    <value>Оценка приема у врача</value>
+  </data>
+  <data name="StringPageSelectSurveyRegistryRate" xml:space="preserve">
+    <value>Оценка работы регистратуры</value>
+  </data>
+  <data name="StringPageSelectSurveySubtitle" xml:space="preserve">
+    <value>Для выбора коснитесь нужной кнопки</value>
+  </data>
+  <data name="StringPageSelectSurveyTitle" xml:space="preserve">
+    <value>Выберите опрос</value>
+  </data>
+  <data name="StringPageRegistryRateSubitle" xml:space="preserve">
+    <value>Для выбора коснитесь кнопки с нужной оценкой</value>
+  </data>
+  <data name="StringPageRegistryRateTitle" xml:space="preserve">
+    <value>Пожалуйста, оцените работу регистратуры</value>
   </data>
 </root>

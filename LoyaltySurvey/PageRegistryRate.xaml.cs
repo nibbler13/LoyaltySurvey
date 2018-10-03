@@ -1,49 +1,45 @@
-﻿using DirectShowLib;
-using Emgu.CV;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace LoyaltySurvey {
 	/// <summary>
-	/// Логика взаимодействия для PageDoctorRate.xaml
+	/// Логика взаимодействия для PageRegistryRate.xaml
 	/// </summary>
-	public partial class PageDoctorRate : PageTemplate {
-		private ItemDoctor doctor;
-
-		public PageDoctorRate(ItemDoctor doctor) {
+	public partial class PageRegistryRate : PageTemplate {
+		public PageRegistryRate() {
 			InitializeComponent();
-
-			this.doctor = doctor;
-
-			string docInfo = doctor.Name;
-			if (!string.IsNullOrEmpty(doctor.Position))
-				docInfo += ", " + doctor.Position;
 
 			HideLogo();
 
 			SetLabelsContent(
-				Properties.Resources.StringPageDoctorRateTitle,
-				Properties.Resources.StringPageDoctorRateSubtitle);
+				Properties.Resources.StringPageRegistryRateTitle,
+				Properties.Resources.StringPageRegistryRateSubitle);
 
-			List<string> rates = new List<string>() { "1", "2", "3", "4", "5" };
+			List<string> rates = new List<string>() { "2", "3", "4" };
 
-			double elementsInLine = rates.Count;
+			double elementsInLine = 5;// rates.Count;
 			double elementWidth = (AvailableWidth * 0.66 - Gap * (elementsInLine - 1)) / elementsInLine;
 			double elementHeight = AvailableHeight * 0.35;
 
-			double currentX = StartX + (AvailableWidth * 0.33) / 2;
+			double currentX = StartX + (AvailableWidth * 0.33) / 2 + elementWidth + Gap;
 			double currentY = StartY + AvailableHeight - elementHeight;
 
 			foreach (string rate in rates) {
 				Button buttonRate = PageControlsFactory.CreateButtonWithImageAndText(
-					rate, 
-					elementWidth, 
+					rate,
+					elementWidth,
 					elementHeight,
 					PageControlsFactory.ElementType.Rate,
 					FontFamilySub,
@@ -58,22 +54,9 @@ namespace LoyaltySurvey {
 				currentX += elementWidth + Gap;
 			}
 
-			Label labelDocInfo = PageControlsFactory.CreateLabel(
-				docInfo,
-				Colors.Transparent,
-				Properties.Settings.Default.ColorLabelForeground,
-				FontFamilySub,
-				FontSizeMain,
-				FontWeights.Normal,
-				AvailableWidth,
-				DefaultButtonHeight,
-				StartX,
-				currentY - Gap - DefaultButtonHeight,
-				CanvasMain);
-
-			double imageSide = AvailableHeight - elementHeight - Gap * 2 - labelDocInfo.Height;
+			double imageSide = AvailableHeight - elementHeight - Gap * 2;
 			Image docPhoto = PageControlsFactory.CreateImage(
-				(System.Drawing.Bitmap)PageControlsFactory.GetImageForDoctor(doctor.Code),
+				Properties.Resources.PicRegistry,
 				imageSide,
 				imageSide,
 				StartX + AvailableWidth / 2 - imageSide / 2,
@@ -84,9 +67,11 @@ namespace LoyaltySurvey {
 
 		private void ButtonRate_Click(object sender, EventArgs e) {
 			string tag = (sender as Control).Tag.ToString();
+			string dCode = "0";
+			string depNum = (Properties.Settings.Default.ClinicRestrictions1AdultOnly2ChildOnly - 1).ToString();
+			
 			SystemLogging.LogMessageToFile("Выбрана оценка: " + tag);
-			_surveyResult = new ItemSurveyResult(ItemSurveyResult.Type.Doctor, DateTime.Now, doctor.Code,
-				doctor.Name, tag, doctor.Department, doctor.DeptCode);
+			_surveyResult = new ItemSurveyResult(ItemSurveyResult.Type.Registry, DateTime.Now, dCode, "Регистратура", tag, string.Empty, depNum);
 			Page page;
 
 			SystemWebCam webCam = new SystemWebCam(_surveyResult);

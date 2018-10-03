@@ -19,6 +19,7 @@ namespace LoyaltySurvey {
 		private Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors = new Dictionary<string, List<ItemDoctor>>();
 		private BackgroundWorker backgroundWorkerUpdateData;
 		private PageDepartmentSelect pageDepartmentSelect;
+		private PageSelectSurvey pageSelectSurvey;
 		private Timer timerUpdateData;
 
 		public PageSplashScreen() {
@@ -88,6 +89,7 @@ namespace LoyaltySurvey {
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
 			try {
 				dictionaryOfDoctors = SystemDataHandle.GetDoctorsDictionary();
+				//dictionaryOfDoctors.Add("test", new List<ItemDoctor>() { new ItemDoctor("test", "test", "test", "123", "123") });
 
 				if ((bool)e.Argument == true &&
 					Directory.GetFiles(Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\", "*.jpg", SearchOption.AllDirectories).Length != 0) 
@@ -111,28 +113,36 @@ namespace LoyaltySurvey {
 				return;
 			}
 
+
 			TimeSpan timeSpanTimeAfterClosing = DateTime.Now - ((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime;
 			if (timeSpanTimeAfterClosing.TotalSeconds > Properties.Settings.Default.PageAutocloseTimeoutInSeconds * 2)
 				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Clear();
 
-			NavigationService.Navigate(pageDepartmentSelect);
+			if (Properties.Settings.Default.EnableRegistrySurvey)
+				NavigationService.Navigate(pageSelectSurvey);
+			else
+				NavigationService.Navigate(pageDepartmentSelect);
 		}
 
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-			Application.Current.Dispatcher.Invoke(new Action(() => {
-				if (dictionaryOfDoctors.Count == 0) {
-					SystemNotification.EmptyResults();
-					PageError pageError = new PageError();
-					NavigationService.Navigate(pageError);
+			if (dictionaryOfDoctors.Count == 0) {
+				SystemNotification.EmptyResults();
+				PageError pageError = new PageError();
+				NavigationService.Navigate(pageError);
 
-					Timer timerTryToUpdate = new Timer(30 * 60 * 1000);
-					timerTryToUpdate.Elapsed += TimerTryToUpdate_Elapsed;
-					timerTryToUpdate.Start();
-				} else {
-					pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
-					CloseAllPagesExceptSplashScreen();
+				Timer timerTryToUpdate = new Timer(30 * 60 * 1000);
+				timerTryToUpdate.Elapsed += TimerTryToUpdate_Elapsed;
+				timerTryToUpdate.Start();
+			} else {
+				pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
+				pageSelectSurvey = new PageSelectSurvey(pageDepartmentSelect);
+
+				try {
+					(Application.Current.MainWindow as NavigationWindow).NavigationService.GoBack();
+				} catch (Exception exc) {
+					SystemLogging.LogMessageToFile(exc.Message + Environment.NewLine + exc.StackTrace);
 				}
-			}));
+			}
 		}
 
 		private void TimerTryToUpdate_Elapsed(object sender, ElapsedEventArgs e) {

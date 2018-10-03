@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,6 +61,15 @@ namespace LoyaltySurvey {
 			(sender as BackgroundWorker).Dispose();
 		}
 
+		private bool IsEmpty(System.Drawing.Bitmap image) {
+			var data = image.LockBits(new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
+				System.Drawing.Imaging.ImageLockMode.ReadOnly, image.PixelFormat);
+			var bytes = new byte[data.Height * data.Stride];
+			Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
+			image.UnlockBits(data);
+			return bytes.All(x => x == 0);
+		}
+
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
 			try {
 				if (!Properties.Settings.Default.IsDebug) {
@@ -68,8 +78,19 @@ namespace LoyaltySurvey {
 					SystemLogging.LogMessageToFile("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
 
 					VideoCapture videoCapture = new VideoCapture();
-					System.Drawing.Bitmap bitmap = videoCapture.QueryFrame().Bitmap;
-					bitmap.Save(savePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+					System.Drawing.Bitmap bitmap = null;
+
+					//wait for camera to be active and get non blank screen
+					for (int i = 0; i < 5; i++) {
+						bitmap = videoCapture.QueryFrame().Bitmap;
+
+						if (IsEmpty(bitmap))
+							continue;
+
+						bitmap.Save(savePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+						break;
+					}
+					
 					bitmap.Dispose();
 					videoCapture.Dispose();
 				}

@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 namespace LoyaltySurvey {
 	public class PageControlsFactory {
-		public enum ElementType { Department, Doctor, Rate, Search, Custom };
+		public enum ElementType { Department, Doctor, Rate, Search, SurveySelect, Custom };
 
 		public static TextBox CreateTextBox(FontFamily fontFamily, double fontSize, bool isContentCentered = true, double width = -1, double height = -1,
 			double left = -1, double top = -1, Panel panel = null) {
@@ -47,11 +47,40 @@ namespace LoyaltySurvey {
 				Canvas.SetTop(button, top);
 			}
 
+			button.Style = Application.Current.MainWindow.FindResource("RoundCorner") as Style;
+
 			if (panel != null)
 				panel.Children.Add(button);
 
 			return button;
 		}
+
+		//public static void RoundButton() {
+		//	ControlTemplate circleButtonTemplate = new ControlTemplate(typeof(Button));
+
+		//	// Create the circle
+		//	FrameworkElementFactory circle = new FrameworkElementFactory(typeof(Ellipse));
+		//	circle.SetValue(Ellipse.FillProperty, Brushes.LightGreen);
+		//	circle.SetValue(Ellipse.StrokeProperty, Brushes.Black);
+		//	circle.SetValue(Ellipse.StrokeThicknessProperty, 1.0);
+
+		//	// Create the ContentPresenter to show the Button.Content
+		//	FrameworkElementFactory presenter = new FrameworkElementFactory(typeof(ContentPresenter));
+		//	presenter.SetValue(ContentPresenter.ContentProperty, new TemplateBindingExtension(Button.ContentProperty));
+		//	presenter.SetValue(ContentPresenter.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+		//	presenter.SetValue(ContentPresenter.VerticalAlignmentProperty, VerticalAlignment.Center);
+
+		//	// Create the Grid to hold both of the elements
+		//	FrameworkElementFactory grid = new FrameworkElementFactory(typeof(Grid));
+		//	grid.AppendChild(circle);
+		//	grid.AppendChild(presenter);
+
+		//	// Set the Grid as the ControlTemplate.VisualTree
+		//	circleButtonTemplate.VisualTree = grid;
+
+		//	// Set the ControlTemplate as the Button.Template
+		//	CircleButton.Template = circleButtonTemplate;
+		//}
 
 		public static Button CreateButtonWithImageOnly(System.Drawing.Bitmap bitmap, double width, double height,
 			double left = -1, double top = -1, Panel panel = null) {
@@ -102,11 +131,14 @@ namespace LoyaltySurvey {
 				imageInside = GetImageForDoctor(dcode);
 				normalizedStr = str.Replace(" ", Environment.NewLine);
 				maxSizeCoefficient = 0.65;
+			} else if (type == ElementType.SurveySelect) {
+				maxSizeCoefficient = 0.8;
+				fontCoefficient = 1.0;
 			}
 
 			Grid grid = new Grid();
-			grid.Width = width;
-			grid.Height = height;
+			grid.Width = width - 5;
+			grid.Height = height - 5;
 
 			Button button = CreateButton(width, height, left, top, panel);
 			Image image = CreateImage((System.Drawing.Bitmap)imageInside, -1, -1, -1, -1, null, true, 10);
@@ -129,11 +161,13 @@ namespace LoyaltySurvey {
 				orientation = Orientation.Horizontal;
 
 			if (type == ElementType.Doctor)
-				image.Margin = new Thickness(10, 10, 10, 0);
+				image.Margin = new Thickness(0);
 
 			if (orientation == Orientation.Horizontal &&
-				horizontalAlignment == HorizontalAlignment.Center)
+				horizontalAlignment == HorizontalAlignment.Center) {
 				image.Margin = new Thickness(10, 10, 0, 10);
+				textBlock.Margin = new Thickness(0, 0, 10, 0);
+			}
 
 			if (orientation == Orientation.Horizontal) {
 				ColumnDefinition col0 = new ColumnDefinition();
@@ -157,6 +191,14 @@ namespace LoyaltySurvey {
 
 				Grid.SetRow(image, 0);
 				Grid.SetRow(textBlock, 1);
+
+				Border border = new Border();
+				border.Background = new SolidColorBrush(Color.FromRgb(250, 250, 250));
+				border.CornerRadius = new CornerRadius(0, 0, 12, 12); // 12 - same as in the style
+				border.Margin = new Thickness(0, 0, 0, 5); // 5 - the shadow offset
+				textBlock.Margin = new Thickness(0, 0, 0, 5);
+				Grid.SetRow(border, 1);
+				grid.Children.Add(border);
 			}
 
 			textBlock.VerticalAlignment = verticalAlignment;
@@ -264,8 +306,8 @@ namespace LoyaltySurvey {
 
 		public static void AddDropShadow(UIElement element, bool heavyShadow = false) {
 			int depth = 5;
-			double opacity = 0.4;
-			int blurRadius = 5;
+			double opacity = 0.2;
+			int blurRadius = 10;
 
 			if (heavyShadow) {
 				depth = 8;

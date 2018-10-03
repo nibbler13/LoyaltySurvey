@@ -2,6 +2,8 @@
 
 namespace LoyaltySurvey {
 	public class ItemSurveyResult {
+		public enum Type { Doctor, Registry }
+
 		public DateTime SurveyDateTime { get; private set; }
 		public string DCode { get; private set; }
 		public string DocName { get; private set; }
@@ -14,9 +16,11 @@ namespace LoyaltySurvey {
 		public string ClinicRecommendMark { get; set; }
 		public EmotionObject EmotionObject { get; set; }
 		public bool IsInsertedToDb { get; set; }
+		public Type MarkType { get; set; }
 
-		public ItemSurveyResult(DateTime dateTime, string dCode, string docName, 
+		public ItemSurveyResult(Type type, DateTime dateTime, string dCode, string docName, 
 			string docRate, string docDepartment, string docDeptCode) {
+			MarkType = type;
 			SurveyDateTime = dateTime;
 			DCode = dCode;
 			DocName = docName;

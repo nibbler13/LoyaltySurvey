@@ -64,6 +64,7 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth - buttonWidth,
 				StartY + AvailableHeight + Gap,
 				CanvasMain);
+			buttonNext.Style = Application.Current.MainWindow.FindResource("RoundCornerGreen") as Style;
 			buttonNext.Click += ButtonNoOrNext_Click;
 			buttonNext.Background = new SolidColorBrush(Properties.Settings.Default.ColorHeaderBackground);
 			buttonNext.Foreground = new SolidColorBrush(Properties.Settings.Default.ColorHeaderForeground);

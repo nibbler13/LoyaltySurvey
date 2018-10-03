@@ -103,11 +103,15 @@ namespace LoyaltySurvey {
 		}
 
 		protected void SetLabelsContent(string title, string subtitle) {
+			double fontTitleScale = 1.2;
+			if (title.Contains(Environment.NewLine))
+				fontTitleScale = 1.0;
+
 			_labelTitle.Content = PageControlsFactory.CreateTextBlock(
-				title, 
-				FontFamilyMain, 
-				FontSizeMain, 
-				FontWeights.Bold);
+				title,
+				FontFamilySub, 
+				FontSizeMain * fontTitleScale, 
+				FontWeights.DemiBold);
 
 			_labelSubtitle.Content = PageControlsFactory.CreateTextBlock(
 				subtitle, 
@@ -180,9 +184,9 @@ namespace LoyaltySurvey {
 				Properties.Settings.Default.ColorPageErrorHeaderBackground : 
 				Properties.Settings.Default.ColorHeaderBackground,
 				Properties.Settings.Default.ColorHeaderForeground,
-				FontFamilyMain,
+				FontFamilySub,
 				FontSizeMain,
-				FontWeights.DemiBold,
+				FontWeights.Normal,
 				ScreenWidth,
 				HeaderHeight,
 				0,
@@ -202,13 +206,27 @@ namespace LoyaltySurvey {
 				ScreenHeight - DefaultButtonHeight - colorLineHeight - Gap,
 				CanvasMain);
 
-			_buttonBack = PageControlsFactory.CreateButtonWithImageOnly(
-				Properties.Resources.ButtonBack,
-				DefaultButtonWidth,
+			//_buttonBack = PageControlsFactory.CreateButtonWithImageOnly(
+			//	Properties.Resources.ButtonBack,
+			//	DefaultButtonWidth,
+			//	DefaultButtonHeight,
+			//	Gap,
+			//	Canvas.GetTop(_labelSubtitle),
+			//	CanvasMain);
+
+			_buttonBack = PageControlsFactory.CreateButtonWithImageAndText(
+				"Назад",
+				DefaultButtonWidth * 3,
 				DefaultButtonHeight,
+				PageControlsFactory.ElementType.Custom,
+				FontFamilySub,
+				FontSizeMain,
+				FontWeights.Normal,
+				Properties.Resources.ButtonBack,
 				Gap,
 				Canvas.GetTop(_labelSubtitle),
 				CanvasMain);
+
 			_buttonBack.Click += ButtonBack_Click;
 			
 			_dispatcherTimerPageAutoClose = new DispatcherTimer();
@@ -225,12 +243,14 @@ namespace LoyaltySurvey {
 		protected Rect CreateFirstOrLastPageControls(string leftTopText, string leftBottomText, string rightText, string subtitleText, bool isFirstPage) {
 			CanvasMain.Children.Clear();
 
-			double leftPartWidthCoefficient = 70;
-			double leftPartHeightCoefficient = 60;
+			double leftTopFontScale = 2.9;
+			double leftBottomFontScale = 1.4;
+			double rightFontScale = 3.9;
 
 			if (!isFirstPage) {
-				leftPartWidthCoefficient = 40;
-				leftPartHeightCoefficient = 50;
+				leftTopFontScale = 1.9;
+				leftBottomFontScale = 1.4;
+				rightFontScale = 2.4;
 			}
 
 			PageControlsFactory.CreateLabel(
@@ -245,7 +265,12 @@ namespace LoyaltySurvey {
 				0, 
 				0, 
 				CanvasMain);
-			
+
+			StackPanel stackPanelInner = new StackPanel();
+			stackPanelInner.Orientation = Orientation.Vertical;
+			stackPanelInner.VerticalAlignment = VerticalAlignment.Center;
+			stackPanelInner.Margin = new Thickness(0, 0, 15, 0);
+
 			Grid gridTitle = new Grid();
 			gridTitle.Width = ScreenWidth;
 			gridTitle.Height = StartY * 1.5;
@@ -254,69 +279,44 @@ namespace LoyaltySurvey {
 			Canvas.SetLeft(gridTitle, 0);
 			Canvas.SetTop(gridTitle, 0);
 
-			ColumnDefinition columnDefinition0 = new ColumnDefinition();
-			columnDefinition0.Width = new GridLength(leftPartWidthCoefficient, GridUnitType.Star);
-			ColumnDefinition columnDefinition1 = new ColumnDefinition();
-			columnDefinition1.Width = new GridLength(100 - leftPartWidthCoefficient, GridUnitType.Star);
-			gridTitle.ColumnDefinitions.Add(columnDefinition0);
-			gridTitle.ColumnDefinitions.Add(columnDefinition1);
-
-			Grid gridTitleLeftParts = new Grid();
-			Grid.SetColumn(gridTitleLeftParts, 0);
-			Grid.SetRow(gridTitleLeftParts, 0);
-			gridTitle.Children.Add(gridTitleLeftParts);
-
-			RowDefinition rowDefinition0 = new RowDefinition();
-			rowDefinition0.Height = new GridLength(leftPartHeightCoefficient, GridUnitType.Star);
-			RowDefinition rowDefinition1 = new RowDefinition();
-			rowDefinition1.Height = new GridLength(100 - leftPartHeightCoefficient, GridUnitType.Star);
-			gridTitleLeftParts.RowDefinitions.Add(rowDefinition0);
-			gridTitleLeftParts.RowDefinitions.Add(rowDefinition1);
-
-			Viewbox viewboxLeftTop = new Viewbox();
-			viewboxLeftTop.Child = PageControlsFactory.CreateTextBlock(
+			TextBlock leftTop = PageControlsFactory.CreateTextBlock(
 				leftTopText, 
 				FontFamilySub, 
-				FontSizeMain, 
+				FontSizeMain * leftTopFontScale, 
 				FontWeights.Normal, 
 				Properties.Settings.Default.ColorHeaderForeground,
 				FontStretches.UltraExpanded);
-			Grid.SetColumn(viewboxLeftTop, 0);
-			Grid.SetRow(viewboxLeftTop, 0);
-			viewboxLeftTop.HorizontalAlignment = HorizontalAlignment.Right;
-			viewboxLeftTop.VerticalAlignment = VerticalAlignment.Bottom;
-			viewboxLeftTop.Margin = new Thickness(Gap, Gap / 2, Gap / 2, 0);
-			gridTitleLeftParts.Children.Add(viewboxLeftTop);
-			
-			Viewbox viewboxLeftBottom = new Viewbox();
-			viewboxLeftBottom.Child = PageControlsFactory.CreateTextBlock(
+			leftTop.HorizontalAlignment = HorizontalAlignment.Right;
+			stackPanelInner.Children.Add(leftTop);
+
+			TextBlock leftBottom = PageControlsFactory.CreateTextBlock(
 				leftBottomText, 
 				FontFamilySub, 
-				FontSizeMain, 
+				FontSizeMain * leftBottomFontScale, 
 				FontWeights.UltraLight, 
 				Properties.Settings.Default.ColorHeaderForeground,
 				FontStretches.UltraExpanded);
-			Grid.SetColumn(viewboxLeftBottom, 0);
-			Grid.SetRow(viewboxLeftBottom, 1);
-			gridTitleLeftParts.Children.Add(viewboxLeftBottom);
-			viewboxLeftBottom.HorizontalAlignment = HorizontalAlignment.Right;
-			viewboxLeftBottom.VerticalAlignment = VerticalAlignment.Top;
-			viewboxLeftBottom.Margin = new Thickness(Gap, 0, Gap / 2, Gap);
+			stackPanelInner.Children.Add(leftBottom);
 
-			Viewbox viewboxRight = new Viewbox();
-			viewboxRight.Child = PageControlsFactory.CreateTextBlock(
+			StackPanel stackPanelRoot = new StackPanel();
+			stackPanelRoot.Orientation = Orientation.Horizontal;
+			stackPanelRoot.HorizontalAlignment = HorizontalAlignment.Center;
+			stackPanelRoot.VerticalAlignment = VerticalAlignment.Center;
+			stackPanelRoot.Children.Add(stackPanelInner);
+			stackPanelRoot.Margin = new Thickness(10);
+			
+			TextBlock right = PageControlsFactory.CreateTextBlock(
 				rightText, 
 				FontFamilyMain, 
-				FontSizeMain, 
+				FontSizeMain * rightFontScale, 
 				FontWeights.Heavy, 
 				Properties.Settings.Default.ColorHeaderForeground,
 				FontStretches.UltraExpanded);
-			Grid.SetColumn(viewboxRight, 1);
-			Grid.SetRow(viewboxRight, 0);
-			gridTitle.Children.Add(viewboxRight);
-			viewboxRight.HorizontalAlignment = HorizontalAlignment.Left;
-			viewboxRight.VerticalAlignment = VerticalAlignment.Center;
-			viewboxRight.Margin = new Thickness(Gap / 2, Gap, Gap, Gap);
+			right.VerticalAlignment = VerticalAlignment.Center;
+			right.Margin = new Thickness(15, 0, 0, 0);
+			stackPanelRoot.Children.Add(right);
+
+			gridTitle.Children.Add(stackPanelRoot);
 
 			double logoBzFullWidth = Properties.Resources.LogoBzFull.Width;
 			double logoBzFullHeight = Properties.Resources.LogoBzFull.Height;
@@ -354,8 +354,7 @@ namespace LoyaltySurvey {
 					ScreenHeight - DefaultButtonHeight,
 					CanvasMain);
 			}
-
-			//need to work previewmouseleftbutton on full screen area
+			
 			Label labelToHandleMousePreview = PageControlsFactory.CreateLabel(
 				"",
 				Colors.Transparent,
@@ -374,9 +373,10 @@ namespace LoyaltySurvey {
 			int day = DateTime.Now.Day;
 			int month = DateTime.Now.Month;
 			if ((month == 12 && day >= 10) || (month == 1 && day < 10)) {
-				PageControlsFactory.AddDropShadow(viewboxLeftBottom, true);
-				PageControlsFactory.AddDropShadow(viewboxLeftTop, true);
-				PageControlsFactory.AddDropShadow(viewboxRight, true);
+				//PageControlsFactory.AddDropShadow(viewboxLeftBottom, true);
+				//PageControlsFactory.AddDropShadow(viewboxLeftTop, true);
+				//PageControlsFactory.AddDropShadow(viewboxRight, true);
+				PageControlsFactory.AddDropShadow(stackPanelRoot);
 
 				Image imageNewYearTree = PageControlsFactory.CreateImage(
 					Properties.Resources.NewYearTree,
@@ -500,9 +500,10 @@ namespace LoyaltySurvey {
 				StartX,
 				Canvas.GetTop(ScrollViewer) + ScrollViewer.Height + Gap,
 				CanvasMain);
+			_buttonScrollLeft.Style = Application.Current.MainWindow.FindResource("RoundCornerBlue") as Style;
 			_buttonScrollLeft.Click += ButtonScrollLeft_Click;
 			_buttonScrollLeft.Visibility = Visibility.Hidden;
-			_buttonScrollLeft.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			//_buttonScrollLeft.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
 			_buttonScrollRight = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonRight,
@@ -511,11 +512,12 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth - DefaultButtonHeight,
 				Canvas.GetTop(_buttonScrollLeft),
 				CanvasMain);
+			_buttonScrollRight.Style = Application.Current.MainWindow.FindResource("RoundCornerBlue") as Style;
 			_buttonScrollRight.Click += ButtonScrollRight_Click;
 			_buttonScrollRight.Visibility = Visibility.Hidden;
-			_buttonScrollRight.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			//_buttonScrollRight.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
-			AddBlickingEffectToButton(new List<Button>() { _buttonScrollLeft, _buttonScrollRight });
+			//AddBlickingEffectToButton(new List<Button>() { _buttonScrollLeft, _buttonScrollRight });
 		}
 
 		private void CreateUpDownButtons() {
@@ -526,9 +528,10 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth - DefaultButtonHeight,
 				StartY,
 				CanvasMain);
+			_buttonScrollUp.Style = Application.Current.MainWindow.FindResource("RoundCornerBlue") as Style;
 			_buttonScrollUp.Click += ButtonScrollUp_Click;
 			_buttonScrollUp.Visibility = Visibility.Hidden;
-			_buttonScrollUp.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			//_buttonScrollUp.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
 			_buttonScrollDown = PageControlsFactory.CreateButtonWithImageOnly(
 				Properties.Resources.ButtonDown,
@@ -537,10 +540,11 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth - DefaultButtonHeight,
 				Canvas.GetTop(_buttonBack),
 				CanvasMain);
+			_buttonScrollDown.Style = Application.Current.MainWindow.FindResource("RoundCornerBlue") as Style;
 			_buttonScrollDown.Click += ButtonScrollDown_Click;
-			_buttonScrollDown.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
+			//_buttonScrollDown.Background = new SolidColorBrush(Properties.Settings.Default.ColorScrollButton);
 
-			AddBlickingEffectToButton(new List<Button>() { _buttonScrollUp, _buttonScrollDown });
+			//AddBlickingEffectToButton(new List<Button>() { _buttonScrollUp, _buttonScrollDown });
 		}
 
 		private void AddBlickingEffectToButton(List<Button> buttons) {
@@ -571,6 +575,7 @@ namespace LoyaltySurvey {
 				StartX + AvailableWidth / 2 - Gap * 2 - buttonWidth,
 				StartY + AvailableHeight - DefaultButtonHeight,
 				CanvasMain);
+			_buttonYesQuestion.Style = Application.Current.MainWindow.FindResource("RoundCornerGreen") as Style;
 
 			_buttonNoQuestion = PageControlsFactory.CreateButtonWithImageAndText(
 				"Нет",

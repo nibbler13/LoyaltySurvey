@@ -353,6 +353,16 @@ namespace LoyaltySurvey.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Doctors {
+            get {
+                object obj = ResourceManager.GetObject("Doctors", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DoctorWithoutAPhoto {
             get {
                 object obj = ResourceManager.GetObject("DoctorWithoutAPhoto", resourceCulture);
@@ -406,6 +416,16 @@ namespace LoyaltySurvey.Properties {
         internal static System.Drawing.Bitmap NewYearTree {
             get {
                 object obj = ResourceManager.GetObject("NewYearTree", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PicRegistry {
+            get {
+                object obj = ResourceManager.GetObject("PicRegistry", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -547,7 +567,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Найти врача по фамилии.
+        ///   Ищет локализованную строку, похожую на Поиск врача по фамилии.
         /// </summary>
         internal static string StringPageDepartmentSelectSearchButton {
             get {
@@ -565,7 +585,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Найдите врача по фамилии или выберите отделение, в котором Вы были.
+        ///   Ищет локализованную строку, похожую на Выберите отделение, в котором Вы были или найдите врача по фамилии.
         /// </summary>
         internal static string StringPageDepartmentSelectTitle {
             get {
@@ -583,7 +603,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пожалуйста, оцените качество приема у врача.
+        ///   Ищет локализованную строку, похожую на Пожалуйста, оцените прием у врача.
         /// </summary>
         internal static string StringPageDoctorRateTitle {
             get {
@@ -684,6 +704,60 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Для выбора коснитесь кнопки с нужной оценкой.
+        /// </summary>
+        internal static string StringPageRegistryRateSubitle {
+            get {
+                return ResourceManager.GetString("StringPageRegistryRateSubitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пожалуйста, оцените работу регистратуры.
+        /// </summary>
+        internal static string StringPageRegistryRateTitle {
+            get {
+                return ResourceManager.GetString("StringPageRegistryRateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Оценка приема у врача.
+        /// </summary>
+        internal static string StringPageSelectSurveyDoctorsRate {
+            get {
+                return ResourceManager.GetString("StringPageSelectSurveyDoctorsRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Оценка работы регистратуры.
+        /// </summary>
+        internal static string StringPageSelectSurveyRegistryRate {
+            get {
+                return ResourceManager.GetString("StringPageSelectSurveyRegistryRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Для выбора коснитесь нужной кнопки.
+        /// </summary>
+        internal static string StringPageSelectSurveySubtitle {
+            get {
+                return ResourceManager.GetString("StringPageSelectSurveySubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите опрос.
+        /// </summary>
+        internal static string StringPageSelectSurveyTitle {
+            get {
+                return ResourceManager.GetString("StringPageSelectSurveyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Для продолжения коснитесь экрана.
         /// </summary>
         internal static string StringPageSplashScreenSubtitle {
@@ -693,7 +767,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Просим Вас уделить пару минут и оценить качество нашей работы.
+        ///   Ищет локализованную строку, похожую на Просим Вас уделить пару минут и оценить нашу работу.
         /// </summary>
         internal static string StringPageSplashScreenTitleLeftBottom {
             get {
@@ -720,7 +794,7 @@ namespace LoyaltySurvey.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Просим Вас принять участие в опросе о качестве работы нашей клиники.
+        ///   Ищет локализованную строку, похожую на Просим Вас принять участие в опросе о работе нашей клиники.
         /// </summary>
         internal static string StringPageSplashScreenWelcome {
             get {
