@@ -8,8 +8,8 @@ using System.Net.Mime;
 namespace LoyaltySurvey {
 	public class SystemMail {
 		public static void SendMail (string subject, string body, string receiver, string attachmentPath = "") {
-			SystemLogging.LogMessageToFile("Отправка сообщения, тема: " + subject + ", текст: " + body);
-			SystemLogging.LogMessageToFile("Получатели: " + receiver);
+			SystemLogging.ToLog("Отправка сообщения, тема: " + subject + ", текст: " + body);
+			SystemLogging.ToLog("Получатели: " + receiver);
 
 			if (string.IsNullOrEmpty(receiver))
 				return;
@@ -83,12 +83,12 @@ namespace LoyaltySurvey {
 				client.SendCompleted += (s, e) => {
 					client.Dispose();
 					message.Dispose();
-					SystemLogging.LogMessageToFile("Письмо отправлено успешно");
+					SystemLogging.ToLog("Письмо отправлено успешно");
 				};
 
 				client.SendAsync(message, null);
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
+				SystemLogging.ToLog("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
 			}
 		}
 	}

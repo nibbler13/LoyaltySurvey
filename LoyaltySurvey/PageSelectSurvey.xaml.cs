@@ -30,7 +30,7 @@ namespace LoyaltySurvey {
 				Properties.Resources.StringPageSelectSurveyTitle,
 				Properties.Resources.StringPageSelectSurveySubtitle);
 
-			SystemLogging.LogMessageToFile("Отображение страницы с выбором типа опроса");
+			SystemLogging.ToLog("Отображение страницы с выбором типа опроса");
 
 			double buttonWidth = AvailableWidth / 3;
 			double buttonHeight = AvailableHeight / 2;

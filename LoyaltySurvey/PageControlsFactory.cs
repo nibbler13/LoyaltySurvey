@@ -347,13 +347,13 @@ namespace LoyaltySurvey {
 				}
 
 				if (string.IsNullOrEmpty(wantedFile)) {
-					SystemLogging.LogMessageToFile("Не удалось найти изображение для доктора с кодом: " + dcode);
+					SystemLogging.ToLog("Не удалось найти изображение для доктора с кодом: " + dcode);
 					return Properties.Resources.DoctorWithoutAPhoto;
 				}
 
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message + 
+				SystemLogging.ToLog("Не удалось открыть файл с изображением: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DoctorWithoutAPhoto;
 			}
@@ -365,13 +365,13 @@ namespace LoyaltySurvey {
 				string wantedFile = mask.Replace("*", depname);
 
 				if (!File.Exists(wantedFile)) {
-					SystemLogging.LogMessageToFile("Не удалось найти изображение для подразделения: " + depname);
+					SystemLogging.ToLog("Не удалось найти изображение для подразделения: " + depname);
 					return Properties.Resources.DepartmentWithoutAPhoto;
 				}
 
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile("Не удалось открыть файл с изображением: " + e.Message +
+				SystemLogging.ToLog("Не удалось открыть файл с изображением: " + e.Message +
 					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DepartmentWithoutAPhoto;
 			}

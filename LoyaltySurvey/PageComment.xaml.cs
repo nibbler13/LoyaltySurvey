@@ -32,7 +32,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.LogMessageToFile("Нажата кнопка 'Да'");
+			SystemLogging.ToLog("Нажата кнопка 'Да'");
 
 			textBox = PageControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain, false);
 			PageOnscreenKeyboard onscreenKeyboard = new PageOnscreenKeyboard(textBox, AvailableWidth, AvailableHeight,
@@ -88,9 +88,9 @@ namespace LoyaltySurvey {
 
 			if ((sender as Button).Tag.ToString().Equals("Далее")) {
 				comment = textBox.Text;
-				SystemLogging.LogMessageToFile("Нажата кнопка 'Далее', введенный комментарий: " + comment);
+				SystemLogging.ToLog("Нажата кнопка 'Далее', введенный комментарий: " + comment);
 			} else
-				SystemLogging.LogMessageToFile("Нажата кнопка 'Нет'");
+				SystemLogging.ToLog("Нажата кнопка 'Нет'");
 
 			_surveyResult.Comment = comment;
 

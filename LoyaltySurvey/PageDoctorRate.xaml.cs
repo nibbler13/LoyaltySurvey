@@ -84,7 +84,7 @@ namespace LoyaltySurvey {
 
 		private void ButtonRate_Click(object sender, EventArgs e) {
 			string tag = (sender as Control).Tag.ToString();
-			SystemLogging.LogMessageToFile("Выбрана оценка: " + tag);
+			SystemLogging.ToLog("Выбрана оценка: " + tag);
 			_surveyResult = new ItemSurveyResult(ItemSurveyResult.Type.Doctor, DateTime.Now, doctor.Code,
 				doctor.Name, tag, doctor.Department, doctor.DeptCode);
 			Page page;

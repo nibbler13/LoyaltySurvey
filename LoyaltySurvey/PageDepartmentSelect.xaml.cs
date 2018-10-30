@@ -22,7 +22,7 @@ namespace LoyaltySurvey {
 			_dictionaryOfDoctors = dictionaryOfDoctors;
 			_dictionarySelectDoctorPages = new Dictionary<string, PageDoctorSelect>();
 
-			SystemLogging.LogMessageToFile("Количество отделений: " + dictionaryOfDoctors.Count);
+			SystemLogging.ToLog("Количество отделений: " + dictionaryOfDoctors.Count);
 
 			SetLabelsContent(
 				Properties.Resources.StringPageDepartmentSelectTitle,
@@ -74,7 +74,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonSearch_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.LogMessageToFile("Нажата кнопка 'Поиск'");
+			SystemLogging.ToLog("Нажата кнопка 'Поиск'");
 
 			PageDoctorSearch pageDoctorSearch = new PageDoctorSearch(_dictionaryOfDoctors);
 			NavigationService.Navigate(pageDoctorSearch);
@@ -82,7 +82,7 @@ namespace LoyaltySurvey {
 
 		private void PanelDepartment_Click(object sender, RoutedEventArgs e) {
 			string depname = (sender as Control).Tag.ToString();
-			SystemLogging.LogMessageToFile("Выбрано отделение: " + depname);
+			SystemLogging.ToLog("Выбрано отделение: " + depname);
 
 			PageDoctorSelect pageDoctorSelect;
 			if (_dictionarySelectDoctorPages.ContainsKey(depname))

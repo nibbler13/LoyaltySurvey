@@ -131,7 +131,7 @@ namespace LoyaltySurvey {
 
 		private void StartSearch() {
 			string text = textBox.Text;
-			SystemLogging.LogMessageToFile("Поиск докторов по тексту: " + text);
+			SystemLogging.ToLog("Поиск докторов по тексту: " + text);
 
 			if (string.IsNullOrWhiteSpace(text) ||
 				string.IsNullOrEmpty(text)) {
@@ -147,7 +147,7 @@ namespace LoyaltySurvey {
 						doctors.Add(doctor);
 
 			if (doctors.Count == 0) {
-				SystemLogging.LogMessageToFile("По заданному тексту докторов не найдено");
+				SystemLogging.ToLog("По заданному тексту докторов не найдено");
 				SetLabelInfoToNothingFound();
 				return;
 			}
@@ -157,7 +157,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void UpdateResultPanelContent(List<ItemDoctor> doctors) {
-			SystemLogging.LogMessageToFile("Количество найденных докторов: " + doctors.Count);
+			SystemLogging.ToLog("Количество найденных докторов: " + doctors.Count);
 
 			CanvasForElements.Children.Clear();
 			SetLabelSubtitleText(Properties.Resources.StringPageDoctorSearchSubtitleFound);
@@ -191,7 +191,7 @@ namespace LoyaltySurvey {
 
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
 			ItemDoctor doctor = (sender as Control).Tag as ItemDoctor;
-			SystemLogging.LogMessageToFile("Выбран доктор: " + doctor.Name);
+			SystemLogging.ToLog("Выбран доктор: " + doctor.Name);
 			PageDoctorRate pageDoctorRate = new PageDoctorRate(doctor);
 			NavigationService.Navigate(pageDoctorRate);
 		}

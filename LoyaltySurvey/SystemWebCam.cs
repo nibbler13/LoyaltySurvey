@@ -24,7 +24,7 @@ namespace LoyaltySurvey {
 				DsDevice[] dsDevices = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
 				if (dsDevices.Length == 0) {
 					surveyResult.PhotoLink = "Camera isn't installed";
-					SystemLogging.LogMessageToFile("CaptureImageFromWebCamAndSave: There is no video input device available");
+					SystemLogging.ToLog("CaptureImageFromWebCamAndSave: There is no video input device available");
 					return;
 				}
 
@@ -38,7 +38,7 @@ namespace LoyaltySurvey {
 					try {
 						Directory.CreateDirectory(photoSavePath);
 					} catch (Exception e) {
-						SystemLogging.LogMessageToFile("CaptureImageFromWebCamAndSave exception: " + e.Message +
+						SystemLogging.ToLog("CaptureImageFromWebCamAndSave exception: " + e.Message +
 							Environment.NewLine + e.StackTrace);
 						return;
 					}
@@ -75,7 +75,7 @@ namespace LoyaltySurvey {
 				if (!Properties.Settings.Default.IsDebug) {
 					string savePath = surveyResult.PhotoLink;
 
-					SystemLogging.LogMessageToFile("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
+					SystemLogging.ToLog("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
 
 					VideoCapture videoCapture = new VideoCapture();
 					System.Drawing.Bitmap bitmap = null;
@@ -125,9 +125,9 @@ namespace LoyaltySurvey {
 					Properties.Settings.Default.MisInfoclinicaDbPassword);
 
 				bool result = fBClient.ExecuteUpdateQuery(updateQuery, parameters);
-				SystemLogging.LogMessageToFile("Результат записи оценок эмоций: " + result);
+				SystemLogging.ToLog("Результат записи оценок эмоций: " + result);
 			} catch (Exception exception) {
-				SystemLogging.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
+				SystemLogging.ToLog("BackgroundWorker_DoWork exception: " + exception.Message +
 					Environment.NewLine + exception.StackTrace);
 			}
 		}

@@ -70,7 +70,7 @@ namespace LoyaltySurvey {
 			string dCode = "0";
 			string depNum = (Properties.Settings.Default.ClinicRestrictions1AdultOnly2ChildOnly - 1).ToString();
 			
-			SystemLogging.LogMessageToFile("Выбрана оценка: " + tag);
+			SystemLogging.ToLog("Выбрана оценка: " + tag);
 			_surveyResult = new ItemSurveyResult(ItemSurveyResult.Type.Registry, DateTime.Now, dCode, "Регистратура", tag, string.Empty, depNum);
 			Page page;
 

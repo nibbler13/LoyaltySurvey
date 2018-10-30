@@ -8,18 +8,22 @@ namespace LoyaltySurvey {
         private FbConnection connection;
 
 		public SystemFirebirdClient(string ipAddress, string baseName, string user, string pass) {
-			SystemLogging.LogMessageToFile("Создание подключения к базе FB: " + 
+			SystemLogging.ToLog("Создание подключения к базе FB: " + 
 				ipAddress + ":" + baseName);
 
 			FbConnectionStringBuilder cs = new FbConnectionStringBuilder();
-            cs.DataSource = ipAddress;
-            cs.Database = baseName;
-            cs.UserID = user;
-            cs.Password = pass;
-            cs.Charset = "NONE";
-            cs.Pooling = false;
+			try {
+				cs.DataSource = ipAddress;
+				cs.Database = baseName;
+				cs.UserID = user;
+				cs.Password = pass;
+				cs.Charset = "NONE";
+				cs.Pooling = false;
 
-            connection = new FbConnection(cs.ToString());
+				connection = new FbConnection(cs.ToString());
+			} catch (Exception e) {
+				SystemLogging.ToLog(e.Message + Environment.NewLine + e.StackTrace);
+			}
 		}
 
 		public DataTable GetDataTable(string query) {
@@ -32,7 +36,7 @@ namespace LoyaltySurvey {
 				FbDataAdapter fbDataAdapter = new FbDataAdapter(command);
 				fbDataAdapter.Fill(dataTable);
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile("GetDataTable exception: " + query + 
+				SystemLogging.ToLog("GetDataTable exception: " + query + 
 					Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
 			} finally {
 				connection.Close();
@@ -54,7 +58,7 @@ namespace LoyaltySurvey {
 
 				updated = update.ExecuteNonQuery() > 0 ? true : false;
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile("ExecuteUpdateQuery exception: " + query +
+				SystemLogging.ToLog("ExecuteUpdateQuery exception: " + query +
 					Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
 			} finally {
 				connection.Close();

@@ -60,7 +60,7 @@ namespace LoyaltySurvey {
 
 
 		public PageTemplate() {
-			SystemLogging.LogMessageToFile("---> Создание страницы " + this.GetType().Name);
+			SystemLogging.ToLog("---> Создание страницы " + this.GetType().Name);
 
 			ScreenWidth = SystemParameters.PrimaryScreenWidth;
 			ScreenHeight = SystemParameters.PrimaryScreenHeight;
@@ -712,7 +712,7 @@ namespace LoyaltySurvey {
 
 
 		private void ButtonBack_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.LogMessageToFile("<-- Нажатие кнопки назад");
+			SystemLogging.ToLog("<-- Нажатие кнопки назад");
 			NavigationService.GoBack();
 		}
 
@@ -791,7 +791,7 @@ namespace LoyaltySurvey {
 		}
 
 		protected void CloseAllPagesExceptSplashScreen(bool showDepartmentSelect = false) {
-			SystemLogging.LogMessageToFile("<<< Возвращение к стартовой странице");
+			SystemLogging.ToLog("<<< Возвращение к стартовой странице");
 
 			try {
 				while (NavigationService.CanGoBack)
@@ -799,10 +799,14 @@ namespace LoyaltySurvey {
 
 				if (showDepartmentSelect && NavigationService.CanGoForward)
 					NavigationService.GoForward();
+				else {
+					while (NavigationService.CanGoForward)
+						NavigationService.RemoveBackEntry();
+				}
 
 				((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime = DateTime.Now;
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile("CloseAllFormsExceptMain exception: " + e.Message + 
+				SystemLogging.ToLog("CloseAllFormsExceptMain exception: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
 			}
 		}
@@ -813,7 +817,7 @@ namespace LoyaltySurvey {
 			else
 				((MainWindow)Application.Current.MainWindow).previousRatesDcodes.Add(surveyResult.DCode);
 
-			SystemLogging.LogMessageToFile("Запись результата в базу данных: " + surveyResult.ToString());
+			SystemLogging.ToLog("Запись результата в базу данных: " + surveyResult.ToString());
 
 			SystemFirebirdClient fBClient = new SystemFirebirdClient(
 				Properties.Settings.Default.MisInfoclinicaDbAddress,
@@ -847,13 +851,13 @@ namespace LoyaltySurvey {
 			
 			surveyResult.IsInsertedToDb = fBClient.ExecuteUpdateQuery(query, surveyResults);
 
-			SystemLogging.LogMessageToFile("Результат выполнения: " + surveyResult.IsInsertedToDb);
+			SystemLogging.ToLog("Результат выполнения: " + surveyResult.IsInsertedToDb);
 		}
 
 
 
 		private void ClassPageTemplate_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-			SystemLogging.LogMessageToFile("Видимость страницы " + sender.GetType().Name +
+			SystemLogging.ToLog("Видимость страницы " + sender.GetType().Name +
 				" изменилась с " + e.OldValue + " на " + e.NewValue);
 
 			if (this is PageSplashScreen ||
@@ -867,7 +871,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void DispatcherTimerPageAutoClose_Tick(object sender, EventArgs e) {
-			SystemLogging.LogMessageToFile("Истекло время таймера автозакрытия страницы");
+			SystemLogging.ToLog("Истекло время таймера автозакрытия страницы");
 			FireUpTimerPageAutoClose();
 		}
 

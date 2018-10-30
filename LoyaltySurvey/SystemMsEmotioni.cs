@@ -56,7 +56,7 @@ namespace LoyaltySurvey {
 
 	class SystemMsEmotioni {
 		public static async Task<List<EmotionObject>> GetEmotions(string fileName) {
-			SystemLogging.LogMessageToFile("MsEmotionApi.GetEmotions: " + fileName);
+			SystemLogging.ToLog("MsEmotionApi.GetEmotions: " + fileName);
 
 			List<EmotionObject> emotionObjects = new List<EmotionObject>();
 
@@ -65,12 +65,12 @@ namespace LoyaltySurvey {
 
 			if (string.IsNullOrEmpty(emotionApiUrl) ||
 				string.IsNullOrEmpty(emotionApiKey)) {
-				SystemLogging.LogMessageToFile("В настройках не заданы параметры emotionApiUrl или emotionApiKey, пропуск");
+				SystemLogging.ToLog("В настройках не заданы параметры emotionApiUrl или emotionApiKey, пропуск");
 				return emotionObjects;
 			}
 
 			if (string.IsNullOrEmpty(fileName)) {
-				SystemLogging.LogMessageToFile("fileName is empty");
+				SystemLogging.ToLog("fileName is empty");
 				return emotionObjects;
 			}
 
@@ -88,7 +88,7 @@ namespace LoyaltySurvey {
 					responseContent = response.Content.ReadAsStringAsync().Result;
 
 					if (!response.IsSuccessStatusCode) { 
-						SystemLogging.LogMessageToFile("MsEmotionApi - не удалось получить ответ: " +
+						SystemLogging.ToLog("MsEmotionApi - не удалось получить ответ: " +
 							"response.StatusCode: " + response.StatusCode + Environment.NewLine +
 							"responseContent: " + responseContent);
 						return emotionObjects;
@@ -98,12 +98,12 @@ namespace LoyaltySurvey {
 				emotionObjects = JsonConvert.DeserializeObject<List<EmotionObject>>(responseContent);
 
 				if (emotionObjects.Count == 0)
-					SystemLogging.LogMessageToFile("Не удалось распознать лица людей");
+					SystemLogging.ToLog("Не удалось распознать лица людей");
 
 				foreach (EmotionObject emotionObject in emotionObjects)
-					SystemLogging.LogMessageToFile(emotionObject.ToString() + Environment.NewLine);
+					SystemLogging.ToLog(emotionObject.ToString() + Environment.NewLine);
 			} catch (Exception e) {
-				SystemLogging.LogMessageToFile(e.Message + Environment.NewLine + e.StackTrace);
+				SystemLogging.ToLog(e.Message + Environment.NewLine + e.StackTrace);
 			}
 
 			return emotionObjects;

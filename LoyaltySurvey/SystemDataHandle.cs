@@ -21,7 +21,7 @@ namespace LoyaltySurvey {
 				misDbUser,
 				misDbPass);
 
-			SystemLogging.LogMessageToFile("Обновление данных из базы ИК");
+			SystemLogging.ToLog("Обновление данных из базы ИК");
 			DataTable dataTable = fbClient.GetDataTable(Properties.Settings.Default.SqlQueryDoctors);
 
 			Dictionary<string, List<ItemDoctor>> dictionary = new Dictionary<string, List<ItemDoctor>>();
@@ -35,7 +35,7 @@ namespace LoyaltySurvey {
 					misDbNamePnd,
 					misDbUser,
 					misDbPass);
-				SystemLogging.LogMessageToFile("Обновление данных из базы ИК для ПНД");
+				SystemLogging.ToLog("Обновление данных из базы ИК для ПНД");
 				DataTable dataTablePnd = fbClientPnd.GetDataTable(sqlQueryDoctors);
 
 				foreach (DataRow row in dataTablePnd.Rows) {
@@ -47,7 +47,7 @@ namespace LoyaltySurvey {
 			}
 
 			if (dataTable.Rows.Count == 0) {
-				SystemLogging.LogMessageToFile("Из базы ИК вернулась пустая таблица");
+				SystemLogging.ToLog("Из базы ИК вернулась пустая таблица");
 				SystemNotification.DataBaseEmptyResponse();
 			}
 
@@ -91,21 +91,28 @@ namespace LoyaltySurvey {
 					} else
 						dictionary.Add(department, new List<ItemDoctor>() { doctor });
 				} catch (Exception e) {
-					SystemLogging.LogMessageToFile("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
+					SystemLogging.ToLog("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
 				}
 			}
 
-			SystemLogging.LogMessageToFile("Обработано строк:" + dataTable.Rows.Count);
+			SystemLogging.ToLog("Обработано строк:" + dataTable.Rows.Count);
 
 			return dictionary;
 		}
 
 		public static void UpdateDoctorsPhoto(Dictionary<string, List<ItemDoctor>> departments) {
-			SystemLogging.LogMessageToFile("Обновление фотографий докторов");
+			SystemLogging.ToLog("Обновление фотографий докторов");
 			string searchPath = @Properties.Settings.Default.PathDoctorsPhotoSource;
-			string destinationPath = Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\";
-			if (!Directory.Exists(destinationPath))
-				Directory.CreateDirectory(destinationPath);
+			string destinationPath = Path.Combine(Directory.GetCurrentDirectory(), "DoctorsPhotos");
+			if (!Directory.Exists(destinationPath)) {
+				try {
+					Directory.CreateDirectory(destinationPath);
+				} catch (Exception e) {
+					SystemLogging.ToLog("SystemDataHandle - UpdateDoctorsPhoto - " +
+						e.Message + Environment.NewLine + e.StackTrace);
+					return;
+				}
+			}
 
 			if (!Directory.Exists(searchPath)) {
 				SystemNotification.DoctorsPhotoPathError();
@@ -124,19 +131,19 @@ namespace LoyaltySurvey {
 							continue;
 
 						photoLink = photo;
-						string destFileName = destinationPath + doctor.Name + "@" + doctor.Code + ".jpg";
+						string destFileName = Path.Combine(destinationPath, doctor.Name + "@" + doctor.Code + ".jpg");
 						
 						try {
 							if (File.Exists(destFileName) && File.GetLastWriteTime(destFileName).Equals(File.GetLastWriteTime(photo))) {
-								SystemLogging.LogMessageToFile("Пропуск копирования файла (скопирован ранее) " + photo);
+								SystemLogging.ToLog("Пропуск копирования файла (скопирован ранее) " + photo);
 								break;
 							}
 
-							File.Copy(photo, destFileName);
-							SystemLogging.LogMessageToFile("Копирование файла " + photo + " в файл " + destFileName);
+							File.Copy(photo, destFileName, true);
+							SystemLogging.ToLog("Копирование файла " + photo + " в файл " + destFileName);
 							break;
 						} catch (Exception e) {
-							SystemLogging.LogMessageToFile("UpdateDoctorsPhoto exception: " + e.Message +
+							SystemLogging.ToLog("UpdateDoctorsPhoto exception: " + e.Message +
 								Environment.NewLine + e.StackTrace);
 							photoLink = "";
 						}

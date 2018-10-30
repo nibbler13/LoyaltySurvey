@@ -101,7 +101,7 @@ namespace LoyaltySurvey {
 					Application.Current.Shutdown();
 				}));
 			} catch (Exception exception) {
-				SystemLogging.LogMessageToFile("BackgroundWorker_DoWork exception: " + exception.Message +
+				SystemLogging.ToLog("BackgroundWorker_DoWork exception: " + exception.Message +
 					Environment.NewLine + exception.StackTrace);
 			}
 		}
@@ -136,11 +136,12 @@ namespace LoyaltySurvey {
 			} else {
 				pageDepartmentSelect = new PageDepartmentSelect(dictionaryOfDoctors);
 				pageSelectSurvey = new PageSelectSurvey(pageDepartmentSelect);
-
+				
 				try {
-					(Application.Current.MainWindow as NavigationWindow).NavigationService.GoBack();
+					if (NavigationService.CanGoBack)
+						NavigationService.GoBack();
 				} catch (Exception exc) {
-					SystemLogging.LogMessageToFile(exc.Message + Environment.NewLine + exc.StackTrace);
+					SystemLogging.ToLog(exc.Message + Environment.NewLine + exc.StackTrace);
 				}
 			}
 		}

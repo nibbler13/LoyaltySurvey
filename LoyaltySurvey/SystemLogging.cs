@@ -7,7 +7,7 @@ namespace LoyaltySurvey {
 		private const string LOG_FILE_NAME = "LoyaltySurvey_*.log";
 		private const int MAX_LOGFILES_QUANTITY = 7;
 
-		public static void LogMessageToFile(string msg) {
+		public static void ToLog(string msg) {
 			string today = DateTime.Now.ToString("yyyyMMdd");
 			string logFileName = AppDomain.CurrentDomain.BaseDirectory + "\\" + LOG_FILE_NAME.Replace("*", today);
 
@@ -26,7 +26,7 @@ namespace LoyaltySurvey {
 		}
 
 		public static void WriteStringToFile(string text, string fileFullPath) {
-			LogMessageToFile("Запись текста в файл: " + fileFullPath + ", содержание: " + Environment.NewLine + text);
+			ToLog("Запись текста в файл: " + fileFullPath + ", содержание: " + Environment.NewLine + text);
 
 			try {
 				System.IO.File.WriteAllText(fileFullPath, text);

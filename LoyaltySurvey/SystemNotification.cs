@@ -54,7 +54,7 @@ namespace LoyaltySurvey {
 				header = "Пациент оставил комментарий к своей негативной оценке";
 			
 			if (string.IsNullOrEmpty(header)) {
-				SystemLogging.LogMessageToFile("Пропуск отправки сообщения об обратной связи - " +
+				SystemLogging.ToLog("Пропуск отправки сообщения об обратной связи - " +
 					"неверный формат номера телефона и отсутствует комментарий");
 				return;
 			}

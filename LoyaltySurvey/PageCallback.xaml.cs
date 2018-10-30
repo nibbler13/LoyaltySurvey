@@ -35,7 +35,7 @@ namespace LoyaltySurvey {
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.LogMessageToFile("Нажата кнопка 'Да'");
+			SystemLogging.ToLog("Нажата кнопка 'Да'");
 
 			textBoxData = new TextBox();
 			textBoxData.TextChanged += TextBoxData_TextChanged;
@@ -115,9 +115,9 @@ namespace LoyaltySurvey {
 
 			if (isNextPressed) {
 				phoneNumber = textBoxData.Text;
-				SystemLogging.LogMessageToFile("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
+				SystemLogging.ToLog("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
 			} else
-				SystemLogging.LogMessageToFile("Нажата кнопка 'Нет'");
+				SystemLogging.ToLog("Нажата кнопка 'Нет'");
 
 			_surveyResult.PhoneNumber = phoneNumber;
 			SystemNotification.NegativeMark(_surveyResult);

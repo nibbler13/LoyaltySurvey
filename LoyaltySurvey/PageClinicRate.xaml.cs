@@ -107,7 +107,7 @@ namespace LoyaltySurvey {
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
 			string tag = (sender as Button).Tag.ToString();
-			SystemLogging.LogMessageToFile("Выбрана оценка: " + tag);
+			SystemLogging.ToLog("Выбрана оценка: " + tag);
 			_surveyResult.ClinicRecommendMark = tag;
 
 			PageThanks pageThanks = new PageThanks(_surveyResult);
