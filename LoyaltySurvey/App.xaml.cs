@@ -15,17 +15,29 @@ namespace LoyaltySurvey {
 	public partial class App : Application {
 		private void Application_Startup(object sender, StartupEventArgs e) {
 			DispatcherUnhandledException += App_DispatcherUnhandledException;
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
 			MainWindow window = new MainWindow();
 			window.Show();
 		}
 
+		private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
+			HandleException(e.ExceptionObject as Exception);
+		}
+
 		private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
-			SystemLogging.ToLog(e.Exception.Message + Environment.NewLine + e.Exception.StackTrace);
-			SystemMail.SendMail(
-				"Необработанное исключение", 
-				e.Exception.Message + Environment.NewLine + e.Exception.StackTrace, 
-				Settings.Default.MailCopy);
+			HandleException(e.Exception);
+		}
+
+		private void HandleException(Exception exception) {
+			if (exception != null) {
+				SystemLogging.ToLog(exception.Message + Environment.NewLine + exception.StackTrace);
+				SystemMail.SendMail(
+					"Необработанное исключение",
+					exception.Message + Environment.NewLine + exception.StackTrace,
+					Settings.Default.MailCopy);
+			}
+
 			SystemLogging.ToLog("!!!App - Аварийное завершение работы");
 			Process.GetCurrentProcess().Kill();
 		}

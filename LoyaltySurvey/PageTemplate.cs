@@ -794,14 +794,20 @@ namespace LoyaltySurvey {
 			SystemLogging.ToLog("<<< Возвращение к стартовой странице");
 
 			try {
-				while (NavigationService.CanGoBack)
+				while (NavigationService.CanGoBack) {
 					NavigationService.GoBack();
-
-				if (showDepartmentSelect && NavigationService.CanGoForward)
-					NavigationService.GoForward();
-				else {
-					while (NavigationService.CanGoForward)
+					Console.WriteLine("CloseAllPagesExceptSplashScreen - NavigationService.CanGoBack");
+					if (!showDepartmentSelect)
 						NavigationService.RemoveBackEntry();
+				}
+
+				if (showDepartmentSelect && NavigationService.CanGoForward) { 
+					NavigationService.GoForward();
+				//else {
+				//	while (NavigationService.CanGoForward) {
+				//		NavigationService.RemoveBackEntry();
+				//		Console.WriteLine("CloseAllPagesExceptSplashScreen - NavigationService.CanGoForward");
+				//	}
 				}
 
 				((MainWindow)Application.Current.MainWindow).previousThankPageCloseTime = DateTime.Now;

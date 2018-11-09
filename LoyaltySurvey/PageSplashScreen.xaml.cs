@@ -21,6 +21,7 @@ namespace LoyaltySurvey {
 		private PageDepartmentSelect pageDepartmentSelect;
 		private PageSelectSurvey pageSelectSurvey;
 		private Timer timerUpdateData;
+		private NavigationService navigationService;
 
 		public PageSplashScreen() {
 			InitializeComponent();
@@ -54,12 +55,14 @@ namespace LoyaltySurvey {
 			backgroundWorkerUpdateData = new BackgroundWorker();
 			backgroundWorkerUpdateData.DoWork += BackgroundWorker_DoWork;
 			backgroundWorkerUpdateData.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-			backgroundWorkerUpdateData.RunWorkerAsync(true);
+			backgroundWorkerUpdateData.RunWorkerAsync();
 
 			DisablePageAutoCloseTimer();
 			DisablePageAutoCloseTimerResetByClick();
 
 			TimerUpdateDataSetup();
+
+			Loaded += (s, e) => { navigationService = NavigationService; };
 		}
 
 		private void TimerUpdateDataSetup() {
@@ -128,7 +131,7 @@ namespace LoyaltySurvey {
 			if (dictionaryOfDoctors.Count == 0) {
 				SystemNotification.EmptyResults();
 				PageError pageError = new PageError();
-				NavigationService.Navigate(pageError);
+				navigationService.Navigate(pageError);
 
 				Timer timerTryToUpdate = new Timer(30 * 60 * 1000);
 				timerTryToUpdate.Elapsed += TimerTryToUpdate_Elapsed;
@@ -138,8 +141,8 @@ namespace LoyaltySurvey {
 				pageSelectSurvey = new PageSelectSurvey(pageDepartmentSelect);
 				
 				try {
-					if (NavigationService.CanGoBack)
-						NavigationService.GoBack();
+					if (navigationService.CanGoBack)
+						navigationService.GoBack();
 				} catch (Exception exc) {
 					SystemLogging.ToLog(exc.Message + Environment.NewLine + exc.StackTrace);
 				}
