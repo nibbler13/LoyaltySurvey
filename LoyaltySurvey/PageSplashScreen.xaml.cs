@@ -17,7 +17,7 @@ namespace LoyaltySurvey {
 	/// </summary>
 	public partial class PageSplashScreen : PageTemplate {
 		private Dictionary<string, List<ItemDoctor>> dictionaryOfDoctors = new Dictionary<string, List<ItemDoctor>>();
-		private BackgroundWorker backgroundWorkerUpdateData;
+		private readonly BackgroundWorker backgroundWorkerUpdateData;
 		private PageDepartmentSelect pageDepartmentSelect;
 		private PageSelectSurvey pageSelectSurvey;
 		private Timer timerUpdateData;
@@ -37,16 +37,18 @@ namespace LoyaltySurvey {
 
 			double mediaElementWidth = rect.Width;
 			double mediaElementHeight = rect.Height;
-			MediaElement mediaElement = new MediaElement();
-			mediaElement.Source = new Uri(Directory.GetCurrentDirectory() + "\\" + Properties.Settings.Default.WelcomeAnimationFileName);
-			mediaElement.Width = mediaElementWidth;
-			mediaElement.Height = mediaElementHeight;
-			mediaElement.Stretch = Stretch.Uniform;
-			mediaElement.IsEnabled = false;
-			Canvas.SetLeft(mediaElement, rect.Location.X);
+            MediaElement mediaElement = new MediaElement {
+                Source = new Uri(Directory.GetCurrentDirectory() + "\\" + Properties.Settings.Default.WelcomeAnimationFileName),
+                Width = mediaElementWidth,
+                Height = mediaElementHeight,
+                Stretch = Stretch.Uniform,
+                IsEnabled = false,
+                UnloadedBehavior = MediaState.Manual
+            };
+
+            Canvas.SetLeft(mediaElement, rect.Location.X);
 			Canvas.SetTop(mediaElement, rect.Location.Y);
 			CanvasMain.Children.Add(mediaElement);
-			mediaElement.UnloadedBehavior = MediaState.Manual;
 			mediaElement.MediaEnded += MediaElement_MediaEnded;
 
 			PreviewMouseLeftButtonDown += PageSplashScreen_PreviewMouseDown;
@@ -55,7 +57,7 @@ namespace LoyaltySurvey {
 			backgroundWorkerUpdateData = new BackgroundWorker();
 			backgroundWorkerUpdateData.DoWork += BackgroundWorker_DoWork;
 			backgroundWorkerUpdateData.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-			backgroundWorkerUpdateData.RunWorkerAsync();
+			backgroundWorkerUpdateData.RunWorkerAsync(true);
 
 			DisablePageAutoCloseTimer();
 			DisablePageAutoCloseTimerResetByClick();
@@ -94,12 +96,14 @@ namespace LoyaltySurvey {
 				dictionaryOfDoctors = SystemDataHandle.GetDoctorsDictionary();
 				//dictionaryOfDoctors.Add("test", new List<ItemDoctor>() { new ItemDoctor("test", "test", "test", "123", "123") });
 
-				if ((bool)e.Argument == true &&
+				if ((e.Argument is bool) && 
+                    (bool)e.Argument == true &&
 					Directory.GetFiles(Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\", "*.jpg", SearchOption.AllDirectories).Length != 0) 
 					return;
 
 				SystemDataHandle.UpdateDoctorsPhoto(dictionaryOfDoctors);
 				Application.Current.Dispatcher.Invoke(new Action(() => {
+                    SystemLogging.ToLog("Автоматическое завершение работы после обновления данных");
 					System.Threading.Thread.Sleep(60 * 1000);
 					Application.Current.Shutdown();
 				}));
