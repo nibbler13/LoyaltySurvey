@@ -32,7 +32,7 @@ namespace LoyaltySurvey {
 		private void HandleException(Exception exception) {
 			if (exception != null) {
 				SystemLogging.ToLog(exception.Message + Environment.NewLine + exception.StackTrace);
-				SystemMail.SendMail(
+				ClientMail.SendMail(
 					"Необработанное исключение",
 					exception.Message + Environment.NewLine + exception.StackTrace,
 					Settings.Default.MailCopy);

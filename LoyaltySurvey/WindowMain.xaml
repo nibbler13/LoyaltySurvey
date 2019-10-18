@@ -10,7 +10,7 @@
                   WindowStartupLocation="CenterScreen"
                   WindowState="Maximized" 
                   ShowsNavigationUI="False"
-                  Source="PageSplashScreen.xaml" 
+                  Source="Pages/PageSplashScreen.xaml" 
                   KeyDown="NavigationWindow_KeyDown">
     <NavigationWindow.Resources>
         <Style x:Key="RoundCorner" TargetType="{x:Type Button}">

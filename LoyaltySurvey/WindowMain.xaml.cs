@@ -9,8 +9,8 @@ namespace LoyaltySurvey {
 	/// Логика взаимодействия для MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : NavigationWindow {
-		public List<string> previousRatesDcodes = new List<string>();
-		public DateTime previousThankPageCloseTime = DateTime.Now;
+		public List<string> PreviousRatesDcodes { get; } = new List<string>();
+		public DateTime PreviousThankPageCloseTime { get; set; } = DateTime.Now;
 
 		public MainWindow() {
 			InitializeComponent();
