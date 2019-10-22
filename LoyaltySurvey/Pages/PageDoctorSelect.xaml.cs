@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -85,7 +86,7 @@ namespace LoyaltySurvey.Pages {
 
 		private void PanelDoctor_Click(object sender, RoutedEventArgs e) {
 			string docname = (sender as Control).Tag.ToString().Split('|')[1];
-			SystemLogging.ToLog("Выбран доктор: " + docname);
+			Logging.ToLog("Выбран доктор: " + docname);
 			ItemDoctor selectedDoctor = new ItemDoctor("", "", "", "", "");
 
 			foreach (ItemDoctor doctor in doctors) {

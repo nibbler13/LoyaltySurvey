@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoyaltySurvey {
-	public class SystemWebCam {
+namespace LoyaltySurvey.Utilities {
+	public class WebCam {
 		private readonly ItemSurveyResult surveyResult;
 
-		public SystemWebCam(ItemSurveyResult surveyResult) {
+		public WebCam(ItemSurveyResult surveyResult) {
 			this.surveyResult = surveyResult;
 		}
 
@@ -24,7 +24,7 @@ namespace LoyaltySurvey {
 				DsDevice[] dsDevices = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
 				if (dsDevices.Length == 0) {
 					surveyResult.PhotoLink = "Camera isn't installed";
-					SystemLogging.ToLog("CaptureImageFromWebCamAndSave: There is no video input device available");
+					Logging.ToLog("CaptureImageFromWebCamAndSave: There is no video input device available");
 					return;
 				}
 
@@ -38,7 +38,7 @@ namespace LoyaltySurvey {
 					try {
 						Directory.CreateDirectory(photoSavePath);
 					} catch (Exception e) {
-						SystemLogging.ToLog("CaptureImageFromWebCamAndSave exception: " + e.Message +
+						Logging.ToLog("CaptureImageFromWebCamAndSave exception: " + e.Message +
 							Environment.NewLine + e.StackTrace);
 						return;
 					}
@@ -77,7 +77,7 @@ namespace LoyaltySurvey {
 				if (!Properties.Settings.Default.IsDebug) {
 					string savePath = surveyResult.PhotoLink;
 
-					SystemLogging.ToLog("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
+					Logging.ToLog("Получение изображения с веб-камеры и сохранение в файл: " + savePath);
 
 					VideoCapture videoCapture = new VideoCapture();
 					System.Drawing.Bitmap bitmap = null;
@@ -97,7 +97,7 @@ namespace LoyaltySurvey {
 					videoCapture.Dispose();
 				}
 
-				List<Items.EmotionObject> emotionObjects = SystemMsEmotioni.GetEmotions(surveyResult.PhotoLink).Result;
+				List<Items.EmotionObject> emotionObjects = MsEmotioni.GetEmotions(surveyResult.PhotoLink).Result;
 				if (emotionObjects.Count == 0)
 					return;
 
@@ -120,16 +120,16 @@ namespace LoyaltySurvey {
 					{ "@photoPath", surveyResult.PhotoLink }
 				};
 
-				using (SystemFirebirdClient fBClient = new SystemFirebirdClient(
+				using (ClientFirebird fBClient = new ClientFirebird(
 					Properties.Settings.Default.MisInfoclinicaDbAddress,
 					Properties.Settings.Default.MisInfoclinicaDbName,
 					Properties.Settings.Default.MisInfoclinicaDbUser,
 					Properties.Settings.Default.MisInfoclinicaDbPassword)) {
 					bool result = fBClient.ExecuteUpdateQuery(updateQuery, parameters);
-					SystemLogging.ToLog("Результат записи оценок эмоций: " + result);
+					Logging.ToLog("Результат записи оценок эмоций: " + result);
 				}
 			} catch (Exception exception) {
-				SystemLogging.ToLog("BackgroundWorker_DoWork exception: " + exception.Message +
+				Logging.ToLog("BackgroundWorker_DoWork exception: " + exception.Message +
 					Environment.NewLine + exception.StackTrace);
 			}
 		}

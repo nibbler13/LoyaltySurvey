@@ -66,7 +66,7 @@ namespace LoyaltySurvey.Pages {
 
 				Application.Current.Dispatcher.Invoke(() => {
 					if (dictionaryOfDoctors.Count == 0) {
-						SystemNotification.EmptyResults();
+						Notification.EmptyResults();
 						PageError pageError = new PageError();
 						NavigationService.Navigate(pageError);
 					} else {
@@ -93,7 +93,7 @@ namespace LoyaltySurvey.Pages {
 
 			timerAutoClose.Tick += (s, e) => {
 				Application.Current.Dispatcher.Invoke(() => {
-					SystemLogging.ToLog("Автоматическое завершение работы");
+					Logging.ToLog("Автоматическое завершение работы");
 					Application.Current.Shutdown();
 				});
 			};

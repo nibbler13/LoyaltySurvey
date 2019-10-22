@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -108,7 +109,7 @@ namespace LoyaltySurvey.Pages {
 
 		private void Button_Click(object sender, RoutedEventArgs e) {
 			string tag = (sender as Button).Tag.ToString();
-			SystemLogging.ToLog("Выбрана оценка: " + tag);
+			Logging.ToLog("Выбрана оценка: " + tag);
 			SurveyResult.ClinicRecommendMark = tag;
 
 			PageThanks pageThanks = new PageThanks(SurveyResult);

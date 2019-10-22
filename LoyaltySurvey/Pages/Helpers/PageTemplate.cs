@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
-using LoyaltySurvey.Pages;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages.Helpers {
 	public partial class PageTemplate : Page {
@@ -61,7 +61,7 @@ namespace LoyaltySurvey.Pages.Helpers {
 
 
 		public PageTemplate() {
-			SystemLogging.ToLog("---> Создание страницы " + this.GetType().Name);
+			Logging.ToLog("---> Создание страницы " + this.GetType().Name);
 
 			ScreenWidth = SystemParameters.PrimaryScreenWidth;
 			ScreenHeight = SystemParameters.PrimaryScreenHeight;
@@ -740,7 +740,7 @@ namespace LoyaltySurvey.Pages.Helpers {
 
 
 		private void ButtonBack_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.ToLog("<-- Нажатие кнопки назад");
+			Logging.ToLog("<-- Нажатие кнопки назад");
 			NavigationService.GoBack();
 		}
 
@@ -822,18 +822,22 @@ namespace LoyaltySurvey.Pages.Helpers {
 		}
 
 		protected void CloseAllPagesExceptSplashScreen(bool showDepartmentSelect = false) {
-			SystemLogging.ToLog("<<< Возвращение к стартовой странице");
+			Logging.ToLog("<<< Возвращение к стартовой странице");
 
 			try {
-				while (NavigationService.CanGoBack)
+				while (NavigationService.CanGoBack) {
 					NavigationService.GoBack();
+
+					if (!showDepartmentSelect)
+						NavigationService.RemoveBackEntry();
+				}
 
 				if (showDepartmentSelect && NavigationService.CanGoForward) 
 					NavigationService.GoForward();
 
 				((MainWindow)Application.Current.MainWindow).PreviousThankPageCloseTime = DateTime.Now;
 			} catch (Exception e) {
-				SystemLogging.ToLog("CloseAllFormsExceptMain exception: " + e.Message + 
+				Logging.ToLog("CloseAllFormsExceptMain exception: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
 			}
 		}
@@ -847,9 +851,9 @@ namespace LoyaltySurvey.Pages.Helpers {
 			else
 				((MainWindow)Application.Current.MainWindow).PreviousRatesDcodes.Add(surveyResult.DCode);
 
-			SystemLogging.ToLog("Запись результата в базу данных: " + surveyResult.ToString());
+			Logging.ToLog("Запись результата в базу данных: " + surveyResult.ToString());
 
-			SystemFirebirdClient fBClient = new SystemFirebirdClient(
+			ClientFirebird fBClient = new ClientFirebird(
 				Properties.Settings.Default.MisInfoclinicaDbAddress,
 				Properties.Settings.Default.MisInfoclinicaDbName,
 				Properties.Settings.Default.MisInfoclinicaDbUser,
@@ -881,13 +885,13 @@ namespace LoyaltySurvey.Pages.Helpers {
 			
 			surveyResult.IsInsertedToDb = fBClient.ExecuteUpdateQuery(query, surveyResults);
 
-			SystemLogging.ToLog("Результат выполнения: " + surveyResult.IsInsertedToDb);
+			Logging.ToLog("Результат выполнения: " + surveyResult.IsInsertedToDb);
 		}
 
 
 
 		private void ClassPageTemplate_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-			SystemLogging.ToLog("Видимость страницы " + sender.GetType().Name +
+			Logging.ToLog("Видимость страницы " + sender.GetType().Name +
 				" изменилась с " + e.OldValue + " на " + e.NewValue);
 
 			if (this is PageSplashScreen ||
@@ -901,7 +905,7 @@ namespace LoyaltySurvey.Pages.Helpers {
 		}
 
 		private void DispatcherTimerPageAutoClose_Tick(object sender, EventArgs e) {
-			SystemLogging.ToLog("Истекло время таймера автозакрытия страницы");
+			Logging.ToLog("Истекло время таймера автозакрытия страницы");
 			AutoCloseAllPages();
 		}
 

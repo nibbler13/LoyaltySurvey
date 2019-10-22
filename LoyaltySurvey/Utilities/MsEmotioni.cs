@@ -8,10 +8,10 @@ using System.IO;
 using Newtonsoft.Json;
 using LoyaltySurvey.Items;
 
-namespace LoyaltySurvey {
-	class SystemMsEmotioni {
+namespace LoyaltySurvey.Utilities {
+	class MsEmotioni {
 		public static async Task<List<EmotionObject>> GetEmotions(string fileName) {
-			SystemLogging.ToLog("MsEmotionApi.GetEmotions: " + fileName);
+			Logging.ToLog("MsEmotionApi.GetEmotions: " + fileName);
 
 			List<EmotionObject> emotionObjects = new List<EmotionObject>();
 
@@ -20,12 +20,12 @@ namespace LoyaltySurvey {
 
 			if (string.IsNullOrEmpty(emotionApiUrl) ||
 				string.IsNullOrEmpty(emotionApiKey)) {
-				SystemLogging.ToLog("В настройках не заданы параметры emotionApiUrl или emotionApiKey, пропуск");
+				Logging.ToLog("В настройках не заданы параметры emotionApiUrl или emotionApiKey, пропуск");
 				return emotionObjects;
 			}
 
 			if (string.IsNullOrEmpty(fileName)) {
-				SystemLogging.ToLog("fileName is empty");
+				Logging.ToLog("fileName is empty");
 				return emotionObjects;
 			}
 
@@ -43,7 +43,7 @@ namespace LoyaltySurvey {
 							responseContent = response.Content.ReadAsStringAsync().Result;
 
 							if (!response.IsSuccessStatusCode) {
-								SystemLogging.ToLog("MsEmotionApi - не удалось получить ответ: " +
+								Logging.ToLog("MsEmotionApi - не удалось получить ответ: " +
 									"response.StatusCode: " + response.StatusCode + Environment.NewLine +
 									"responseContent: " + responseContent);
 								return emotionObjects;
@@ -54,13 +54,13 @@ namespace LoyaltySurvey {
 					}
 
 					if (emotionObjects.Count == 0)
-						SystemLogging.ToLog("Не удалось распознать лица людей");
+						Logging.ToLog("Не удалось распознать лица людей");
 
 					foreach (EmotionObject emotionObject in emotionObjects)
-						SystemLogging.ToLog(emotionObject.ToString() + Environment.NewLine);
+						Logging.ToLog(emotionObject.ToString() + Environment.NewLine);
 				}
 			} catch (Exception e) {
-				SystemLogging.ToLog(e.Message + Environment.NewLine + e.StackTrace);
+				Logging.ToLog(e.Message + Environment.NewLine + e.StackTrace);
 			}
 
 			return emotionObjects;

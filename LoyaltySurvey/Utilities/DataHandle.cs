@@ -15,19 +15,19 @@ namespace LoyaltySurvey.Utilities {
 			string misDbPass = Properties.Settings.Default.MisInfoclinicaDbPassword;
 			string sqlQueryDoctors = Properties.Settings.Default.SqlQueryDoctors;
 
-			SystemLogging.ToLog("Обновление данных из базы ИК");
+			Logging.ToLog("Обновление данных из базы ИК");
 			Dictionary<string, List<ItemDoctor>> dictionary = new Dictionary<string, List<ItemDoctor>>();
 
-			using (SystemFirebirdClient fbClient = new SystemFirebirdClient(
+			using (ClientFirebird fbClient = new ClientFirebird(
 				misDbAddress, misDbName, misDbUser, misDbPass))
 			using (DataTable dataTable = fbClient.GetDataTable(Properties.Settings.Default.SqlQueryDoctors)) {
 				string misDbAddressPnd = Properties.Settings.Default.MisInfoclinicaDbAddressPnd;
 				string misDbNamePnd = Properties.Settings.Default.MisInfoclinicaDbNamePnd;
 				if (!string.IsNullOrEmpty(misDbAddressPnd) &&
 					!string.IsNullOrEmpty(misDbNamePnd)) {
-					SystemLogging.ToLog("Обновление данных из базы ИК для ПНД");
+					Logging.ToLog("Обновление данных из базы ИК для ПНД");
 
-					using (SystemFirebirdClient fbClientPnd = new SystemFirebirdClient(
+					using (ClientFirebird fbClientPnd = new ClientFirebird(
 						misDbAddressPnd, misDbNamePnd, misDbUser, misDbPass))
 					using (DataTable dataTablePnd = fbClientPnd.GetDataTable(sqlQueryDoctors))
 						foreach (DataRow row in dataTablePnd.Rows)
@@ -38,8 +38,8 @@ namespace LoyaltySurvey.Utilities {
 				}
 
 				if (dataTable.Rows.Count == 0) {
-					SystemLogging.ToLog("Из базы ИК вернулась пустая таблица");
-					SystemNotification.DataBaseEmptyResponse();
+					Logging.ToLog("Из базы ИК вернулась пустая таблица");
+					Notification.DataBaseEmptyResponse();
 				}
 
 				int clinicRestriction = Properties.Settings.Default.ClinicRestrictions1AdultOnly2ChildOnly;
@@ -82,11 +82,11 @@ namespace LoyaltySurvey.Utilities {
 						} else
 							dictionary.Add(department, new List<ItemDoctor>() { doctor });
 					} catch (Exception e) {
-						SystemLogging.ToLog("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
+						Logging.ToLog("Не удалось обработать строку с данными: " + dataRow.ToString() + ", " + e.Message);
 					}
 				}
 
-				SystemLogging.ToLog("Обработано строк:" + dataTable.Rows.Count);
+				Logging.ToLog("Обработано строк:" + dataTable.Rows.Count);
 			}
 
 
@@ -97,21 +97,21 @@ namespace LoyaltySurvey.Utilities {
 			if (departments == null)
 				throw (new ArgumentNullException(nameof(departments)));
 
-			SystemLogging.ToLog("Обновление фотографий докторов");
+			Logging.ToLog("Обновление фотографий докторов");
 			string searchPath = @Properties.Settings.Default.PathDoctorsPhotoSource;
 			string destinationPath = Path.Combine(Directory.GetCurrentDirectory(), "DoctorsPhotos");
 			if (!Directory.Exists(destinationPath)) {
 				try {
 					Directory.CreateDirectory(destinationPath);
 				} catch (Exception e) {
-					SystemLogging.ToLog("SystemDataHandle - UpdateDoctorsPhoto - " +
+					Logging.ToLog("SystemDataHandle - UpdateDoctorsPhoto - " +
 						e.Message + Environment.NewLine + e.StackTrace);
 					return;
 				}
 			}
 
 			if (!Directory.Exists(searchPath)) {
-				SystemNotification.DoctorsPhotoPathError();
+				Notification.DoctorsPhotoPathError();
 				return;
 			}
 
@@ -131,15 +131,15 @@ namespace LoyaltySurvey.Utilities {
 						
 						try {
 							if (File.Exists(destFileName) && File.GetLastWriteTime(destFileName).Equals(File.GetLastWriteTime(photo))) {
-								SystemLogging.ToLog("Пропуск копирования файла (скопирован ранее) " + photo);
+								Logging.ToLog("Пропуск копирования файла (скопирован ранее) " + photo);
 								break;
 							}
 
 							File.Copy(photo, destFileName, true);
-							SystemLogging.ToLog("Копирование файла " + photo + " в файл " + destFileName);
+							Logging.ToLog("Копирование файла " + photo + " в файл " + destFileName);
 							break;
 						} catch (Exception e) {
-							SystemLogging.ToLog("UpdateDoctorsPhoto exception: " + e.Message +
+							Logging.ToLog("UpdateDoctorsPhoto exception: " + e.Message +
 								Environment.NewLine + e.StackTrace);
 							photoLink = "";
 						}
@@ -153,7 +153,7 @@ namespace LoyaltySurvey.Utilities {
 				return;
 
 			missedPhotos.Sort();
-			SystemNotification.DoctorsPhotoMissed(missedPhotos);
+			Notification.DoctorsPhotoMissed(missedPhotos);
 		}
 	}
 }

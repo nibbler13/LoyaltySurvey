@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey {
 	/// <summary>
@@ -31,14 +32,14 @@ namespace LoyaltySurvey {
 
 		private void HandleException(Exception exception) {
 			if (exception != null) {
-				SystemLogging.ToLog(exception.Message + Environment.NewLine + exception.StackTrace);
+				Logging.ToLog(exception.Message + Environment.NewLine + exception.StackTrace);
 				ClientMail.SendMail(
 					"Необработанное исключение",
 					exception.Message + Environment.NewLine + exception.StackTrace,
 					Settings.Default.MailCopy);
 			}
 
-			SystemLogging.ToLog("!!!App - Аварийное завершение работы");
+			Logging.ToLog("!!!App - Аварийное завершение работы");
 			Process.GetCurrentProcess().Kill();
 		}
 	}

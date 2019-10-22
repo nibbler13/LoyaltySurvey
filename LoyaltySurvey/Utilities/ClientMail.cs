@@ -5,11 +5,11 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net.Mime;
 
-namespace LoyaltySurvey {
+namespace LoyaltySurvey.Utilities {
 	public static class ClientMail {
 		public static void SendMail (string subject, string body, string receiver, string attachmentPath = "") {
-			SystemLogging.ToLog("Отправка сообщения, тема: " + subject + ", текст: " + body);
-			SystemLogging.ToLog("Получатели: " + receiver);
+			Logging.ToLog("Отправка сообщения, тема: " + subject + ", текст: " + body);
+			Logging.ToLog("Получатели: " + receiver);
 
 			if (string.IsNullOrEmpty(receiver))
 				return;
@@ -90,13 +90,13 @@ namespace LoyaltySurvey {
 
 						message.Dispose();
 
-						SystemLogging.ToLog("Письмо отправлено успешно");
+						Logging.ToLog("Письмо отправлено успешно");
 					};
 
 					client.SendAsync(message, null);
 				}
 			} catch (Exception e) {
-				SystemLogging.ToLog("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
+				Logging.ToLog("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
 			}
 		}
 	}

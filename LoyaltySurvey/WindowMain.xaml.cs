@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey {
 	/// <summary>
@@ -15,9 +16,9 @@ namespace LoyaltySurvey {
 		public MainWindow() {
 			InitializeComponent();
 
-			SystemLogging.ToLog("==================================" + 
+			Logging.ToLog("==================================" + 
 				Environment.NewLine + "Создание основного окна");
-			SystemNotification.AppStart();
+			Notification.AppStart();
 
 			if (!Properties.Settings.Default.IsDebug &&
 				!Environment.MachineName.Equals("MSSU-DEV")) {
@@ -28,7 +29,7 @@ namespace LoyaltySurvey {
 
 		private void NavigationWindow_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Key.Equals(Key.Escape)) {
-				SystemLogging.ToLog("---------------------------------" +
+				Logging.ToLog("---------------------------------" +
 					Environment.NewLine + "Закрытие по нажатию клавиши ESC");
 				Application.Current.Shutdown();
 			}

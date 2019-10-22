@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -23,7 +24,7 @@ namespace LoyaltySurvey.Pages {
 			_dictionaryOfDoctors = dictionaryOfDoctors ?? throw new ArgumentNullException(nameof(dictionaryOfDoctors));
 			_dictionarySelectDoctorPages = new Dictionary<string, PageDoctorSelect>();
 
-			SystemLogging.ToLog("Количество отделений: " + dictionaryOfDoctors.Count);
+			Logging.ToLog("Количество отделений: " + dictionaryOfDoctors.Count);
 
 			SetLabelsContent(
 				Properties.Resources.StringPageDepartmentSelectTitle,
@@ -75,7 +76,7 @@ namespace LoyaltySurvey.Pages {
 		}
 
 		private void ButtonSearch_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.ToLog("Нажата кнопка 'Поиск'");
+			Logging.ToLog("Нажата кнопка 'Поиск'");
 
 			PageDoctorSearch pageDoctorSearch = new PageDoctorSearch(_dictionaryOfDoctors);
 			NavigationService.Navigate(pageDoctorSearch);
@@ -83,7 +84,7 @@ namespace LoyaltySurvey.Pages {
 
 		private void PanelDepartment_Click(object sender, RoutedEventArgs e) {
 			string depname = (sender as Control).Tag.ToString();
-			SystemLogging.ToLog("Выбрано отделение: " + depname);
+			Logging.ToLog("Выбрано отделение: " + depname);
 
 			PageDoctorSelect pageDoctorSelect;
 			if (_dictionarySelectDoctorPages.ContainsKey(depname))

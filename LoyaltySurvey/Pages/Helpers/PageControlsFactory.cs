@@ -11,6 +11,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages.Helpers {
 #pragma warning disable CA1060 // Move pinvokes to native methods class
@@ -370,13 +371,13 @@ namespace LoyaltySurvey.Pages.Helpers {
 				}
 
 				if (string.IsNullOrEmpty(wantedFile)) {
-					SystemLogging.ToLog("Не удалось найти изображение для доктора с кодом: " + dcode);
+					Logging.ToLog("Не удалось найти изображение для доктора с кодом: " + dcode);
 					return Properties.Resources.DoctorWithoutAPhoto;
 				}
 
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception e) {
-				SystemLogging.ToLog("Не удалось открыть файл с изображением: " + e.Message + 
+				Logging.ToLog("Не удалось открыть файл с изображением: " + e.Message + 
 					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DoctorWithoutAPhoto;
 			}
@@ -388,13 +389,13 @@ namespace LoyaltySurvey.Pages.Helpers {
 				string wantedFile = mask.Replace("*", depname);
 
 				if (!File.Exists(wantedFile)) {
-					SystemLogging.ToLog("Не удалось найти изображение для подразделения: " + depname);
+					Logging.ToLog("Не удалось найти изображение для подразделения: " + depname);
 					return Properties.Resources.DepartmentWithoutAPhoto;
 				}
 
 				return System.Drawing.Image.FromFile(wantedFile);
 			} catch (Exception e) {
-				SystemLogging.ToLog("Не удалось открыть файл с изображением: " + e.Message +
+				Logging.ToLog("Не удалось открыть файл с изображением: " + e.Message +
 					Environment.NewLine + e.StackTrace);
 				return Properties.Resources.DepartmentWithoutAPhoto;
 			}

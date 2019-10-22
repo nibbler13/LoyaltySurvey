@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -71,11 +72,11 @@ namespace LoyaltySurvey.Pages {
 			string dCode = "0";
 			string depNum = (Properties.Settings.Default.ClinicRestrictions1AdultOnly2ChildOnly - 1).ToString();
 			
-			SystemLogging.ToLog("Выбрана оценка: " + tag);
+			Logging.ToLog("Выбрана оценка: " + tag);
 			SurveyResult = new ItemSurveyResult(ItemSurveyResult.Type.Registry, DateTime.Now, dCode, "Регистратура", tag, string.Empty, depNum);
 			Page page;
 
-			SystemWebCam webCam = new SystemWebCam(SurveyResult);
+			WebCam webCam = new WebCam(SurveyResult);
 			if (Properties.Settings.Default.WebCamWriteAll)
 				webCam.CaptureImageFromWebCamAndSave();
 			else if ((tag.Equals("1") || tag.Equals("2")) &&

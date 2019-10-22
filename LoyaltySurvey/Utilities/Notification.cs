@@ -6,8 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoyaltySurvey {
-	public static class SystemNotification {
+namespace LoyaltySurvey.Utilities {
+	public static class Notification {
 		public static void EmptyResults() {
 			string subject = "Ошибка обработки данных";
 			string body = 
@@ -57,7 +57,7 @@ namespace LoyaltySurvey {
 				header = "Пациент оставил комментарий к своей негативной оценке";
 			
 			if (string.IsNullOrEmpty(header)) {
-				SystemLogging.ToLog("Пропуск отправки сообщения об обратной связи - " +
+				Logging.ToLog("Пропуск отправки сообщения об обратной связи - " +
 					"неверный формат номера телефона и отсутствует комментарий");
 				return;
 			}
@@ -131,7 +131,7 @@ namespace LoyaltySurvey {
 			if (!string.IsNullOrEmpty(receiver))
 				ClientMail.SendMail(subject, body, receiver);
 
-			SystemLogging.WriteStringToFile(body, Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\MissedPhotos.txt");
+			Logging.WriteStringToFile(body, Directory.GetCurrentDirectory() + "\\DoctorsPhotos\\MissedPhotos.txt");
 		}
 	}
 }

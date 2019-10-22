@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -27,7 +28,7 @@ namespace LoyaltySurvey.Pages {
 				Properties.Resources.StringPageSelectSurveyTitle,
 				Properties.Resources.StringPageSelectSurveySubtitle);
 
-			SystemLogging.ToLog("Отображение страницы с выбором типа опроса");
+			Logging.ToLog("Отображение страницы с выбором типа опроса");
 
 			double buttonWidth = AvailableWidth / 3;
 			double buttonHeight = AvailableHeight / 2;

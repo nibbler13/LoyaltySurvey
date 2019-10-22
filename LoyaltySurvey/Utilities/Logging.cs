@@ -2,8 +2,8 @@
 using System.IO;
 using System.Linq;
 
-namespace LoyaltySurvey {
-	class SystemLogging {
+namespace LoyaltySurvey.Utilities {
+	class Logging {
 		private const string LOG_FILE_NAME = "LoyaltySurvey_*.log";
 		private const int MAX_LOGFILES_QUANTITY = 7;
 

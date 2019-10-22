@@ -112,8 +112,8 @@
       <DependentUpon>PageSelectSurvey.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DataHandle.cs" />
-    <Compile Include="Utilities\SystemMsEmotioni.cs" />
-    <Compile Include="Utilities\SystemNotification.cs" />
+    <Compile Include="Utilities\MsEmotioni.cs" />
+    <Compile Include="Utilities\Notification.cs" />
     <Compile Include="Pages\PageCallback.xaml.cs">
       <DependentUpon>PageCallback.xaml</DependentUpon>
     </Compile>
@@ -138,7 +138,7 @@
     <Compile Include="Pages\Helpers\PageScrollAnimationBehavior.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Items\ItemSurveyResult.cs" />
-    <Compile Include="Utilities\SystemWebCam.cs" />
+    <Compile Include="Utilities\WebCam.cs" />
     <Page Include="Pages\PageRegistryRate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,8 +157,8 @@
     </Compile>
     <Compile Include="Pages\Helpers\PageTemplate.cs" />
     <Compile Include="Items\ItemDoctor.cs" />
-    <Compile Include="Utilities\SystemFirebirdClient.cs" />
-    <Compile Include="Utilities\SystemLogging.cs" />
+    <Compile Include="Utilities\ClientFirebird.cs" />
+    <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\ClientMail.cs" />
     <Compile Include="WindowMain.xaml.cs">
       <DependentUpon>WindowMain.xaml</DependentUpon>

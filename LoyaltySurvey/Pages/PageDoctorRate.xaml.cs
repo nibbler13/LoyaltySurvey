@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -85,12 +86,12 @@ namespace LoyaltySurvey.Pages {
 
 		private void ButtonRate_Click(object sender, EventArgs e) {
 			string tag = (sender as Control).Tag.ToString();
-			SystemLogging.ToLog("Выбрана оценка: " + tag);
+			Logging.ToLog("Выбрана оценка: " + tag);
 			SurveyResult = new ItemSurveyResult(ItemSurveyResult.Type.Doctor, DateTime.Now, doctor.Code,
 				doctor.Name, tag, doctor.Department, doctor.DeptCode);
 			Page page;
 
-			SystemWebCam webCam = new SystemWebCam(SurveyResult);
+			WebCam webCam = new WebCam(SurveyResult);
 			if (Properties.Settings.Default.WebCamWriteAll)
 				webCam.CaptureImageFromWebCamAndSave();
 			else if ((tag.Equals("1") || tag.Equals("2")) &&

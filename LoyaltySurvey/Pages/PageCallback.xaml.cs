@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -36,7 +37,7 @@ namespace LoyaltySurvey.Pages {
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.ToLog("Нажата кнопка 'Да'");
+			Logging.ToLog("Нажата кнопка 'Да'");
 
 			textBoxData = new TextBox();
 			textBoxData.TextChanged += TextBoxData_TextChanged;
@@ -116,12 +117,12 @@ namespace LoyaltySurvey.Pages {
 
 			if (isNextPressed) {
 				phoneNumber = textBoxData.Text;
-				SystemLogging.ToLog("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
+				Logging.ToLog("Нажата кнопка 'Далее', введенный номер телефона: " + phoneNumber);
 			} else
-				SystemLogging.ToLog("Нажата кнопка 'Нет'");
+				Logging.ToLog("Нажата кнопка 'Нет'");
 
 			SurveyResult.PhoneNumber = phoneNumber;
-			SystemNotification.NegativeMark(SurveyResult);
+			Notification.NegativeMark(SurveyResult);
 
 			Page page;
 			if (((MainWindow)Application.Current.MainWindow).PreviousRatesDcodes.Count > 0 ||

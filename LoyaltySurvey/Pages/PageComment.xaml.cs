@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using LoyaltySurvey.Pages.Helpers;
+using LoyaltySurvey.Utilities;
 
 namespace LoyaltySurvey.Pages {
 	/// <summary>
@@ -33,7 +34,7 @@ namespace LoyaltySurvey.Pages {
 		}
 
 		private void ButtonYes_Click(object sender, RoutedEventArgs e) {
-			SystemLogging.ToLog("Нажата кнопка 'Да'");
+			Logging.ToLog("Нажата кнопка 'Да'");
 
 			textBox = PageControlsFactory.CreateTextBox(FontFamilySub, FontSizeMain, false);
 			PageOnscreenKeyboard onscreenKeyboard = new PageOnscreenKeyboard(textBox, AvailableWidth, AvailableHeight,
@@ -89,9 +90,9 @@ namespace LoyaltySurvey.Pages {
 
 			if ((sender as Button).Tag.ToString().Equals("Далее")) {
 				comment = textBox.Text;
-				SystemLogging.ToLog("Нажата кнопка 'Далее', введенный комментарий: " + comment);
+				Logging.ToLog("Нажата кнопка 'Далее', введенный комментарий: " + comment);
 			} else
-				SystemLogging.ToLog("Нажата кнопка 'Нет'");
+				Logging.ToLog("Нажата кнопка 'Нет'");
 
 			SurveyResult.Comment = comment;
 
