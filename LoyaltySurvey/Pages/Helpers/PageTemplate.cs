@@ -853,39 +853,40 @@ namespace LoyaltySurvey.Pages.Helpers {
 
 			Logging.ToLog("Запись результата в базу данных: " + surveyResult.ToString());
 
-			ClientFirebird fBClient = new ClientFirebird(
+			using (ClientFirebird fBClient = new ClientFirebird(
 				Properties.Settings.Default.MisInfoclinicaDbAddress,
 				Properties.Settings.Default.MisInfoclinicaDbName,
 				Properties.Settings.Default.MisInfoclinicaDbUser,
-				Properties.Settings.Default.MisInfoclinicaDbPassword);
+				Properties.Settings.Default.MisInfoclinicaDbPassword)) {
 
-			Dictionary<string, object> surveyResults = new Dictionary<string, object>() {
-				{ "@dcode", surveyResult.DCode },
-				{ "@docrate", surveyResult.DocRate },
-				{ "@comment", surveyResult.Comment },
-				{ "@phonenumber", surveyResult.PhoneNumber },
-				{ "@clinicrate", surveyResult.ClinicRecommendMark },
-				{ "@photopath", surveyResult.PhotoLink },
-				{ "@depnum", surveyResult.DocDeptCode }
-			};
+				Dictionary<string, object> surveyResults = new Dictionary<string, object>() {
+					{ "@dcode", surveyResult.DCode },
+					{ "@docrate", surveyResult.DocRate },
+					{ "@comment", surveyResult.Comment },
+					{ "@phonenumber", surveyResult.PhoneNumber },
+					{ "@clinicrate", surveyResult.ClinicRecommendMark },
+					{ "@photopath", surveyResult.PhotoLink },
+					{ "@depnum", surveyResult.DocDeptCode }
+				};
 
-			string query = Properties.Settings.Default.SqlInsertSurveyResultWithoutEmotion;
+				string query = Properties.Settings.Default.SqlInsertSurveyResultWithoutEmotion;
 
-			if (surveyResult.EmotionObject != null) {
-				surveyResults.Add("@em_anger", surveyResult.EmotionObject.Scores.Anger);
-				surveyResults.Add("@em_contempt", surveyResult.EmotionObject.Scores.Contempt);
-				surveyResults.Add("@em_disgust", surveyResult.EmotionObject.Scores.Disgust);
-				surveyResults.Add("@em_fear", surveyResult.EmotionObject.Scores.Fear);
-				surveyResults.Add("@em_happiness", surveyResult.EmotionObject.Scores.Happiness);
-				surveyResults.Add("@em_neutral", surveyResult.EmotionObject.Scores.Neutral);
-				surveyResults.Add("@em_sadness", surveyResult.EmotionObject.Scores.Sadness);
-				surveyResults.Add("@em_surprice",  surveyResult.EmotionObject.Scores.Surprise);
-				query = Properties.Settings.Default.SqlInsertSurveyResultWithEmotion;
+				if (surveyResult.EmotionObject != null) {
+					surveyResults.Add("@em_anger", surveyResult.EmotionObject.Scores.Anger);
+					surveyResults.Add("@em_contempt", surveyResult.EmotionObject.Scores.Contempt);
+					surveyResults.Add("@em_disgust", surveyResult.EmotionObject.Scores.Disgust);
+					surveyResults.Add("@em_fear", surveyResult.EmotionObject.Scores.Fear);
+					surveyResults.Add("@em_happiness", surveyResult.EmotionObject.Scores.Happiness);
+					surveyResults.Add("@em_neutral", surveyResult.EmotionObject.Scores.Neutral);
+					surveyResults.Add("@em_sadness", surveyResult.EmotionObject.Scores.Sadness);
+					surveyResults.Add("@em_surprice", surveyResult.EmotionObject.Scores.Surprise);
+					query = Properties.Settings.Default.SqlInsertSurveyResultWithEmotion;
+				}
+
+				surveyResult.IsInsertedToDb = fBClient.ExecuteUpdateQuery(query, surveyResults);
+
+				Logging.ToLog("Результат выполнения: " + surveyResult.IsInsertedToDb);
 			}
-			
-			surveyResult.IsInsertedToDb = fBClient.ExecuteUpdateQuery(query, surveyResults);
-
-			Logging.ToLog("Результат выполнения: " + surveyResult.IsInsertedToDb);
 		}
 
 

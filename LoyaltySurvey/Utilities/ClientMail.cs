@@ -4,10 +4,11 @@ using System.Reflection;
 using System.IO;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace LoyaltySurvey.Utilities {
 	public static class ClientMail {
-		public static void SendMail (string subject, string body, string receiver, string attachmentPath = "") {
+		public async static void SendMail (string subject, string body, string receiver, string attachmentPath = "") {
 			Logging.ToLog("Отправка сообщения, тема: " + subject + ", текст: " + body);
 			Logging.ToLog("Получатели: " + receiver);
 
@@ -77,24 +78,25 @@ namespace LoyaltySurvey.Utilities {
 				if (!string.IsNullOrEmpty(Properties.Settings.Default.MailCopy))
 					message.CC.Add(Properties.Settings.Default.MailCopy);
 
-				using (SmtpClient client = new SmtpClient(Properties.Settings.Default.MailSmtpServer, 25)) {
-					client.UseDefaultCredentials = false;
-					client.Credentials = new System.Net.NetworkCredential(
+				await Task.Run(() => {
+					SmtpClient client = new SmtpClient(Properties.Settings.Default.MailSmtpServer, 25) {
+						UseDefaultCredentials = false,
+						Credentials = new System.Net.NetworkCredential(
 						Properties.Settings.Default.MailUser,
 						Properties.Settings.Default.MailPassword,
-						Properties.Settings.Default.MailDomain);
-
-					client.SendCompleted += (s, e) => {
-						foreach (Attachment attach in message.Attachments)
-							attach.Dispose();
-
-						message.Dispose();
-
-						Logging.ToLog("Письмо отправлено успешно");
+						Properties.Settings.Default.MailDomain)
 					};
 
-					client.SendAsync(message, null);
-				}
+					client.Send(message);
+					foreach (Attachment attach in message.Attachments)
+						attach.Dispose();
+
+					message.Dispose();
+					client.Dispose();
+
+					Logging.ToLog("Письмо отправлено успешно");
+				}).ConfigureAwait(false);
+
 			} catch (Exception e) {
 				Logging.ToLog("SendMail exception: " + e.Message + Environment.NewLine + e.StackTrace);
 			}
