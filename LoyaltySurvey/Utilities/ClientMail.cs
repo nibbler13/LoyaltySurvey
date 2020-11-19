@@ -79,12 +79,13 @@ namespace LoyaltySurvey.Utilities {
 					message.CC.Add(Properties.Settings.Default.MailCopy);
 
 				await Task.Run(() => {
-					SmtpClient client = new SmtpClient(Properties.Settings.Default.MailSmtpServer, 25) {
+					SmtpClient client = new SmtpClient(Properties.Settings.Default.MailSmtpServer, 587) {
 						UseDefaultCredentials = false,
+						DeliveryMethod = SmtpDeliveryMethod.Network,
+						EnableSsl = false,
 						Credentials = new System.Net.NetworkCredential(
-						Properties.Settings.Default.MailUser,
-						Properties.Settings.Default.MailPassword,
-						Properties.Settings.Default.MailDomain)
+							Properties.Settings.Default.MailUser,
+							Properties.Settings.Default.MailPassword)
 					};
 
 					client.Send(message);
